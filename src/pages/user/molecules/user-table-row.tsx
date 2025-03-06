@@ -1,0 +1,67 @@
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import IconButton from '@mui/material/IconButton';
+import { useBoolean } from 'src/hooks/use-boolean';
+import Label from 'src/components/label';
+import Iconify from 'src/components/iconify';
+import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
+import UserQuickEditForm from './user-quick-edit-form';
+import { IUserItem } from '../../../types/user';
+
+type Props = {
+  row: IUserItem;
+  selected: boolean;
+};
+
+export default function UserTableRow({ row, selected }: Props) {
+  const { name, email, role, status, UserRegion, UserTerritory } = row;
+
+  const quickEdit = useBoolean();
+
+  return (
+    <>
+      <TableRow hover selected={selected}>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{name}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{email}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{role}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>
+          {UserRegion.length ? UserRegion.map((region) => region.Region.name).join(', ') : '-'}
+        </TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>
+          {UserTerritory.length
+            ? UserTerritory.map((territory) => territory.Territory.name).join(', ')
+            : '-'}
+        </TableCell>
+        <TableCell>
+          <Label
+            variant="soft"
+            color={
+              (status === 'active' && 'success') ||
+              (status === 'pending' && 'warning') ||
+              (status === 'banned' && 'error') ||
+              'default'
+            }
+          >
+            {status}
+          </Label>
+        </TableCell>
+
+        <TableCell align="right" sx={{ whiteSpace: 'nowrap' }}>
+          <Stack direction="row" alignItems="center" justifyContent="flex-end">
+            <Tooltip title="Quick Edit" placement="top" arrow>
+              <IconButton
+                color={quickEdit.value ? 'inherit' : 'default'}
+                onClick={quickEdit.onTrue}
+              >
+                <Iconify icon="solar:pen-bold" />
+              </IconButton>
+            </Tooltip>
+          </Stack>
+        </TableCell>
+      </TableRow>
+
+      <UserQuickEditForm currentUser={row} open={quickEdit.value} onClose={quickEdit.onFalse} />
+    </>
+  );
+}
