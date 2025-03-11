@@ -6,6 +6,14 @@ export const ASSETS_API = import.meta.env.VITE_ASSETS_API;
 export const API_KEY = import.meta.env.VITE_API_KEY;
 export const GOOGLE_SITE_KEY = import.meta.env.VITE_GOOGLE_SITE_KEY;
 
+export const IDAMAN = {
+  viteIdamanAuthority: import.meta.env.VITE_IDAMAN_AUTHORITY,
+  viteIdamanClientId: import.meta.env.VITE_IDAMAN_CLIENT_ID,
+  viteIdamanClientSecret: import.meta.env.VITE_IDAMAN_CLIENT_SECRET,
+  viteIdamanRedirectUri: import.meta.env.VITE_IDAMAN_REDIRECT_URI,
+  viteIdamanPostLogoutRedirectUrl: import.meta.env.VITE_IDAMAN_POST_LOGOUT_REDIRECT_URL,
+};
+
 export const IS_CAPTCHA_ACTIVE = import.meta.env.VITE_IS_CAPTCHA;
 
 // ROOT PATH AFTER LOGIN SUCCESSFUL

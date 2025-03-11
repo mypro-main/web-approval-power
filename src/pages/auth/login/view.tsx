@@ -15,6 +15,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { useAuthContext } from 'src/auth/hooks';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
 import Iconify from 'src/components/iconify';
+import IdamanLoginView from './idaman';
 
 export default function JwtLoginView() {
   const { login } = useAuthContext();
@@ -111,6 +112,8 @@ export default function JwtLoginView() {
       >
         Login
       </LoadingButton>
+
+      <IdamanLoginView />
     </Stack>
   );
 
