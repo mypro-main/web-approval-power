@@ -1,27 +1,27 @@
 import { useCallback } from 'react';
 import Stack from '@mui/material/Stack';
 import MenuItem from '@mui/material/MenuItem';
-import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
 import Iconify from 'src/components/iconify';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
-import { IApprovalTableFilters } from '../../../types/approval';
+import { IActivityTableFilters } from '../../../types/activity';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 type Props = {
-  filters: IApprovalTableFilters;
-  onFilters: (key: string, value: string) => void;
+  filters: IActivityTableFilters;
+  onFilters: (key: string, value: Date) => void;
 };
 
-export default function ApprovalTableToolbar({ filters, onFilters }: Props) {
+export default function ActivityTableToolbar({ filters, onFilters }: Props) {
   const popover = usePopover();
 
-  const handleFilterName = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      onFilters('name', event.target.value);
-    },
-    [onFilters]
-  );
+  const handleFilterStartDate = useCallback((date: Date | null) => {
+    if (date) onFilters('startDate', date);
+  }, []);
+
+  const handleFilterEndDate = useCallback((date: Date | null) => {
+    if (date) onFilters('endDate', date);
+  }, []);
 
   return (
     <>
@@ -38,20 +38,31 @@ export default function ApprovalTableToolbar({ filters, onFilters }: Props) {
         }}
       >
         <Stack direction="row" alignItems="center" spacing={2} flexGrow={1} sx={{ width: 1 }}>
-          <TextField
-            fullWidth
-            value={filters.name}
-            onChange={handleFilterName}
-            placeholder="Search by name..."
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
-                </InputAdornment>
-              ),
-            }}
+          <DatePicker
+            label="Start Date"
+            value={filters.startDate}
+            onChange={handleFilterStartDate}
+            sx={{ width: 1 }}
           />
-
+          <DatePicker
+            label="End Date"
+            value={filters.endDate}
+            onChange={handleFilterEndDate}
+            sx={{ width: 1 }}
+          />
+          {/*<TextField*/}
+          {/*  fullWidth*/}
+          {/*  value={filters.name}*/}
+          {/*  onChange={handleFilterName}*/}
+          {/*  placeholder="Search by name..."*/}
+          {/*  InputProps={{*/}
+          {/*    startAdornment: (*/}
+          {/*      <InputAdornment position="start">*/}
+          {/*        <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />*/}
+          {/*      </InputAdornment>*/}
+          {/*    ),*/}
+          {/*  }}*/}
+          {/*/>*/}
           <IconButton onClick={popover.onOpen}>
             <Iconify icon="eva:more-vertical-fill" />
           </IconButton>

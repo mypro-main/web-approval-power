@@ -8,9 +8,9 @@ import DialogContent from '@mui/material/DialogContent';
 import Grid from '@mui/material/Grid';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMemo } from 'react';
-import FormProvider, { RHFTextField } from '../../../components/hook-form';
-import { EditApprovalSchema } from '../schemas';
-import { IApprovalItem } from '../../../types/approval';
+import FormProvider, { RHFTextField } from '../../../../components/hook-form';
+import { EditApprovalSchema } from '../../schemas';
+import { IApprovalItem } from '../../../../types/approval';
 
 type Props = {
   open: boolean;

@@ -2,11 +2,11 @@ import { Button, CardContent } from '@mui/material';
 import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import CustomBreadcrumbs from '../../../components/custom-breadcrumbs';
-import { RouterLink } from '../../../components/router-link';
-import { paths } from '../../paths';
-import Iconify from '../../../components/iconify';
-import { useSettingsContext } from '../../../components/settings';
+import CustomBreadcrumbs from '../../../../components/custom-breadcrumbs';
+import { RouterLink } from '../../../../components/router-link';
+import { paths } from '../../../paths';
+import Iconify from '../../../../components/iconify';
+import { useSettingsContext } from '../../../../components/settings';
 import { useCallback, useMemo, useState } from 'react';
 import {
   getComparator,
@@ -16,23 +16,24 @@ import {
   TableSelectedAction,
   TableSkeleton,
   useTable,
-} from '../../../components/table';
-import { useDebounceQuery } from '../../../hooks/use-debounce';
+} from '../../../../components/table';
+import { useDebounceQuery } from '../../../../hooks/use-debounce';
 import isEqual from 'lodash/isEqual';
 import Tabs from '@mui/material/Tabs';
 import { alpha } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
-import Label from '../../../components/label';
+import Label from '../../../../components/label';
 import TableContainer from '@mui/material/TableContainer';
-import Scrollbar from '../../../components/scrollbar/scrollbar';
+import Scrollbar from '../../../../components/scrollbar/scrollbar';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import { useGetAllApproval } from '../../../services/approval/hooks/use-get-all-approval';
+import { useGetAllApproval } from '../../../../services/approval/hooks/use-get-all-approval';
 import ApprovalTableToolbar from '../molecules/approval-table-toolbar';
 import ApprovalTableFiltersResult from '../molecules/approval-table-filters-result';
 import ApprovalTableRow from '../molecules/approval-table-row';
-import { IApprovalItem, IApprovalTableFilters } from '../../../types/approval';
-import { GetAllApprovalParams } from '../../../services/approval/approval.request';
+import { IApprovalItem, IApprovalTableFilters } from '../../../../types/approval';
+import { GetAllApprovalParams } from '../../../../services/approval/approval.request';
+import { useRouter } from '../../../../hooks/use-router';
 
 const STATUS_OPTIONS = [
   { value: '', label: 'All' },
@@ -52,8 +53,10 @@ const defaultFilters: IApprovalTableFilters = {
   status: '',
 };
 
-export function ApprovalView() {
+export function ApprovalListView() {
   const [filters, setFilters] = useState(defaultFilters);
+
+  const router = useRouter();
 
   const table = useTable({
     defaultRowsPerPage: 5,
@@ -105,11 +108,18 @@ export function ApprovalView() {
     setFilters(defaultFilters);
   }, []);
 
+  const handleViewRow = useCallback(
+    (id: string) => {
+      router.push(paths.approval.details(id));
+    },
+    [router]
+  );
+
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Approval"
-        links={[{ name: 'Main Hub' }, { name: 'Approval' }]}
+        heading="Approval List"
+        links={[{ name: 'Main Hub' }, { name: 'Approval List' }]}
         action={
           <Stack direction="row" gap={1}>
             <Button
@@ -212,6 +222,7 @@ export function ApprovalView() {
                         key={row.id}
                         row={row}
                         selected={table.selected.includes(row.id)}
+                        onViewRow={() => handleViewRow(row.id)}
                       />
                     ))}
                   </>

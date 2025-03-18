@@ -2,33 +2,26 @@ import capitalize from '@mui/utils/capitalize';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
-import Iconify from '../../../components/iconify';
+import Iconify from '../../../../components/iconify';
 import { ApprovalQuickEditForm } from './approval-quick-edit-form';
-import { useBoolean } from '../../../hooks/use-boolean';
-import { Button } from '@mui/material';
-import { ConfirmDialog } from '../../../components/custom-dialog';
-import { useCallback } from 'react';
-import CustomPopover, { usePopover } from '../../../components/custom-popover';
+import { useBoolean } from '../../../../hooks/use-boolean';
+import CustomPopover, { usePopover } from '../../../../components/custom-popover';
 import MenuItem from '@mui/material/MenuItem';
-import Label from '../../../components/label';
-import { IApprovalItem } from '../../../types/approval';
+import Label from '../../../../components/label';
+import { IApprovalItem } from '../../../../types/approval';
 
 type Props = {
   selected: boolean;
   row: IApprovalItem;
+  onViewRow: VoidFunction;
 };
 
-export default function ApprovalTableRow({ row, selected }: Props) {
+export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
   const { id, name, status } = row;
 
   const popover = usePopover();
 
-  const confirm = useBoolean();
-  const quickEdit = useBoolean();
-
-  const onDeleteRow = useCallback(() => {
-    console.log('deleted');
-  }, []);
+  const quickApprove = useBoolean();
 
   return (
     <>
@@ -58,38 +51,29 @@ export default function ApprovalTableRow({ row, selected }: Props) {
       >
         <MenuItem
           onClick={() => {
-            quickEdit.onTrue();
+            quickApprove.onTrue();
             popover.onClose();
           }}
         >
-          <Iconify icon="solar:pen-bold" />
-          Edit
+          <Iconify icon="mingcute:check-2-fill" />
+          Approval
         </MenuItem>
 
         <MenuItem
           onClick={() => {
-            confirm.onTrue();
+            onViewRow();
             popover.onClose();
           }}
-          sx={{ color: 'error.main' }}
         >
-          <Iconify sx={{ color: 'error' }} icon="solar:trash-bin-minimalistic-bold" />
-          Delete
+          <Iconify icon="mingcute:eye-2-fill" />
+          View
         </MenuItem>
       </CustomPopover>
 
-      <ApprovalQuickEditForm currentItem={row} open={quickEdit.value} onClose={quickEdit.onFalse} />
-
-      <ConfirmDialog
-        open={confirm.value}
-        onClose={confirm.onFalse}
-        title="Delete"
-        content="Are you sure want to delete?"
-        action={
-          <Button variant="contained" color="error" onClick={onDeleteRow}>
-            Delete
-          </Button>
-        }
+      <ApprovalQuickEditForm
+        currentItem={row}
+        open={quickApprove.value}
+        onClose={quickApprove.onFalse}
       />
     </>
   );

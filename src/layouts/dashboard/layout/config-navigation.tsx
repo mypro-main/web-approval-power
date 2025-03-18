@@ -43,7 +43,7 @@ const navItem: {
     items: [
       {
         roles: ['SUPERSAIYAN', 'PTPL_IT', 'PTPL_QA', 'PTPL_PROD', 'GUEST', 'EMPLOYEE', 'VENDOR'],
-        title: 'Approval',
+        title: 'ApprovalList',
         path: paths.approval.root,
         icon: ICONS.blank,
       },

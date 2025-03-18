@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack, { StackProps } from '@mui/material/Stack';
 import Iconify from 'src/components/iconify';
-import { IApprovalTableFilters } from '../../../types/approval';
+import { IApprovalTableFilters } from '../../../../types/approval';
 
 type Props = StackProps & {
   filters: IApprovalTableFilters;

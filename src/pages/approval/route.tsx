@@ -5,7 +5,8 @@ import { LoadingScreen } from 'src/components/loading-screen';
 import DashboardLayout from '../../layouts/dashboard/layout';
 import { SUPER_ROLE } from '../../config-global';
 
-const Approval = lazy(() => import('./approval'));
+const ApprovalList = lazy(() => import('./list/approval-list'));
+const ApprovalDetail = lazy(() => import('./detail/approval-detail'));
 
 export const approvalRoutes: RouteObject[] = [
   {
@@ -22,6 +23,9 @@ export const approvalRoutes: RouteObject[] = [
         </DashboardLayout>
       </AuthGuard>
     ),
-    children: [{ element: <Approval />, index: true }],
+    children: [
+      { element: <ApprovalList />, index: true },
+      { path: 'detail/:id', element: <ApprovalDetail /> },
+    ],
   },
 ];

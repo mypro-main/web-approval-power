@@ -10,6 +10,7 @@ import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem';
 
 import { fDateTime } from 'src/utils/format-time';
+import Stack from '@mui/material/Stack';
 
 type Props = CardProps & {
   title?: string;
@@ -18,11 +19,12 @@ type Props = CardProps & {
     id: string;
     type: string;
     title: string;
+    subtitle?: string;
     time: Date;
   }[];
 };
 
-export function ActivityTimeline({ title, subheader, list, ...other }: Props) {
+export function ApprovalHistory({ title, subheader, list, ...other }: Props) {
   return (
     <Timeline
       sx={{
@@ -50,16 +52,38 @@ function Item({ item, lastItem, index, ...other }: ItemProps) {
   return (
     <TimelineItem {...other}>
       <TimelineSeparator>
-        <TimelineDot color="grey" />
-        {lastItem ? null : <TimelineConnector />}
+        <TimelineDot color="primary" sx={{ width: 25, height: 25, position: 'relative' }}>
+          <Typography
+            variant="caption"
+            color="background.default"
+            fontWeight="bold"
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          >
+            {index + 1}
+          </Typography>
+        </TimelineDot>
+        {lastItem ? null : <TimelineConnector sx={{ height: 50 }} />}
       </TimelineSeparator>
 
-      <TimelineContent>
-        <Typography variant="subtitle2">{item.title}</Typography>
-
-        <Typography variant="caption" sx={{ color: 'text.disabled' }}>
+      <TimelineContent sx={{ mt: 0.65 }}>
+        <Typography variant="subtitle2" color="primary.main">
           {fDateTime(item.time)}
         </Typography>
+
+        <Typography variant="body2" color="text.primary">
+          {item.title}
+        </Typography>
+
+        {item.subtitle && (
+          <Typography variant="body2" color="text.disabled">
+            Catatan: {item.subtitle}
+          </Typography>
+        )}
       </TimelineContent>
     </TimelineItem>
   );
