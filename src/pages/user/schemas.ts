@@ -15,6 +15,7 @@ export const CreateUserSchema = Yup.object({
     .required('Name must not be empty.'),
   email: Yup.string().email('Email must be a valid email.').required('Email must not be empty.'),
   role: Yup.string().required('Role must not be empty.'),
+  jobTitle: Yup.string().required('Role must not be empty.'),
   regionIds: Yup.array().of(Yup.string().required()).required(),
   territoryIds: Yup.array().of(Yup.string().required()).required(),
   password: Yup.string()

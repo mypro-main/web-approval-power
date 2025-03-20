@@ -5,7 +5,7 @@ export interface GetAllTerritoryParams extends BaseParams {
   name?: string;
   description?: string;
   status?: string;
-  regionId?: string;
+  regionIds?: string;
 }
 
 export interface CreateTerritoryRequest {

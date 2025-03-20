@@ -12,7 +12,7 @@ export interface CreateUserRequest {
   role: string;
   password: string;
   confirmPassword: string;
-  regionIds: string[];
+  jobTitle: string;
   territoryIds: string[];
 }
 

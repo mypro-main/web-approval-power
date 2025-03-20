@@ -36,9 +36,6 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
   const regionService = new RegionService();
   const territoryService = new TerritoryService();
 
-  const getRegion = (keyword?: string) => regionService.getAll({ name: keyword });
-  const getTerritory = (keyword?: string) => territoryService.getAll({ name: keyword });
-
   const defaultValues = useMemo(
     () => ({
       name: '',
@@ -46,6 +43,7 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
       role: '',
       password: '',
       confirmPassword: '',
+      jobTitle: '',
       regionIds: [],
       territoryIds: [],
     }),
@@ -63,7 +61,14 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
     handleSubmit,
     setError,
     formState: { isSubmitting },
+    watch,
   } = methods;
+
+  const getRegion = (keyword?: string) => regionService.getAll({ name: keyword });
+  const getTerritory = (keyword?: string) => {
+    const { regionIds } = watch();
+    return territoryService.getAll({ name: keyword, regionIds: regionIds.join(';') });
+  };
 
   useEffect(() => {
     if (error) {
@@ -91,11 +96,14 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
 
         <DialogContent>
           <Grid container spacing={2} rowSpacing={2} sx={{ mt: 2 }}>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <RHFTextField name="name" label="Name" required />
             </Grid>
             <Grid item xs={6}>
               <RHFTextField name="email" label="Email" autoComplete="email" required />
+            </Grid>
+            <Grid item xs={6}>
+              <RHFTextField name="jobTitle" label="Job Title" required />
             </Grid>
             <Grid item xs={6}>
               <RHFSelect name="role" label="Role" required>

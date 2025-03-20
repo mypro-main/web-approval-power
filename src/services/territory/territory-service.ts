@@ -21,7 +21,7 @@ export class TerritoryService {
         name: params?.name || '',
         description: params?.description || '',
         status: params?.status || '',
-        regionId: params?.regionId || '',
+        regionIds: params?.regionIds || '',
       },
       {
         filter: (key: string, value: string | number) => value || undefined,
@@ -29,7 +29,7 @@ export class TerritoryService {
       }
     );
 
-    const response = await this.api.get(`/territory?${query}`);
+    const response = await this.api.get(`/loyalty/territory?${query}`);
     return response.data;
   }
 

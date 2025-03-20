@@ -2,12 +2,13 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
 import { useBoolean } from 'src/hooks/use-boolean';
-import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import UserQuickEditForm from './user-quick-edit-form';
 import { IUserItem } from '../../../types/user';
+import capitalize from '@mui/utils/capitalize';
+import Label from '../../../components/label';
 
 type Props = {
   row: IUserItem;
@@ -24,7 +25,7 @@ export default function UserTableRow({ row, selected }: Props) {
       <TableRow hover selected={selected}>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{name}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{email}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{jobTitle || 'MOCK JOB TITLE'}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{capitalize(jobTitle)}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{role}</TableCell>
         <TableCell>
           <Label

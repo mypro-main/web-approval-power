@@ -24,7 +24,7 @@ export class RegionService {
       }
     );
 
-    const response = await this.api.get(`/region?${query}`);
+    const response = await this.api.get(`/loyalty/region?${query}`);
     return response.data;
   }
 

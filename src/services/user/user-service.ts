@@ -23,7 +23,7 @@ export class UserService {
       }
     );
 
-    const response = await this.api.get(`/user?${query}`);
+    const response = await this.api.get(`/user/list?${query}`);
     return response.data;
   }
 
