@@ -9,6 +9,6 @@ export function pathAfterLogin(role?: string) {
     //   return paths.approval.root;
 
     default:
-      return paths.dashboard.root;
+      return paths.approval.root;
   }
 }

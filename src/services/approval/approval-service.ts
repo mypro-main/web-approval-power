@@ -2,9 +2,8 @@ import { AxiosInstance } from 'axios';
 import axiosInstance from '../../utils/axios';
 import { BaseResponse } from '../shared/base.response';
 import { stringify } from 'qs';
-import { GetAllApprovalParams } from './approval.request';
-import { ApprovalResponse } from './approval.response';
-import { IApprovalStatus } from '../../types/approval';
+import { GetAllApprovalParams, UpdateApprovalRequest } from './approval.request';
+import { ApprovalDetailResponse, ApprovalResponse } from './approval.response';
 
 export class ApprovalService {
   api: AxiosInstance = axiosInstance;
@@ -14,7 +13,12 @@ export class ApprovalService {
       {
         page: params?.page || 1,
         'per-page': params?.perPage || 10,
-        name: params?.name || '',
+        keyword: params?.keyword || '',
+        requestOwnerStatus:
+          !params?.requestOwnerStatus || params?.requestOwnerStatus === 'all'
+            ? ''
+            : params?.requestOwnerStatus,
+        status: params?.status || '',
       },
       {
         filter: (key: string, value: string | number) => value || undefined,
@@ -22,29 +26,18 @@ export class ApprovalService {
       }
     );
 
-    // const response = await this.api.get(`/approval?${query}`);
+    const response = await this.api.get(`/loyalty/user?${query}`);
 
-    console.log('XX', MOCK_RESPONSE);
+    return response.data;
+  }
 
-    return MOCK_RESPONSE;
+  async get(id: string): Promise<ApprovalDetailResponse> {
+    const response = await this.api.get(`/loyalty/user/${id}`);
+    return response.data;
+  }
 
-    // return response.data;
+  async approval(id: string, payload: UpdateApprovalRequest): Promise<ApprovalResponse> {
+    const response = await this.api.post(`/approval`, payload);
+    return response.data;
   }
 }
-
-const MOCK_RESPONSE = {
-  data: [
-    { id: '123456', name: 'MOCK 1', status: 'active' as IApprovalStatus },
-    { id: '654321', name: 'MOCK 2', status: 'active' as IApprovalStatus },
-  ],
-  meta: {
-    record: {
-      current: 1,
-      total: 1,
-    },
-    page: {
-      current: 1,
-      total: 1,
-    },
-  },
-};

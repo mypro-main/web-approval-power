@@ -3,8 +3,6 @@ import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import CustomBreadcrumbs from '../../../components/custom-breadcrumbs';
-import { RouterLink } from '../../../components/router-link';
-import { paths } from '../../paths';
 import Iconify from '../../../components/iconify';
 import { useSettingsContext } from '../../../components/settings';
 import { IUserItem, IUserTableFilters } from '../../../types/user';
@@ -40,9 +38,8 @@ import { UserQuickCreateForm } from '../molecules/user-quick-create-form';
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', width: 300 },
   { id: 'email', label: 'Email', width: 200 },
+  { id: 'jobtitle', label: 'Job Title', width: 200 },
   { id: 'role', label: 'Role', width: 200 },
-  { id: 'region', label: 'Region', width: 200 },
-  { id: 'territory', label: 'Territory', width: 200 },
   { id: 'status', label: 'Status', width: 100 },
   { id: '', width: 100 },
 ];

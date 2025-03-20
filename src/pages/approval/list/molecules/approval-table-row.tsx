@@ -3,7 +3,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
 import Iconify from '../../../../components/iconify';
-import { ApprovalQuickEditForm } from './approval-quick-edit-form';
+import { ApprovalQuickApproveForm } from './approval-quick-approve-form';
 import { useBoolean } from '../../../../hooks/use-boolean';
 import CustomPopover, { usePopover } from '../../../../components/custom-popover';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,7 +17,8 @@ type Props = {
 };
 
 export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
-  const { id, name, status } = row;
+  const { identityCardNumber, name, phoneNumber, outletId, outlet, status, requestOwnerStatus } =
+    row;
 
   const popover = usePopover();
 
@@ -26,16 +27,40 @@ export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
   return (
     <>
       <TableRow hover selected={selected}>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{capitalize(id)}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{capitalize(name)}</TableCell>
-        <TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{outletId}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{outlet?.name ?? '-'}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{phoneNumber || '-'}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{name ? capitalize(name) : '-'}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{identityCardNumber || '-'}</TableCell>
+        {/*<TableCell sx={{ whiteSpace: 'nowrap' }}>{email}</TableCell>*/}
+        {/*<TableCell sx={{ whiteSpace: 'nowrap' }}>{fDateISOString(birthDate)}</TableCell>*/}
+        {/*<TableCell sx={{ whiteSpace: 'nowrap' }}>{outlet.territory.name}</TableCell>*/}
+        {/*<TableCell sx={{ whiteSpace: 'nowrap' }}>MOCK</TableCell>*/}
+        <TableCell sx={{ textAlign: 'center' }}>
           <Label
             variant="soft"
             color={
-              (status === 'active' && 'success') || (status === 'inactive' && 'error') || 'default'
+              (status === 'active' && 'success') ||
+              (status === 'pending' && 'warning') ||
+              (status === 'banned' && 'error') ||
+              'default'
             }
           >
-            {status}
+            {status || '-'}
+          </Label>
+        </TableCell>
+        <TableCell sx={{ textAlign: 'center' }}>
+          <Label
+            variant="soft"
+            color={
+              (requestOwnerStatus === 'requested' && 'warning') ||
+              (requestOwnerStatus === 'verified' && 'info') ||
+              (requestOwnerStatus === 'approved' && 'success') ||
+              (requestOwnerStatus === 'rejected' && 'error') ||
+              'default'
+            }
+          >
+            {requestOwnerStatus || '-'}
           </Label>
         </TableCell>
         <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
@@ -70,7 +95,7 @@ export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
         </MenuItem>
       </CustomPopover>
 
-      <ApprovalQuickEditForm
+      <ApprovalQuickApproveForm
         currentItem={row}
         open={quickApprove.value}
         onClose={quickApprove.onFalse}

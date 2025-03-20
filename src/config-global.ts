@@ -25,12 +25,4 @@ export const MAP_ID = '70a0fe702821572b';
 
 // ROLE GROUPING
 export const SUPER_ROLE = ['SUPERSAIYAN'];
-export const BASIC_ROLE = [
-  'SUPERSAIYAN',
-  'PTPL_IT',
-  'PTPL_QA',
-  'PTPL_PROD',
-  'GUEST',
-  'EMPLOYEE',
-  'VENDOR',
-];
+export const BASIC_ROLE = ['SUPER_ADMIN', 'SAM', 'ADMIN_CENTRAL', 'VIEWER'];

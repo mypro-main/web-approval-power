@@ -1,11 +1,7 @@
-import { Button, CardContent } from '@mui/material';
 import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
 import CustomBreadcrumbs from '../../../../components/custom-breadcrumbs';
-import { RouterLink } from '../../../../components/router-link';
 import { paths } from '../../../paths';
-import Iconify from '../../../../components/iconify';
 import { useSettingsContext } from '../../../../components/settings';
 import { useCallback, useMemo, useState } from 'react';
 import {
@@ -38,18 +34,27 @@ import { useRouter } from '../../../../hooks/use-router';
 const STATUS_OPTIONS = [
   { value: '', label: 'All' },
   { value: 'active', label: 'Active' },
-  { value: 'inactive', label: 'Inactive' },
+  { value: 'pending', label: 'Pending' },
 ];
 
 const TABLE_HEAD = [
-  { id: 'id', label: 'ID', width: 300 },
-  { id: 'name', label: 'Name', width: 300 },
-  { id: 'status', label: 'Status', width: 300 },
+  { id: 'outletCode', label: 'Kode Outlet', width: 200 },
+  { id: 'outletName', label: 'Name Outlet', width: 200 },
+  { id: 'phoneNumber', label: 'No Handphone', width: 200 },
+  { id: 'name', label: 'Nama', width: 200 },
+  { id: 'nik', label: 'NIK', width: 200 },
+  // { id: 'email', label: 'Email', width: 200 },
+  // { id: 'birthdate', label: 'Tanggal Lahir', width: 200 },
+  // { id: 'territory', label: 'Territory', width: 200 },
+  // { id: 'approvedBy', label: 'Approved By', width: 200 },
+  { id: 'accountStatus', label: 'Status Akun', width: 100, align: 'center' },
+  { id: 'approvalStatus', label: 'Status Approval', width: 100, align: 'center' },
   { id: '', width: 100 },
 ];
 
 const defaultFilters: IApprovalTableFilters = {
-  name: '',
+  keyword: '',
+  requestOwnerStatus: 'all',
   status: '',
 };
 
@@ -60,18 +65,21 @@ export function ApprovalListView() {
 
   const table = useTable({
     defaultRowsPerPage: 5,
+    defaultOrderBy: 'outletName',
   });
 
   const query = useMemo(
     () => ({
       page: table.page + 1,
       perPage: table.rowsPerPage,
-      name: filters.name,
+      keyword: filters.keyword,
+      requestOwnerStatus: filters.requestOwnerStatus,
+      status: filters.status,
     }),
     [table.page, table.rowsPerPage, filters]
   );
 
-  const debouncedQuery = useDebounceQuery<GetAllApprovalParams>(query, 'name');
+  const debouncedQuery = useDebounceQuery<GetAllApprovalParams>(query, 'keyword');
 
   const { approvals, meta, isFetching, error } = useGetAllApproval(debouncedQuery);
 
@@ -120,18 +128,6 @@ export function ApprovalListView() {
       <CustomBreadcrumbs
         heading="Approval List"
         links={[{ name: 'Main Hub' }, { name: 'Approval List' }]}
-        action={
-          <Stack direction="row" gap={1}>
-            <Button
-              component={RouterLink}
-              href={paths.approval.root}
-              variant="contained"
-              startIcon={<Iconify icon="mingcute:add-line" />}
-            >
-              Button
-            </Button>
-          </Stack>
-        }
         sx={{
           mb: { xs: 3, md: 5 },
         }}
@@ -158,7 +154,7 @@ export function ApprovalListView() {
                   }
                   color={
                     (tab.value === 'active' && 'success') ||
-                    (tab.value === 'inactive' && 'error') ||
+                    (tab.value === 'pending' && 'warning') ||
                     'default'
                   }
                   sx={{ cursor: 'pointer' }}

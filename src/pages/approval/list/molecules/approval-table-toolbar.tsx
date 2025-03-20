@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { ChangeEvent, useCallback } from 'react';
 import Stack from '@mui/material/Stack';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
@@ -7,6 +7,11 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Iconify from 'src/components/iconify';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { IApprovalTableFilters } from '../../../../types/approval';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import capitalize from '@mui/utils/capitalize';
+import Label from '../../../../components/label';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 
 type Props = {
   filters: IApprovalTableFilters;
@@ -16,9 +21,16 @@ type Props = {
 export default function ApprovalTableToolbar({ filters, onFilters }: Props) {
   const popover = usePopover();
 
-  const handleFilterName = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      onFilters('name', event.target.value);
+  const handleFilterRequestStatus = useCallback(
+    (event: SelectChangeEvent<string>) => {
+      onFilters('requestOwnerStatus', event.target.value);
+    },
+    [onFilters]
+  );
+
+  const handleFilterKeyword = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      onFilters('keyword', event.target.value);
     },
     [onFilters]
   );
@@ -37,25 +49,56 @@ export default function ApprovalTableToolbar({ filters, onFilters }: Props) {
           pr: { xs: 2.5, md: 1 },
         }}
       >
-        <Stack direction="row" alignItems="center" spacing={2} flexGrow={1} sx={{ width: 1 }}>
-          <TextField
-            fullWidth
-            value={filters.name}
-            onChange={handleFilterName}
-            placeholder="Search by name..."
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
-                </InputAdornment>
-              ),
-            }}
-          />
+        <FormControl
+          sx={{
+            flexShrink: 0,
+            width: { xs: 1, md: 150 },
+          }}
+        >
+          <InputLabel>Status Approval</InputLabel>
+          <Select
+            label="requestOwnerStatus"
+            value={filters.requestOwnerStatus}
+            onChange={handleFilterRequestStatus}
+            variant="outlined"
+          >
+            {['all', 'requested', 'verified', 'approved', 'rejected'].map((key) => (
+              <MenuItem key={key} value={key} sx={{ textAlign: 'center' }}>
+                <Label
+                  variant={key === 'all' ? 'filled' : 'soft'}
+                  color={
+                    (key === 'requested' && 'warning') ||
+                    (key === 'verified' && 'info') ||
+                    (key === 'approved' && 'success') ||
+                    (key === 'rejected' && 'error') ||
+                    'default'
+                  }
+                  sx={{ cursor: 'pointer' }}
+                >
+                  {capitalize(key)}
+                </Label>
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-          <IconButton onClick={popover.onOpen}>
-            <Iconify icon="eva:more-vertical-fill" />
-          </IconButton>
-        </Stack>
+        <TextField
+          fullWidth
+          value={filters.keyword}
+          onChange={handleFilterKeyword}
+          placeholder="Search..."
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+              </InputAdornment>
+            ),
+          }}
+        />
+
+        <IconButton onClick={popover.onOpen}>
+          <Iconify icon="eva:more-vertical-fill" />
+        </IconButton>
       </Stack>
 
       <CustomPopover

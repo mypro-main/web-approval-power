@@ -8,9 +8,12 @@ export function fDate(date: InputValue, newFormat?: string) {
   return date ? format(new Date(date), fm) : '';
 }
 
-export function fDateISOString(inputDate: string | null | undefined): string {
+export function fDateISOString(
+  inputDate: string | null | undefined,
+  excludeTime?: boolean
+): string {
   if (!inputDate) {
-    return format(new Date(), 'dd-MM-yyyy');
+    return format(new Date(), 'dd MMM yyyy HH:mm:ss');
   }
 
   const ISORegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
@@ -21,7 +24,7 @@ export function fDateISOString(inputDate: string | null | undefined): string {
   }
 
   const date = parseISO(inputDate);
-  return format(date, 'dd-MM-yyyy');
+  return excludeTime ? format(date, 'dd MMM yyyy') : format(date, 'dd MMM yyyy HH:mm:ss');
 }
 
 export function fDateTime(date: InputValue, newFormat?: string) {

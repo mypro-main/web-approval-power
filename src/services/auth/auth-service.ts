@@ -6,6 +6,6 @@ export class AuthService {
 
   async getAccount(): Promise<Record<string, any> | null> {
     const response = await this.api.get('auth/account');
-    return response.data;
+    return response.data.user;
   }
 }

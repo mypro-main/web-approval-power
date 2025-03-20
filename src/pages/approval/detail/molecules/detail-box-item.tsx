@@ -3,10 +3,11 @@ import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
+import { ReactNode } from 'react';
 
 type Props = {
   title: string;
-  content: string | string[] | number | null | undefined;
+  content: string | string[] | number | null | undefined | ReactNode;
   subcontent?: string | null;
   fixedHeight?: boolean;
 };

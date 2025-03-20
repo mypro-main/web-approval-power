@@ -3,11 +3,14 @@ import { ITerritoryItem } from './territory';
 
 export interface IUserItem {
   id: string;
-  email: string;
   name: string;
+  email: string;
   role: string;
   status: string;
-  UserRegion: IUserRegion[];
+  jobTitle: string;
+}
+
+export interface IUserDetailItem extends IUserItem {
   UserTerritory: IUserTerritory[];
 }
 

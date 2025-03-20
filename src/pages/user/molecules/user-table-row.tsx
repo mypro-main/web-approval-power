@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default function UserTableRow({ row, selected }: Props) {
-  const { name, email, role, status, UserRegion, UserTerritory } = row;
+  const { name, email, role, status, jobTitle } = row;
 
   const quickEdit = useBoolean();
 
@@ -24,15 +24,8 @@ export default function UserTableRow({ row, selected }: Props) {
       <TableRow hover selected={selected}>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{name}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{email}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{jobTitle || 'MOCK JOB TITLE'}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{role}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>
-          {UserRegion.length ? UserRegion.map((region) => region.Region.name).join(', ') : '-'}
-        </TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>
-          {UserTerritory.length
-            ? UserTerritory.map((territory) => territory.Territory.name).join(', ')
-            : '-'}
-        </TableCell>
         <TableCell>
           <Label
             variant="soft"

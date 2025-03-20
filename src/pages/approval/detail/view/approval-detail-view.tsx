@@ -9,28 +9,10 @@ import { useSettingsContext } from '../../../../components/settings';
 import { DetailsBoxItem } from '../molecules/detail-box-item';
 import Box from '@mui/material/Box';
 import { ApprovalHistory } from '../molecules/approval-history';
-
-const MOCK_HISTORY = [
-  {
-    id: '123',
-    type: 'Approval',
-    title: 'Super Admin has verified and confirmed approval for the @mockuser1 registration',
-    time: new Date(),
-  },
-  {
-    id: '123',
-    type: 'Approval',
-    title: 'Super Admin has verified and confirmed approval for the @mockuser1 registration',
-    subtitle: 'OK this is approved',
-    time: new Date(),
-  },
-  {
-    id: '123',
-    type: 'Approval',
-    title: 'Super Admin has verified and confirmed approval for the @mockuser1 registration',
-    time: new Date(),
-  },
-];
+import { useGetAppoval } from '../../../../services/approval/hooks/use-get-approval';
+import capitalize from '@mui/utils/capitalize';
+import Label from '../../../../components/label';
+import { fDateISOString } from '../../../../utils/format-time';
 
 type Props = {
   id: string;
@@ -38,6 +20,16 @@ type Props = {
 
 export function ApprovalDetailView({ id }: Props) {
   const settings = useSettingsContext();
+
+  const { approval, isFetching } = useGetAppoval(id);
+
+  if (isFetching) {
+    return <p>Loading...</p>;
+  }
+
+  if (!approval) {
+    return <p>No data</p>;
+  }
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -65,16 +57,48 @@ export function ApprovalDetailView({ id }: Props) {
               display="grid"
               gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
             >
-              <DetailsBoxItem title="NIK" content="Mock Data" />
-              <DetailsBoxItem title="Nama" content="Mock Data" />
-              <DetailsBoxItem title="No Handphone" content="Mock Data" />
-              <DetailsBoxItem title="Email" content="Mock Data" />
-              <DetailsBoxItem title="Tanggal Lahir" content="Mock Data" />
-              <DetailsBoxItem title="Kode Outlet" content="Mock Data" />
-              <DetailsBoxItem title="Nama Outlet" content="Mock Data" />
-              <DetailsBoxItem title="Territory" content="Mock Data" />
-              <DetailsBoxItem title="Region" content="Mock Data" />
-              <DetailsBoxItem title="Status" content="Mock Data" />
+              <DetailsBoxItem title="NIK" content={approval.identityCardNumber} />
+              <DetailsBoxItem title="Nama" content={approval.name} />
+              <DetailsBoxItem title="No Handphone" content={approval.phoneNumber} />
+              <DetailsBoxItem title="Email" content={approval.email} />
+              <DetailsBoxItem
+                title="Tanggal Lahir"
+                content={fDateISOString(approval.birthDate, true)}
+              />
+              <DetailsBoxItem title="Kode Outlet" content={approval.outletId} />
+              <DetailsBoxItem title="Nama Outlet" content={approval.outlet.name} />
+              <DetailsBoxItem title="Territory" content={approval.outlet.territory.name} />
+              {/*<DetailsBoxItem title="Region" content="Mock Data" />*/}
+              <DetailsBoxItem
+                title="Status Akun"
+                content={
+                  <Label
+                    variant="soft"
+                    color={(approval.status === 'active' && 'success') || 'warning'}
+                    sx={{ cursor: 'pointer' }}
+                  >
+                    {capitalize(approval.status || '')}
+                  </Label>
+                }
+              />
+              <DetailsBoxItem
+                title="Status Approval"
+                content={
+                  <Label
+                    variant="soft"
+                    color={
+                      (approval.requestOwnerStatus === 'requested' && 'warning') ||
+                      (approval.requestOwnerStatus === 'approved' && 'success') ||
+                      (approval.requestOwnerStatus === 'verified' && 'info') ||
+                      (approval.requestOwnerStatus === 'rejected' && 'error') ||
+                      'default'
+                    }
+                    sx={{ cursor: 'pointer' }}
+                  >
+                    {capitalize(approval.requestOwnerStatus || '')}
+                  </Label>
+                }
+              />
             </Box>
           </CardContent>
         </Card>
@@ -82,7 +106,7 @@ export function ApprovalDetailView({ id }: Props) {
         <Card>
           <CardHeader title="Approval History" />
           <CardContent>
-            <ApprovalHistory title="Title" subheader="Subtitle" list={MOCK_HISTORY} />
+            <ApprovalHistory list={approval.history} />
           </CardContent>
         </Card>
       </Stack>

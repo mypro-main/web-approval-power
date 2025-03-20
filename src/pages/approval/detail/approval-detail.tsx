@@ -7,6 +7,8 @@ export default function ApprovalDetail() {
 
   const { id } = params;
 
+  console.log('SSSSSSSSS', id);
+
   return (
     <>
       <Helmet>

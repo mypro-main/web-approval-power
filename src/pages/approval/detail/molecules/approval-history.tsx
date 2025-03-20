@@ -9,22 +9,27 @@ import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem';
 
-import { fDateTime } from 'src/utils/format-time';
+import { fDateISOString, fDateTime } from 'src/utils/format-time';
 import Stack from '@mui/material/Stack';
+import { IApprovalHistory } from '../../../../types/approval';
+import Label from '../../../../components/label';
+import capitalize from '@mui/utils/capitalize';
 
 type Props = CardProps & {
   title?: string;
   subheader?: string;
-  list: {
-    id: string;
-    type: string;
-    title: string;
-    subtitle?: string;
-    time: Date;
-  }[];
+  list: IApprovalHistory[];
 };
 
 export function ApprovalHistory({ title, subheader, list, ...other }: Props) {
+  if (!list.length) {
+    return (
+      <Typography variant="body2" color="text.disabled">
+        Data approval history tidak tersedia.
+      </Typography>
+    );
+  }
+
   return (
     <Timeline
       sx={{
@@ -72,18 +77,29 @@ function Item({ item, lastItem, index, ...other }: ItemProps) {
 
       <TimelineContent sx={{ mt: 0.65 }}>
         <Typography variant="subtitle2" color="primary.main">
-          {fDateTime(item.time)}
+          {fDateISOString(item.createdAt)}
         </Typography>
 
         <Typography variant="body2" color="text.primary">
-          {item.title}
+          {item.User.name.toUpperCase()} has been change the approval status to
+          <Label
+            variant="soft"
+            color={
+              (item.currentStatus === 'approved' && 'success') ||
+              (item.currentStatus === 'verified' && 'info') ||
+              'error'
+            }
+            sx={{ cursor: 'pointer', ml: 0.5 }}
+          >
+            {capitalize(item.currentStatus)}
+          </Label>
         </Typography>
 
-        {item.subtitle && (
-          <Typography variant="body2" color="text.disabled">
-            Catatan: {item.subtitle}
-          </Typography>
-        )}
+        {/*{item.reason && (*/}
+        {/*  <Typography variant="body2" color="text.disabled">*/}
+        {/*    Catatan: {item.reason}*/}
+        {/*  </Typography>*/}
+        {/*)}*/}
       </TimelineContent>
     </TimelineItem>
   );

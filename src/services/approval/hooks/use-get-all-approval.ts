@@ -15,7 +15,14 @@ export function useGetAllApproval(params?: GetAllApprovalParams): UseGetAllAppro
   const api = new ApprovalService();
 
   const { data, error, isPending, isFetching, isLoading } = useQuery({
-    queryKey: ['approvals', params?.page, params?.perPage, params?.name, params?.status],
+    queryKey: [
+      'approvals',
+      params?.page,
+      params?.perPage,
+      params?.keyword,
+      params?.requestOwnerStatus,
+      params?.status,
+    ],
     queryFn: () => api.getAll(params),
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,

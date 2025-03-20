@@ -1,15 +1,49 @@
+import { IOutletItem } from './outlet';
+
 export interface IApprovalTableFilters {
-  name: string;
+  keyword: string;
+  requestOwnerStatus: string;
   status: string;
 }
 
 export interface IApprovalItem {
   id: string;
+  identityCardNumber: string | null;
+  name: string | null;
+  phoneNumber: string | null;
+  email: string | null;
+  birthDate: string | null;
+  status: IApprovalStatus | null;
+  requestOwnerStatus: IApprovalRequestOwnerStatus | null;
+  outletId: string;
+  outlet: IOutletItem;
+}
+
+export interface IApprovalHistory {
+  id: string;
+  prevStatus: string;
+  currentStatus: string;
+  status: string;
+  userId: string;
+  createdAt: string;
+  User: IApprovalHistoryUser;
+}
+
+interface IApprovalHistoryUser {
   name: string;
-  status: IApprovalStatus;
+  role: string;
 }
 
 export enum IApprovalStatus {
   active = 'active',
-  inactive = 'inactive',
+  pending = 'pending',
+  banned = 'banned',
+  rejected = 'rejected',
+}
+
+export enum IApprovalRequestOwnerStatus {
+  requested = 'requested',
+  verified = 'verified',
+  approved = 'approved',
+  rejected = 'rejected',
 }

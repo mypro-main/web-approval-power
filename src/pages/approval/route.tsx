@@ -3,7 +3,7 @@ import { Outlet, RouteObject } from 'react-router-dom';
 import { AuthGuard, RoleBasedGuard } from 'src/auth/guard';
 import { LoadingScreen } from 'src/components/loading-screen';
 import DashboardLayout from '../../layouts/dashboard/layout';
-import { SUPER_ROLE } from '../../config-global';
+import { BASIC_ROLE } from '../../config-global';
 
 const ApprovalList = lazy(() => import('./list/approval-list'));
 const ApprovalDetail = lazy(() => import('./detail/approval-detail'));
@@ -16,7 +16,7 @@ export const approvalRoutes: RouteObject[] = [
       <AuthGuard>
         <DashboardLayout>
           <Suspense fallback={<LoadingScreen />}>
-            <RoleBasedGuard hasContent roles={SUPER_ROLE} isRoute>
+            <RoleBasedGuard hasContent roles={BASIC_ROLE} isRoute>
               <Outlet />
             </RoleBasedGuard>
           </Suspense>
