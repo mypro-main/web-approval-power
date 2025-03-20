@@ -1,17 +1,15 @@
-import { IRegionItem } from './region';
-
 export interface ITerritoryTableFilters {
   id: string;
   name: string;
   status: string;
-  regionId: string;
+  regionIds: string;
 }
 
 export interface ITerritoryItem {
   id: string;
-  Region: Pick<IRegionItem, 'id' | 'name'>;
+  regionId: string;
   name: string;
-  description: string;
+  description: string | null;
   status: ITerritoryStatus;
 }
 

@@ -23,7 +23,7 @@ export function useGetAllTerritory(params?: GetAllTerritoryParams): UseGetAllTer
       params?.name,
       params?.id,
       params?.description,
-      params?.regionId,
+      params?.regionIds,
     ],
     queryFn: () => api.getAll(params),
     refetchOnWindowFocus: false,

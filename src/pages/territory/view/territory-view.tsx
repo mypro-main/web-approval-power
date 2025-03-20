@@ -44,7 +44,6 @@ const TABLE_HEAD = [
   { id: 'id', label: 'ID', width: 300 },
   { id: 'name', label: 'Name', width: 300 },
   { id: 'desc', label: 'Description', width: 300 },
-  { id: 'region', label: 'Region', width: 300 },
   { id: 'status', label: 'Status', width: 300 },
   { id: '', width: 100 },
 ];
@@ -53,7 +52,7 @@ const defaultFilters: ITerritoryTableFilters = {
   id: '',
   name: '',
   status: '',
-  regionId: '',
+  regionIds: '',
 };
 
 export function TerritoryView() {
@@ -70,7 +69,7 @@ export function TerritoryView() {
       id: filters.id,
       name: filters.name,
       status: filters.status,
-      regionId: filters.regionId,
+      regionIds: filters.regionIds,
     }),
     [table.page, table.rowsPerPage, filters]
   );

@@ -16,7 +16,7 @@ export const EditTerritorySchema = Yup.object({
 export const FilterTerritoryListSchema = Yup.object({
   name: Yup.string(),
   status: Yup.string(),
-  regionId: Yup.string(),
+  regionIds: Yup.string(),
 });
 
 export const UploadTerritoryTemplateSchema = Yup.object({

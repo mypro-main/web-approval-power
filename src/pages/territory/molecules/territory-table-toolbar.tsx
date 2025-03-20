@@ -31,7 +31,7 @@ export default function TerritoryTableToolbar({ filters, onFilters }: Props) {
       id: '',
       name: '',
       status: '',
-      regionId: '',
+      regionIds: '',
     }),
     []
   );
@@ -52,13 +52,13 @@ export default function TerritoryTableToolbar({ filters, onFilters }: Props) {
 
   const handleFilterRegion = useCallback(
     (event: SelectChangeEvent<string>) => {
-      onFilters('regionId', event.target.value);
+      onFilters('regionIds', event.target.value);
     },
     [onFilters]
   );
 
   useEffect(() => {
-    if (!filters.regionId) {
+    if (!filters.regionIds) {
       reset();
     }
   }, [filters]);
@@ -87,7 +87,7 @@ export default function TerritoryTableToolbar({ filters, onFilters }: Props) {
             <InputLabel>Region</InputLabel>
             <Select
               label="Region"
-              value={filters.regionId}
+              value={filters.regionIds}
               onChange={handleFilterRegion}
               variant="outlined"
             >
