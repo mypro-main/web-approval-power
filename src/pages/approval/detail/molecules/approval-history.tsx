@@ -9,8 +9,7 @@ import TimelineSeparator from '@mui/lab/TimelineSeparator';
 import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem';
 
-import { fDateISOString, fDateTime } from 'src/utils/format-time';
-import Stack from '@mui/material/Stack';
+import { fDateISOString } from 'src/utils/format-time';
 import { IApprovalHistory } from '../../../../types/approval';
 import Label from '../../../../components/label';
 import capitalize from '@mui/utils/capitalize';
@@ -95,11 +94,11 @@ function Item({ item, lastItem, index, ...other }: ItemProps) {
           </Label>
         </Typography>
 
-        {/*{item.reason && (*/}
-        {/*  <Typography variant="body2" color="text.disabled">*/}
-        {/*    Catatan: {item.reason}*/}
-        {/*  </Typography>*/}
-        {/*)}*/}
+        {item.reason && (
+          <Typography variant="body2" color="text.disabled">
+            Catatan: {item.reason}
+          </Typography>
+        )}
       </TimelineContent>
     </TimelineItem>
   );

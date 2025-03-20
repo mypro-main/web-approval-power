@@ -30,7 +30,6 @@ import Label from '../../../components/label';
 import { alpha } from '@mui/material/styles';
 
 const TABLE_HEAD = [
-  { id: 'id', label: 'ID', width: 100 },
   { id: 'date', label: 'Date', width: 100 },
   { id: 'name', label: 'Activity', width: 500 },
 ];
@@ -75,7 +74,7 @@ export function ActivityView() {
   const notFound = !!error;
 
   const handleFilters = useCallback(
-    (key: string, value: Date) => {
+    (key: string, value: string) => {
       table.onResetPage();
       setFilters((prevState) => ({
         ...prevState,

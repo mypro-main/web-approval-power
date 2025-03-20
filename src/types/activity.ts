@@ -6,6 +6,6 @@ export interface IActivityTableFilters {
 
 export interface IActivityItem {
   id: string;
-  name: string;
-  date: Date;
+  activity: string;
+  createdAt: string;
 }

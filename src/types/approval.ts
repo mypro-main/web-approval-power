@@ -26,6 +26,7 @@ export interface IApprovalHistory {
   status: string;
   userId: string;
   createdAt: string;
+  reason: string | null;
   User: IApprovalHistoryUser;
 }
 

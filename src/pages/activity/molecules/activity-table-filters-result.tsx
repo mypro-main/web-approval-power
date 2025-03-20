@@ -6,7 +6,7 @@ import { IActivityTableFilters } from '../../../types/activity';
 
 type Props = StackProps & {
   filters: IActivityTableFilters;
-  onFilters: (key: string, value: Date) => void;
+  onFilters: (key: string, value: string) => void;
   onResetFilters: VoidFunction;
   results: number;
 };

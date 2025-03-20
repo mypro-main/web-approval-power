@@ -6,21 +6,22 @@ import Iconify from 'src/components/iconify';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { IActivityTableFilters } from '../../../types/activity';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { fDate } from '../../../utils/format-time';
 
 type Props = {
   filters: IActivityTableFilters;
-  onFilters: (key: string, value: Date) => void;
+  onFilters: (key: string, value: string) => void;
 };
 
 export default function ActivityTableToolbar({ filters, onFilters }: Props) {
   const popover = usePopover();
 
   const handleFilterStartDate = useCallback((date: Date | null) => {
-    if (date) onFilters('startDate', date);
+    if (date) onFilters('startDate', fDate(date));
   }, []);
 
   const handleFilterEndDate = useCallback((date: Date | null) => {
-    if (date) onFilters('endDate', date);
+    if (date) onFilters('endDate', fDate(date));
   }, []);
 
   return (
@@ -43,26 +44,15 @@ export default function ActivityTableToolbar({ filters, onFilters }: Props) {
             value={filters.startDate}
             onChange={handleFilterStartDate}
             sx={{ width: 1 }}
+            maxDate={new Date()}
           />
           <DatePicker
             label="End Date"
             value={filters.endDate}
             onChange={handleFilterEndDate}
             sx={{ width: 1 }}
+            maxDate={new Date()}
           />
-          {/*<TextField*/}
-          {/*  fullWidth*/}
-          {/*  value={filters.name}*/}
-          {/*  onChange={handleFilterName}*/}
-          {/*  placeholder="Search by name..."*/}
-          {/*  InputProps={{*/}
-          {/*    startAdornment: (*/}
-          {/*      <InputAdornment position="start">*/}
-          {/*        <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />*/}
-          {/*      </InputAdornment>*/}
-          {/*    ),*/}
-          {/*  }}*/}
-          {/*/>*/}
           <IconButton onClick={popover.onOpen}>
             <Iconify icon="eva:more-vertical-fill" />
           </IconButton>

@@ -22,37 +22,8 @@ export class ActivityService {
       }
     );
 
-    // const response = await this.api.get(`/role?${query}`);
+    const response = await this.api.get(`/approval/activity-logs?${query}`);
 
-    console.log('XX', MOCK_RESPONSE);
-
-    return MOCK_RESPONSE;
-
-    // return response.data;
+    return response.data;
   }
 }
-
-const MOCK_RESPONSE = {
-  data: [
-    {
-      id: '123456',
-      name: 'Super Admin has verified and confirmed approval for the @mockuser1 registration',
-      date: new Date(),
-    },
-    {
-      id: '654321',
-      name: 'Super Admin has verified and confirmed approval for the @mockuser2 registration',
-      date: new Date(),
-    },
-  ],
-  meta: {
-    record: {
-      current: 1,
-      total: 1,
-    },
-    page: {
-      current: 1,
-      total: 1,
-    },
-  },
-};
