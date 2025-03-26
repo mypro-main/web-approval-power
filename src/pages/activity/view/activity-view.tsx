@@ -71,7 +71,7 @@ export function ActivityView() {
 
   const denseHeight = table.dense ? 52 : 72;
   const canReset = !isEqual(defaultFilters, filters);
-  const notFound = !!error;
+  const notFound = !activities.length;
 
   const handleFilters = useCallback(
     (key: string, value: string) => {

@@ -9,6 +9,7 @@ import CustomPopover, { usePopover } from '../../../../components/custom-popover
 import MenuItem from '@mui/material/MenuItem';
 import Label from '../../../../components/label';
 import { IApprovalItem } from '../../../../types/approval';
+import Stack from '@mui/material/Stack';
 
 type Props = {
   selected: boolean;
@@ -32,10 +33,6 @@ export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{phoneNumber || '-'}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{name ? capitalize(name) : '-'}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{identityCardNumber || '-'}</TableCell>
-        {/*<TableCell sx={{ whiteSpace: 'nowrap' }}>{email}</TableCell>*/}
-        {/*<TableCell sx={{ whiteSpace: 'nowrap' }}>{fDateISOString(birthDate)}</TableCell>*/}
-        {/*<TableCell sx={{ whiteSpace: 'nowrap' }}>{outlet.territory.name}</TableCell>*/}
-        {/*<TableCell sx={{ whiteSpace: 'nowrap' }}>MOCK</TableCell>*/}
         <TableCell sx={{ textAlign: 'center' }}>
           <Label
             variant="soft"
@@ -63,9 +60,13 @@ export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
             {requestOwnerStatus || '-'}
           </Label>
         </TableCell>
-        <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
-          <Iconify icon="eva:more-vertical-fill" />
-        </IconButton>
+        <TableCell>
+          <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
+            <Stack alignItems="center" justifyContent="center">
+              <Iconify icon="eva:more-vertical-fill" />
+            </Stack>
+          </IconButton>
+        </TableCell>
       </TableRow>
 
       <CustomPopover

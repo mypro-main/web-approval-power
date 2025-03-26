@@ -19,6 +19,7 @@ export class ApprovalService {
             ? ''
             : params?.requestOwnerStatus,
         status: params?.status || '',
+        sort: params?.sort || '',
       },
       {
         filter: (key: string, value: string | number) => value || undefined,

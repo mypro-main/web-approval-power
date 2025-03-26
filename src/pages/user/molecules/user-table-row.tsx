@@ -25,7 +25,7 @@ export default function UserTableRow({ row, selected }: Props) {
       <TableRow hover selected={selected}>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{name}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{email}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{capitalize(jobTitle)}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{jobTitle ? capitalize(jobTitle) : '-'}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{role}</TableCell>
         <TableCell>
           <Label

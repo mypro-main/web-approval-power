@@ -42,10 +42,9 @@ export const STATUS_OPTIONS = [
 
 const TABLE_HEAD = [
   { id: 'id', label: 'ID', width: 300 },
-  { id: 'name', label: 'Name', width: 300 },
-  { id: 'desc', label: 'Description', width: 300 },
+  { id: 'name', label: 'Name', width: 600 },
+  { id: 'desc', label: 'Description', width: 600 },
   { id: 'status', label: 'Status', width: 300 },
-  { id: '', width: 100 },
 ];
 
 const defaultFilters: ITerritoryTableFilters = {

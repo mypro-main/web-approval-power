@@ -30,7 +30,7 @@ export const authRoutes: RouteObject[] = [
       {
         path: 'login',
         element: (
-          <AuthClassicLayout title="Web ApprovalList Power">
+          <AuthClassicLayout title="Web Approval Power">
             <LoginPage />
           </AuthClassicLayout>
         ),

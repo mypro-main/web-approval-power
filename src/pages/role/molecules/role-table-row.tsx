@@ -12,6 +12,7 @@ import CustomPopover, { usePopover } from '../../../components/custom-popover';
 import MenuItem from '@mui/material/MenuItem';
 import { IRoleItem } from '../../../types/role';
 import Label from '../../../components/label';
+import Stack from '@mui/material/Stack';
 
 type Props = {
   selected: boolean;
@@ -45,9 +46,13 @@ export default function RoleTableRow({ row, selected }: Props) {
             {status}
           </Label>
         </TableCell>
-        <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
-          <Iconify icon="eva:more-vertical-fill" />
-        </IconButton>
+        <TableCell>
+          <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
+            <Stack alignItems="center" justifyContent="center">
+              <Iconify icon="eva:more-vertical-fill" />
+            </Stack>
+          </IconButton>
+        </TableCell>
       </TableRow>
 
       <CustomPopover

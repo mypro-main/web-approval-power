@@ -4,6 +4,7 @@ export interface GetAllApprovalParams extends BaseParams {
   keyword?: string;
   status?: string;
   requestOwnerStatus?: string;
+  sort?: string;
 }
 
 export interface UpdateApprovalRequest {

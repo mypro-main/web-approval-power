@@ -7,7 +7,7 @@ export interface IUserItem {
   email: string;
   role: string;
   status: string;
-  jobTitle: string;
+  jobTitle: string | null;
 }
 
 export interface IUserDetailItem extends IUserItem {

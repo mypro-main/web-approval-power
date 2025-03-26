@@ -22,6 +22,7 @@ export function useGetAllApproval(params?: GetAllApprovalParams): UseGetAllAppro
       params?.keyword,
       params?.requestOwnerStatus,
       params?.status,
+      params?.sort,
     ],
     queryFn: () => api.getAll(params),
     refetchOnWindowFocus: false,

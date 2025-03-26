@@ -30,6 +30,7 @@ import ApprovalTableRow from '../molecules/approval-table-row';
 import { IApprovalItem, IApprovalTableFilters } from '../../../../types/approval';
 import { GetAllApprovalParams } from '../../../../services/approval/approval.request';
 import { useRouter } from '../../../../hooks/use-router';
+import { useAuthContext } from '../../../../auth/hooks';
 
 const STATUS_OPTIONS = [
   { value: '', label: 'All' },
@@ -43,22 +44,22 @@ const TABLE_HEAD = [
   { id: 'phoneNumber', label: 'No Handphone', width: 200 },
   { id: 'name', label: 'Nama', width: 200 },
   { id: 'nik', label: 'NIK', width: 200 },
-  // { id: 'email', label: 'Email', width: 200 },
-  // { id: 'birthdate', label: 'Tanggal Lahir', width: 200 },
-  // { id: 'territory', label: 'Territory', width: 200 },
-  // { id: 'approvedBy', label: 'Approved By', width: 200 },
   { id: 'accountStatus', label: 'Status Akun', width: 100, align: 'center' },
   { id: 'approvalStatus', label: 'Status Approval', width: 100, align: 'center' },
   { id: '', width: 100 },
 ];
 
-const defaultFilters: IApprovalTableFilters = {
-  keyword: '',
-  requestOwnerStatus: 'all',
-  status: '',
-};
-
 export function ApprovalListView() {
+  const { user } = useAuthContext();
+
+  const defaultFilters = useCallback((): IApprovalTableFilters => {
+    return {
+      keyword: '',
+      requestOwnerStatus: generateDefaultRequestStatusFilter(user?.role),
+      status: '',
+    };
+  }, []);
+
   const [filters, setFilters] = useState(defaultFilters);
 
   const router = useRouter();
@@ -92,7 +93,7 @@ export function ApprovalListView() {
 
   const denseHeight = table.dense ? 52 : 72;
   const canReset = !isEqual(defaultFilters, filters);
-  const notFound = !!error;
+  const notFound = !approvals.length;
 
   const handleFilters = useCallback(
     (key: string, value: string) => {
@@ -262,4 +263,11 @@ function applyFilter({
   inputData = stabilizedThis.map((el) => el[0]);
 
   return inputData;
+}
+
+function generateDefaultRequestStatusFilter(role: string) {
+  if (role === 'SAM') return 'requested';
+  if (role === 'ADMIN_CENTRAL') return 'verified';
+
+  return '';
 }

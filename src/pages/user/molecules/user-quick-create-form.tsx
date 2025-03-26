@@ -64,6 +64,8 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
     watch,
   } = methods;
 
+  const { regionIds } = watch();
+
   const getRegion = (keyword?: string) => regionService.getAll({ name: keyword });
   const getTerritory = (keyword?: string) => {
     const { regionIds } = watch();
@@ -124,6 +126,7 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
             </Grid>
             <Grid item xs={6}>
               <RHFAutocompleteAsyncOnSearch
+                disabled={!regionIds.length}
                 name="territoryIds"
                 label="Territory"
                 asyncFn={getTerritory}

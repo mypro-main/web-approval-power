@@ -3,7 +3,7 @@ import Iconify from 'src/components/iconify';
 
 export const navConfig = [
   {
-    title: 'Web ApprovalList Power',
+    title: 'Web Approval Power',
     icon: <Iconify icon="solar:home-2-bold-duotone" />,
     path: paths.root,
   },
