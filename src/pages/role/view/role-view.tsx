@@ -12,7 +12,6 @@ import {
   TableSkeleton,
   useTable,
 } from '../../../components/table';
-import { useDebounceQuery } from '../../../hooks/use-debounce';
 import isEqual from 'lodash/isEqual';
 import Tabs from '@mui/material/Tabs';
 import { alpha } from '@mui/material/styles';
@@ -21,7 +20,6 @@ import Label from '../../../components/label';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import { useGetAllRole } from '../../../services/role/hooks/use-get-all-role';
-import { GetAllRoleParams } from '../../../services/role/role.request';
 import RoleTableToolbar from '../molecules/role-table-toolbar';
 import RoleTableFiltersResult from '../molecules/role-table-filters-result';
 import RoleTableRow from '../molecules/role-table-row';
@@ -36,10 +34,9 @@ export const STATUS_OPTIONS = [
 ];
 
 const TABLE_HEAD = [
-  { id: 'id', label: 'ID', width: 300 },
+  { id: 'no', label: 'No', width: 100 },
   { id: 'name', label: 'Name', width: 300 },
   { id: 'status', label: 'Status', width: 300 },
-  { id: '', width: 100 },
 ];
 
 const defaultFilters: IRoleTableFilters = {
@@ -52,20 +49,18 @@ export function RoleView() {
 
   const table = useTable({
     defaultRowsPerPage: 5,
+    defaultOrderBy: 'no',
   });
 
   const query = useMemo(
     () => ({
-      page: table.page + 1,
-      perPage: table.rowsPerPage,
+      status: filters.status,
       name: filters.name,
     }),
-    [table.page, table.rowsPerPage, filters]
+    [filters]
   );
 
-  const debouncedQuery = useDebounceQuery<GetAllRoleParams>(query, 'name');
-
-  const { roles, meta, isFetching, error } = useGetAllRole(debouncedQuery);
+  const { roles, meta, isFetching, error } = useGetAllRole(query);
 
   const settings = useSettingsContext();
 
