@@ -42,7 +42,7 @@ const navItem: {
     subheader: 'Main Hub',
     items: [
       {
-        roles: ['SUPERSAIYAN', 'PTPL_IT', 'PTPL_QA', 'PTPL_PROD', 'GUEST', 'EMPLOYEE', 'VENDOR'],
+        roles: ['SUPER_ADMIN', 'SAM', 'ADMIN_CENTRAL', 'VIEWER'],
         title: 'Approval',
         path: paths.approval.root,
         icon: ICONS.blank,
@@ -53,13 +53,13 @@ const navItem: {
     subheader: 'Master',
     items: [
       {
-        roles: ['SUPERSAIYAN', 'PTPL_IT', 'PTPL_QA', 'PTPL_PROD', 'GUEST', 'EMPLOYEE', 'VENDOR'],
+        roles: ['SUPER_ADMIN', 'SAM', 'ADMIN_CENTRAL', 'VIEWER'],
         title: 'Region',
         path: paths.region.root,
         icon: ICONS.banking,
       },
       {
-        roles: ['SUPERSAIYAN', 'PTPL_IT', 'PTPL_QA', 'PTPL_PROD', 'GUEST', 'EMPLOYEE', 'VENDOR'],
+        roles: ['SUPER_ADMIN', 'SAM', 'ADMIN_CENTRAL', 'VIEWER'],
         title: 'Territory',
         path: paths.territory.root,
         icon: ICONS.tour,
@@ -70,13 +70,13 @@ const navItem: {
     subheader: 'Authentication',
     items: [
       {
-        roles: ['SUPERSAIYAN', 'PTPL_IT', 'PTPL_QA', 'PTPL_PROD', 'GUEST', 'EMPLOYEE', 'VENDOR'],
+        roles: ['SUPER_ADMIN', 'SAM', 'ADMIN_CENTRAL', 'VIEWER'],
         title: 'User',
         path: paths.user.root,
         icon: ICONS.user,
       },
       {
-        roles: ['SUPERSAIYAN', 'PTPL_IT', 'PTPL_QA', 'PTPL_PROD', 'GUEST', 'EMPLOYEE', 'VENDOR'],
+        roles: ['SUPER_ADMIN', 'SAM', 'ADMIN_CENTRAL', 'VIEWER'],
         title: 'Role',
         path: paths.role.root,
         icon: ICONS.lock,
@@ -87,7 +87,7 @@ const navItem: {
     subheader: 'Log',
     items: [
       {
-        roles: ['SUPERSAIYAN', 'PTPL_IT', 'PTPL_QA', 'PTPL_PROD', 'GUEST', 'EMPLOYEE', 'VENDOR'],
+        roles: ['SUPER_ADMIN', 'SAM', 'ADMIN_CENTRAL', 'VIEWER'],
         title: 'Activity',
         path: paths.activity.root,
         icon: ICONS.blog,

@@ -34,7 +34,7 @@ export const router = createBrowserRouter(
         // Auth routes
         ...authRoutes,
 
-        // Approval routes
+        // ApprovalList routes
         ...approvalRoutes,
 
         // Master routes

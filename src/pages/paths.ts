@@ -22,6 +22,7 @@ export const paths = {
 
   approval: {
     root: `${ROOTS.APPROVAL}`,
+    details: (id: string) => `${ROOTS.APPROVAL}/detail/${id}`,
   },
 
   territory: {

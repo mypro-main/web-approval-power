@@ -68,7 +68,7 @@ export default function NavList({ item, offsetTop }: NavListProps) {
                   key={list.subheader}
                   subheader={list.subheader}
                   items={list.items}
-                  isDashboard={list.subheader === 'Approval'}
+                  isDashboard={list.subheader === 'Main Hub'}
                   onClose={nav.onFalse}
                 />
               ))}
