@@ -10,6 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Label from '../../../../components/label';
 import { IApprovalItem } from '../../../../types/approval';
 import Stack from '@mui/material/Stack';
+import { useAuthContext } from '../../../../auth/hooks';
 
 type Props = {
   selected: boolean;
@@ -18,12 +19,18 @@ type Props = {
 };
 
 export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
+  const { user } = useAuthContext();
+
   const { identityCardNumber, name, phoneNumber, outletId, outlet, status, requestOwnerStatus } =
     row;
 
   const popover = usePopover();
 
   const quickApprove = useBoolean();
+
+  const shouldRenderApprovalButton =
+    (user?.role === 'SAM' && requestOwnerStatus === 'requested') ||
+    (user?.role === 'ADMIN_CEMTRAL' && requestOwnerStatus === 'verified');
 
   return (
     <>
@@ -75,15 +82,17 @@ export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
         arrow="right-top"
         sx={{ width: 140 }}
       >
-        <MenuItem
-          onClick={() => {
-            quickApprove.onTrue();
-            popover.onClose();
-          }}
-        >
-          <Iconify icon="mingcute:check-2-fill" />
-          Approval
-        </MenuItem>
+        {shouldRenderApprovalButton && (
+          <MenuItem
+            onClick={() => {
+              quickApprove.onTrue();
+              popover.onClose();
+            }}
+          >
+            <Iconify icon="mingcute:check-2-fill" />
+            Approval
+          </MenuItem>
+        )}
 
         <MenuItem
           onClick={() => {

@@ -269,5 +269,5 @@ function generateDefaultRequestStatusFilter(role: string) {
   if (role === 'SAM') return 'requested';
   if (role === 'ADMIN_CENTRAL') return 'verified';
 
-  return '';
+  return 'requested';
 }

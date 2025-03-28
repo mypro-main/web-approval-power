@@ -62,10 +62,10 @@ export default function ApprovalTableToolbar({ filters, onFilters }: Props) {
             onChange={handleFilterRequestStatus}
             variant="outlined"
           >
-            {['all', 'requested', 'verified', 'approved', 'rejected'].map((key) => (
+            {['requested', 'verified', 'approved', 'rejected'].map((key) => (
               <MenuItem key={key} value={key} sx={{ textAlign: 'center' }}>
                 <Label
-                  variant={key === 'all' ? 'filled' : 'soft'}
+                  variant="soft"
                   color={
                     (key === 'requested' && 'warning') ||
                     (key === 'verified' && 'info') ||
