@@ -5,8 +5,7 @@ export const EditUserSchema = Yup.object({
   email: Yup.string().required('Email must not be empty.'),
   role: Yup.string().required('Role must not be empty.'),
   status: Yup.string().required('Status must not be empty.'),
-  regionIds: Yup.array().of(Yup.string().required()).required(),
-  territoryIds: Yup.array().of(Yup.string().required()).required(),
+  jobTitle: Yup.string().required('Status must not be empty.'),
 });
 
 export const CreateUserSchema = Yup.object({

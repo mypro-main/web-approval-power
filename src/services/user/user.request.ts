@@ -21,6 +21,5 @@ export interface UpdateUserRequest {
   email: string;
   role: string;
   status: string;
-  regionIds: string[];
-  territoryIds: string[];
+  jobTitle: string;
 }
