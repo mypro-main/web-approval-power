@@ -53,13 +53,13 @@ const navItem: {
     subheader: 'Master',
     items: [
       {
-        roles: ['SUPER_ADMIN', 'SAM', 'ADMIN_CENTRAL', 'VIEWER'],
+        roles: ['SUPER_ADMIN'],
         title: 'Region',
         path: paths.region.root,
         icon: ICONS.banking,
       },
       {
-        roles: ['SUPER_ADMIN', 'SAM', 'ADMIN_CENTRAL', 'VIEWER'],
+        roles: ['SUPER_ADMIN'],
         title: 'Territory',
         path: paths.territory.root,
         icon: ICONS.tour,
@@ -70,13 +70,13 @@ const navItem: {
     subheader: 'Authentication',
     items: [
       {
-        roles: ['SUPER_ADMIN', 'SAM', 'ADMIN_CENTRAL', 'VIEWER'],
+        roles: ['SUPER_ADMIN'],
         title: 'User',
         path: paths.user.root,
         icon: ICONS.user,
       },
       {
-        roles: ['SUPER_ADMIN', 'SAM', 'ADMIN_CENTRAL', 'VIEWER'],
+        roles: ['SUPER_ADMIN'],
         title: 'Role',
         path: paths.role.root,
         icon: ICONS.lock,
@@ -87,7 +87,7 @@ const navItem: {
     subheader: 'Log',
     items: [
       {
-        roles: ['SUPER_ADMIN', 'SAM', 'ADMIN_CENTRAL', 'VIEWER'],
+        roles: ['SUPER_ADMIN', 'ADMIN_CENTRAL'],
         title: 'Activity',
         path: paths.activity.root,
         icon: ICONS.blog,

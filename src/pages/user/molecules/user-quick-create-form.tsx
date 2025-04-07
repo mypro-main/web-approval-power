@@ -64,7 +64,7 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
     watch,
   } = methods;
 
-  const { regionIds } = watch();
+  const { role, regionIds } = watch();
 
   const getRegion = (keyword?: string) => regionService.getAll({ name: keyword });
   const getTerritory = (keyword?: string) => {
@@ -116,23 +116,27 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
                 ))}
               </RHFSelect>
             </Grid>
-            <Grid item xs={6}>
-              <RHFAutocompleteAsyncOnSearch
-                name="regionIds"
-                label="Region"
-                asyncFn={getRegion}
-                multiple
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <RHFAutocompleteAsyncOnSearch
-                disabled={!regionIds.length}
-                name="territoryIds"
-                label="Territory"
-                asyncFn={getTerritory}
-                multiple
-              />
-            </Grid>
+            {role !== 'ADMIN_CENTRAL' && (
+              <>
+                <Grid item xs={6}>
+                  <RHFAutocompleteAsyncOnSearch
+                    name="regionIds"
+                    label="Region"
+                    asyncFn={getRegion}
+                    multiple
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <RHFAutocompleteAsyncOnSearch
+                    disabled={!regionIds.length}
+                    name="territoryIds"
+                    label="Territory"
+                    asyncFn={getTerritory}
+                    multiple
+                  />
+                </Grid>
+              </>
+            )}
             <Grid item xs={6}>
               <RHFTextField
                 required
