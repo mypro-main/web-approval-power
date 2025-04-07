@@ -24,6 +24,7 @@ export function useUpdateApproval(): UseUpdateApprovalReturn {
   >({
     mutationFn: ({ id, payload }) => api.approval(id, payload),
     onSuccess: async () => {
+      await client.refetchQueries({ queryKey: ['approval'] });
       await client.refetchQueries({ queryKey: ['approvals'] });
       toast.success('Update approval account success.');
     },

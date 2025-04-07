@@ -65,6 +65,8 @@ export function ApprovalQuickApproveForm({ currentItem, open, onClose }: Props) 
       };
 
       await mutateApproval({ id, payload });
+
+      onClose();
     }
   });
 
