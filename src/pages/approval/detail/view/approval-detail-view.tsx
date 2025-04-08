@@ -16,6 +16,8 @@ import { fDateISOString } from '../../../../utils/format-time';
 import Iconify from '../../../../components/iconify';
 import { useBoolean } from '../../../../hooks/use-boolean';
 import { ApprovalQuickApproveForm } from '../../list/molecules/approval-quick-approve-form';
+import View404 from '../../../error/404';
+import { LoadingScreen } from '../../../../components/loading-screen';
 
 type Props = {
   id: string;
@@ -29,11 +31,11 @@ export function ApprovalDetailView({ id }: Props) {
   const quickApprove = useBoolean();
 
   if (isFetching) {
-    return <p>Loading...</p>;
+    return <LoadingScreen />;
   }
 
   if (!approval) {
-    return <p>No data</p>;
+    return <View404 />;
   }
 
   return (
@@ -84,7 +86,6 @@ export function ApprovalDetailView({ id }: Props) {
               <DetailsBoxItem title="Kode Outlet" content={approval.outletId} />
               <DetailsBoxItem title="Nama Outlet" content={approval.outlet.name} />
               <DetailsBoxItem title="Territory" content={approval.outlet.territory.name} />
-              {/*<DetailsBoxItem title="Region" content="Mock Data" />*/}
               <DetailsBoxItem
                 title="Status Akun"
                 content={

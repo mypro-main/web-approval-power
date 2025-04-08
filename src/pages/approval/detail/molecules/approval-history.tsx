@@ -110,7 +110,7 @@ function Item({ item, lastItem, index, ...other }: ItemProps) {
 
         {item.reason && (
           <Typography variant="body2" color="text.disabled">
-            Catatan: {item.reason}
+            Alasan: {item.reason}
           </Typography>
         )}
       </TimelineContent>

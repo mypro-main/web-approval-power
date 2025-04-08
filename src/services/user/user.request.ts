@@ -13,7 +13,7 @@ export interface CreateUserRequest {
   password: string;
   confirmPassword: string;
   jobTitle: string;
-  territoryIds: string[];
+  territoryIds?: string[];
 }
 
 export interface UpdateUserRequest {
