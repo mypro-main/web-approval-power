@@ -1,6 +1,7 @@
 const ROOTS = {
   API: '/api',
   AUTH: '/auth',
+  NOTIFICATION: '/notification',
   APPROVAL: '/approval',
   TERRITORY: '/territory',
   REGION: '/region',
@@ -18,6 +19,10 @@ export const paths = {
     login: `${ROOTS.AUTH}/login`,
     register: `${ROOTS.AUTH}/register`,
     forgotPassword: `${ROOTS.AUTH}/forgot-password`,
+  },
+
+  notification: {
+    root: `${ROOTS.NOTIFICATION}`,
   },
 
   approval: {
