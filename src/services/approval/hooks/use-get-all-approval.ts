@@ -32,7 +32,7 @@ export function useGetAllApproval(params?: GetAllApprovalParams): UseGetAllAppro
 
   return useMemo(
     () => ({
-      approvals: data?.data || [],
+      approvals: data?.data.filter((item) => item.status !== 'active') || [],
       meta: data?.meta,
       error,
       isFetching: isLoading || isFetching || isPending,

@@ -18,6 +18,10 @@ import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import { varHover } from 'src/components/animate';
 import NotificationItem from './notification-item';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import { RouterLink } from 'src/components/router-link';
+import { paths } from '../../../pages/paths';
 
 const TABS = [
   {
@@ -26,8 +30,8 @@ const TABS = [
     count: 22,
   },
   {
-    value: 'unread',
-    label: 'Unread',
+    value: 'unprocessed',
+    label: 'Unprocessed',
     count: 12,
   },
 ];
@@ -90,7 +94,7 @@ export default function NotificationsPopover() {
             <Label
               variant={((tab.value === 'all' || tab.value === currentTab) && 'filled') || 'soft'}
               color={
-                (tab.value === 'unread' && 'info') ||
+                (tab.value === 'unprocessed' && 'info') ||
                 (tab.value === 'archived' && 'success') ||
                 'default'
               }
@@ -161,11 +165,11 @@ export default function NotificationsPopover() {
 
         {renderList}
 
-        {/*<Box sx={{ p: 1 }}>*/}
-        {/*    <Button fullWidth size="large">*/}
-        {/*        View All*/}
-        {/*    </Button>*/}
-        {/*</Box>*/}
+        <Box sx={{ p: 1 }}>
+          <Button component={RouterLink} href={paths.notification.root} fullWidth size="large">
+            View All
+          </Button>
+        </Box>
       </Drawer>
     </>
   );

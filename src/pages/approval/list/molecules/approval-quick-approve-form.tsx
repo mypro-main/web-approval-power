@@ -7,13 +7,12 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import Grid from '@mui/material/Grid';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import FormProvider, { RHFSelect, RHFTextField } from '../../../../components/hook-form';
 import { EditApprovalSchema } from '../../schemas';
 import { IApprovalItem } from '../../../../types/approval';
 import MenuItem from '@mui/material/MenuItem';
 import Label from '../../../../components/label';
-import { useAuthContext } from '../../../../auth/hooks';
 import { useUpdateApproval } from '../../../../services/approval/hooks/use-update-approval';
 
 type Props = {
@@ -26,12 +25,12 @@ const SAM_APPROVAL_OPTIONS = ['verified', 'rejected'];
 const ADMIN_CENTER_APPROVAL_OPTIONS = ['approved', 'rejected'];
 
 export function ApprovalQuickApproveForm({ currentItem, open, onClose }: Props) {
-  const { user } = useAuthContext();
-
   const { mutateApproval } = useUpdateApproval();
 
   const APPROVAL_OPTIONS =
-    user?.role === 'SAM' ? SAM_APPROVAL_OPTIONS : ADMIN_CENTER_APPROVAL_OPTIONS;
+    currentItem?.requestOwnerStatus === 'requested'
+      ? SAM_APPROVAL_OPTIONS
+      : ADMIN_CENTER_APPROVAL_OPTIONS;
 
   const defaultValues = useMemo(
     () => ({
@@ -51,9 +50,14 @@ export function ApprovalQuickApproveForm({ currentItem, open, onClose }: Props) 
     handleSubmit,
     formState: { isSubmitting },
     watch,
+    resetField,
   } = methods;
 
   const { approvalStatus } = watch();
+
+  useEffect(() => {
+    resetField('reason');
+  }, [approvalStatus]);
 
   const onSubmit = handleSubmit(async (data) => {
     if (currentItem) {
@@ -65,6 +69,8 @@ export function ApprovalQuickApproveForm({ currentItem, open, onClose }: Props) 
       };
 
       await mutateApproval({ id, payload });
+
+      onClose();
     }
   });
 
@@ -82,12 +88,7 @@ export function ApprovalQuickApproveForm({ currentItem, open, onClose }: Props) 
         <DialogContent>
           <Grid container columnSpacing={2} rowSpacing={2} sx={{ mt: 1 }}>
             <Grid item xs={6}>
-              <RHFTextField
-                name="outletName"
-                label="Nama Outlet"
-                value={currentItem?.name}
-                disabled
-              />
+              <RHFTextField name="outletName" label="Nama" value={currentItem?.name} disabled />
             </Grid>
             <Grid item xs={6}>
               <RHFSelect name="approvalStatus" label="Status Approval" required>
@@ -108,9 +109,15 @@ export function ApprovalQuickApproveForm({ currentItem, open, onClose }: Props) 
                 ))}
               </RHFSelect>
             </Grid>
-            <Grid item xs={12}>
-              <RHFTextField name="reason" label="Alasan" disabled={approvalStatus !== 'rejected'} />
-            </Grid>
+            {approvalStatus === 'rejected' && (
+              <Grid item xs={12}>
+                <RHFTextField
+                  name="reason"
+                  label="Alasan"
+                  disabled={approvalStatus !== 'rejected'}
+                />
+              </Grid>
+            )}
           </Grid>
         </DialogContent>
 

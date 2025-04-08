@@ -1,12 +1,15 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
 import { fToNow } from 'src/utils/format-time';
+import { SxProps, Theme } from '@mui/material/styles';
+import RouterLink from '../../../components/router-link/router-link';
+import { paths } from '../../../pages/paths';
 
 type NotificationItemProps = {
+  sx?: SxProps<Theme>;
   notification: {
     id: string;
     title: string;
@@ -16,7 +19,7 @@ type NotificationItemProps = {
   };
 };
 
-export default function NotificationItem({ notification }: NotificationItemProps) {
+export default function NotificationItem({ notification, sx }: NotificationItemProps) {
   const renderAvatar = (
     <ListItemAvatar>
       <Stack
@@ -80,31 +83,23 @@ export default function NotificationItem({ notification }: NotificationItemProps
     />
   );
 
-  const action = (
-    <Stack spacing={1} direction="row" sx={{ mt: 1.5 }}>
-      <Button size="small" variant="outlined" fullWidth>
-        View
-      </Button>
-    </Stack>
-  );
-
   return (
     <ListItemButton
+      component={RouterLink}
+      href={paths.approval.details(notification.id)}
       disableRipple
       sx={{
         p: 2.5,
         alignItems: 'flex-start',
         borderBottom: (theme) => `dashed 1px ${theme.palette.divider}`,
+        ...sx,
       }}
     >
       {renderUnReadBadge}
 
       {renderAvatar}
 
-      <Stack sx={{ flexGrow: 1 }}>
-        {renderText}
-        {action}
-      </Stack>
+      <Stack sx={{ flexGrow: 1 }}>{renderText}</Stack>
     </ListItemButton>
   );
 }

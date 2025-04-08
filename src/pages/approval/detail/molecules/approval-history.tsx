@@ -80,10 +80,24 @@ function Item({ item, lastItem, index, ...other }: ItemProps) {
         </Typography>
 
         <Typography variant="body2" color="text.primary">
-          {item.User.name.toUpperCase()} has been change the approval status to
+          {item.User.name.toUpperCase()} has been change the approval status from
           <Label
             variant="soft"
             color={
+              (item.prevStatus === 'requested' && 'warning') ||
+              (item.prevStatus === 'approved' && 'success') ||
+              (item.prevStatus === 'verified' && 'info') ||
+              'error'
+            }
+            sx={{ cursor: 'pointer', mr: 0.5, ml: 0.5 }}
+          >
+            {capitalize(item.prevStatus)}
+          </Label>
+          to
+          <Label
+            variant="soft"
+            color={
+              (item.currentStatus === 'requested' && 'warning') ||
               (item.currentStatus === 'approved' && 'success') ||
               (item.currentStatus === 'verified' && 'info') ||
               'error'
@@ -96,7 +110,7 @@ function Item({ item, lastItem, index, ...other }: ItemProps) {
 
         {item.reason && (
           <Typography variant="body2" color="text.disabled">
-            Catatan: {item.reason}
+            Alasan: {item.reason}
           </Typography>
         )}
       </TimelineContent>

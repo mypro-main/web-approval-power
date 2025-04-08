@@ -15,8 +15,20 @@ export const CreateUserSchema = Yup.object({
   email: Yup.string().email('Email must be a valid email.').required('Email must not be empty.'),
   role: Yup.string().required('Role must not be empty.'),
   jobTitle: Yup.string().required('Role must not be empty.'),
-  regionIds: Yup.array().of(Yup.string().required()).required(),
-  territoryIds: Yup.array().of(Yup.string().required()).required(),
+  regionIds: Yup.array()
+    .of(Yup.string().required())
+    .when('role', {
+      is: (val: string) => val !== 'ADMIN_CENTRAL',
+      then: (schema) => schema.required().min(1, 'Region must not be empty'),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+  territoryIds: Yup.array()
+    .of(Yup.string().required())
+    .when('role', {
+      is: (val: string) => val !== 'ADMIN_CENTRAL',
+      then: (schema) => schema.required().min(1, 'Territory must not be empty'),
+      otherwise: (schema) => schema.notRequired(),
+    }),
   password: Yup.string()
     .min(3, 'Password must be at least 3 characters.')
     .required('Password must not be empty.'),

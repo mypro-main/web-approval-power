@@ -1,6 +1,6 @@
 import CustomBreadcrumbs from '../../../../components/custom-breadcrumbs';
 import Stack from '@mui/material/Stack';
-import { CardContent } from '@mui/material';
+import { Button, CardContent } from '@mui/material';
 import { paths } from '../../../paths';
 import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
@@ -13,6 +13,11 @@ import { useGetAppoval } from '../../../../services/approval/hooks/use-get-appro
 import capitalize from '@mui/utils/capitalize';
 import Label from '../../../../components/label';
 import { fDateISOString } from '../../../../utils/format-time';
+import Iconify from '../../../../components/iconify';
+import { useBoolean } from '../../../../hooks/use-boolean';
+import { ApprovalQuickApproveForm } from '../../list/molecules/approval-quick-approve-form';
+import View404 from '../../../error/404';
+import { LoadingScreen } from '../../../../components/loading-screen';
 
 type Props = {
   id: string;
@@ -23,12 +28,14 @@ export function ApprovalDetailView({ id }: Props) {
 
   const { approval, isFetching } = useGetAppoval(id);
 
+  const quickApprove = useBoolean();
+
   if (isFetching) {
-    return <p>Loading...</p>;
+    return <LoadingScreen />;
   }
 
   if (!approval) {
-    return <p>No data</p>;
+    return <View404 />;
   }
 
   return (
@@ -42,6 +49,17 @@ export function ApprovalDetailView({ id }: Props) {
             name: 'Approval Detail',
           },
         ]}
+        action={
+          <Stack direction="row" gap={1}>
+            <Button
+              variant="contained"
+              startIcon={<Iconify icon="mingcute:check-2-fill" />}
+              onClick={quickApprove.onTrue}
+            >
+              Approval
+            </Button>
+          </Stack>
+        }
         sx={{
           mb: { xs: 3, md: 5 },
         }}
@@ -68,7 +86,6 @@ export function ApprovalDetailView({ id }: Props) {
               <DetailsBoxItem title="Kode Outlet" content={approval.outletId} />
               <DetailsBoxItem title="Nama Outlet" content={approval.outlet.name} />
               <DetailsBoxItem title="Territory" content={approval.outlet.territory.name} />
-              {/*<DetailsBoxItem title="Region" content="Mock Data" />*/}
               <DetailsBoxItem
                 title="Status Akun"
                 content={
@@ -110,6 +127,12 @@ export function ApprovalDetailView({ id }: Props) {
           </CardContent>
         </Card>
       </Stack>
+
+      <ApprovalQuickApproveForm
+        currentItem={approval}
+        open={quickApprove.value}
+        onClose={quickApprove.onFalse}
+      />
     </Container>
   );
 }

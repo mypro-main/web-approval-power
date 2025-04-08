@@ -62,15 +62,24 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
     setError,
     formState: { isSubmitting },
     watch,
+    resetField,
   } = methods;
 
-  const { regionIds } = watch();
+  const { role, regionIds } = watch();
 
   const getRegion = (keyword?: string) => regionService.getAll({ name: keyword });
   const getTerritory = (keyword?: string) => {
     const { regionIds } = watch();
-    return territoryService.getAll({ name: keyword, regionIds: regionIds.join(';') });
+    return territoryService.getAll({
+      name: keyword,
+      regionIds: regionIds ? regionIds.join(';') : '',
+    });
   };
+
+  useEffect(() => {
+    resetField('regionIds');
+    resetField('territoryIds');
+  }, [role]);
 
   useEffect(() => {
     if (error) {
@@ -116,23 +125,27 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
                 ))}
               </RHFSelect>
             </Grid>
-            <Grid item xs={6}>
-              <RHFAutocompleteAsyncOnSearch
-                name="regionIds"
-                label="Region"
-                asyncFn={getRegion}
-                multiple
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <RHFAutocompleteAsyncOnSearch
-                disabled={!regionIds.length}
-                name="territoryIds"
-                label="Territory"
-                asyncFn={getTerritory}
-                multiple
-              />
-            </Grid>
+            {role == 'SAM' && (
+              <>
+                <Grid item xs={6}>
+                  <RHFAutocompleteAsyncOnSearch
+                    name="regionIds"
+                    label="Region"
+                    asyncFn={getRegion}
+                    multiple
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <RHFAutocompleteAsyncOnSearch
+                    disabled={!regionIds || !regionIds.length}
+                    name="territoryIds"
+                    label="Territory"
+                    asyncFn={getTerritory}
+                    multiple
+                  />
+                </Grid>
+              </>
+            )}
             <Grid item xs={6}>
               <RHFTextField
                 required
