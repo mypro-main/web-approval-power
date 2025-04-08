@@ -11,6 +11,7 @@ import Label from '../../../../components/label';
 import { IApprovalItem } from '../../../../types/approval';
 import Stack from '@mui/material/Stack';
 import { useAuthContext } from '../../../../auth/hooks';
+import Link from '@mui/material/Link';
 
 type Props = {
   selected: boolean;
@@ -28,15 +29,21 @@ export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
 
   const quickApprove = useBoolean();
 
-  const shouldRenderApprovalButton =
-    (user?.role === 'SAM' && requestOwnerStatus === 'requested') ||
-    (user?.role === 'ADMIN_CEMTRAL' && requestOwnerStatus === 'verified');
-
   return (
     <>
       <TableRow hover selected={selected}>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{outletId}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{outlet?.name ?? '-'}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>
+          <Link
+            variant="body2"
+            fontWeight={600}
+            noWrap
+            onClick={onViewRow}
+            sx={{ color: 'text.primary', cursor: 'pointer' }}
+          >
+            {outlet?.name ?? '-'}
+          </Link>
+        </TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{phoneNumber || '-'}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{name ? capitalize(name) : '-'}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{identityCardNumber || '-'}</TableCell>
@@ -82,17 +89,15 @@ export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
         arrow="right-top"
         sx={{ width: 140 }}
       >
-        {shouldRenderApprovalButton && (
-          <MenuItem
-            onClick={() => {
-              quickApprove.onTrue();
-              popover.onClose();
-            }}
-          >
-            <Iconify icon="mingcute:check-2-fill" />
-            Approval
-          </MenuItem>
-        )}
+        <MenuItem
+          onClick={() => {
+            quickApprove.onTrue();
+            popover.onClose();
+          }}
+        >
+          <Iconify icon="mingcute:check-2-fill" />
+          Approval
+        </MenuItem>
 
         <MenuItem
           onClick={() => {
