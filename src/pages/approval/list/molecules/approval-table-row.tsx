@@ -29,6 +29,11 @@ export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
 
   const quickApprove = useBoolean();
 
+  const shouldRenderApprovalButton =
+    (user?.role === 'SAM' && requestOwnerStatus === 'requested') ||
+    (user?.role === 'ADMIN_CENTRAL' && requestOwnerStatus === 'verified') ||
+    user?.role === 'SUPER_ADMIN';
+
   return (
     <>
       <TableRow hover selected={selected}>
@@ -89,15 +94,17 @@ export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
         arrow="right-top"
         sx={{ width: 140 }}
       >
-        <MenuItem
-          onClick={() => {
-            quickApprove.onTrue();
-            popover.onClose();
-          }}
-        >
-          <Iconify icon="mingcute:check-2-fill" />
-          Approval
-        </MenuItem>
+        {shouldRenderApprovalButton && (
+          <MenuItem
+            onClick={() => {
+              quickApprove.onTrue();
+              popover.onClose();
+            }}
+          >
+            <Iconify icon="mingcute:check-2-fill" />
+            Approval
+          </MenuItem>
+        )}
 
         <MenuItem
           onClick={() => {

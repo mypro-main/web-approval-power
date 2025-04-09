@@ -1,9 +1,6 @@
-import { Button } from '@mui/material';
 import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
 import CustomBreadcrumbs from '../../../components/custom-breadcrumbs';
-import Iconify from '../../../components/iconify';
 import { useSettingsContext } from '../../../components/settings';
 import { useCallback, useMemo, useState } from 'react';
 import { ITerritoryItem, ITerritoryTableFilters } from '../../../types/territory';
@@ -117,17 +114,6 @@ export function TerritoryView() {
       <CustomBreadcrumbs
         heading="Territory"
         links={[{ name: 'Master' }, { name: 'Territory' }]}
-        action={
-          <Stack direction="row" gap={1}>
-            <Button
-              variant="contained"
-              startIcon={<Iconify icon="mingcute:upload-3-fill" />}
-              onClick={quickUpload.onTrue}
-            >
-              Upload
-            </Button>
-          </Stack>
-        }
         sx={{
           mb: { xs: 3, md: 5 },
         }}
