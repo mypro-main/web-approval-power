@@ -2,7 +2,12 @@ import { AxiosInstance } from 'axios';
 import { stringify } from 'qs';
 import { UserResponse } from './user.response';
 import axiosInstance from '../../utils/axios';
-import { CreateUserRequest, GetAllUserParams, UpdateUserRequest } from './user.request';
+import {
+  CreateUserRequest,
+  GetAllUserParams,
+  UpdateUserPasswordRequest,
+  UpdateUserRequest,
+} from './user.request';
 import { BaseResponse } from '../shared/base.response';
 
 export class UserService {
@@ -29,6 +34,11 @@ export class UserService {
 
   async create(payload: CreateUserRequest): Promise<void> {
     const response = await this.api.post(`/user`, payload);
+    return response.data;
+  }
+
+  async changePassword(id: string, payload: UpdateUserPasswordRequest): Promise<void> {
+    const response = await this.api.put(`/user/change-password/${id}`, payload);
     return response.data;
   }
 

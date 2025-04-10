@@ -72,7 +72,7 @@ export default function UserQuickEditForm({ currentUser, open, onClose }: Props)
       }}
     >
       <FormProvider methods={methods} onSubmit={onSubmit}>
-        <DialogTitle>Update User</DialogTitle>
+        <DialogTitle>Edit User Information</DialogTitle>
 
         <DialogContent>
           <Grid container spacing={2} rowSpacing={4} sx={{ mt: 1 }}>
