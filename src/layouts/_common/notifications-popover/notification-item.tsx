@@ -7,16 +7,12 @@ import { fToNow } from 'src/utils/format-time';
 import { SxProps, Theme } from '@mui/material/styles';
 import RouterLink from '../../../components/router-link/router-link';
 import { paths } from '../../../pages/paths';
+import { IHighlightItem } from '../../../types/notification';
+import Typography from '@mui/material/Typography';
 
 type NotificationItemProps = {
   sx?: SxProps<Theme>;
-  notification: {
-    id: string;
-    title: string;
-    category: string;
-    createdAt: Date;
-    isUnRead: boolean;
-  };
+  notification: IHighlightItem;
 };
 
 export default function NotificationItem({ notification, sx }: NotificationItemProps) {
@@ -44,7 +40,16 @@ export default function NotificationItem({ notification, sx }: NotificationItemP
   const renderText = (
     <ListItemText
       disableTypography
-      primary={reader(notification.title)}
+      primary={
+        <Stack>
+          <Typography variant="body2">
+            <Box component="span" fontWeight="bold">
+              {notification.name}
+            </Box>{' '}
+            needs your approval.
+          </Typography>
+        </Stack>
+      }
       secondary={
         <Stack
           direction="row"
@@ -62,20 +67,20 @@ export default function NotificationItem({ notification, sx }: NotificationItemP
             />
           }
         >
-          {fToNow(notification.createdAt)}
-          {notification.category}
+          {fToNow(notification.updatedAt)}
+          Approval
         </Stack>
       }
     />
   );
 
-  const renderUnReadBadge = notification.isUnRead && (
+  const renderUnReadBadge = (
     <Box
       sx={{
-        top: 26,
+        top: 15,
+        left: 15,
         width: 8,
         height: 8,
-        right: 20,
         borderRadius: '50%',
         bgcolor: 'info.main',
         position: 'absolute',

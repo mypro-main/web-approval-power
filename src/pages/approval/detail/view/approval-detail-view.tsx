@@ -18,12 +18,15 @@ import { useBoolean } from '../../../../hooks/use-boolean';
 import { ApprovalQuickApproveForm } from '../../list/molecules/approval-quick-approve-form';
 import View404 from '../../../error/404';
 import { LoadingScreen } from '../../../../components/loading-screen';
+import { useAuthContext } from '../../../../auth/hooks';
 
 type Props = {
   id: string;
 };
 
 export function ApprovalDetailView({ id }: Props) {
+  const { user } = useAuthContext();
+
   const settings = useSettingsContext();
 
   const { approval, isFetching } = useGetAppoval(id);
@@ -38,6 +41,11 @@ export function ApprovalDetailView({ id }: Props) {
     return <View404 />;
   }
 
+  const shouldRenderApprovalButton =
+    (user?.role === 'SAM' && approval.requestOwnerStatus === 'requested') ||
+    (user?.role === 'ADMIN_CENTRAL' && approval.requestOwnerStatus === 'verified') ||
+    user?.role === 'SUPER_ADMIN';
+
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
@@ -50,15 +58,17 @@ export function ApprovalDetailView({ id }: Props) {
           },
         ]}
         action={
-          <Stack direction="row" gap={1}>
-            <Button
-              variant="contained"
-              startIcon={<Iconify icon="mingcute:check-2-fill" />}
-              onClick={quickApprove.onTrue}
-            >
-              Approval
-            </Button>
-          </Stack>
+          shouldRenderApprovalButton && (
+            <Stack direction="row" gap={1}>
+              <Button
+                variant="contained"
+                startIcon={<Iconify icon="mingcute:check-2-fill" />}
+                onClick={quickApprove.onTrue}
+              >
+                Approval
+              </Button>
+            </Stack>
+          )
         }
         sx={{
           mb: { xs: 3, md: 5 },
