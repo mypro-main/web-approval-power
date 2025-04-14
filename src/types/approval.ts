@@ -14,7 +14,7 @@ export interface IApprovalItem {
   email: string | null;
   birthDate: string | null;
   status: IApprovalStatus | null;
-  requestOwnerStatus: IApprovalRequestOwnerStatus | null;
+  requestOwnerStatus: IApprovalOwnerStatus | null;
   ownerStatus: IApprovalOwnerStatus | null;
   outletId: string;
   outlet: IOutletItem;
@@ -43,16 +43,10 @@ export enum IApprovalStatus {
   rejected = 'rejected',
 }
 
-export enum IApprovalRequestOwnerStatus {
-  requested = 'requested',
-  verified = 'verified',
-  approved = 'approved',
-  rejected = 'rejected',
-}
-
 export enum IApprovalOwnerStatus {
   requested = 'requested',
   verified = 'verified',
   approved = 'approved',
   rejected = 'rejected',
+  reconfirm = 'reconfirm',
 }

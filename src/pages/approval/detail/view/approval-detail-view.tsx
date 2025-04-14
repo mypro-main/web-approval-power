@@ -19,6 +19,7 @@ import { ApprovalQuickApproveForm } from '../../list/molecules/approval-quick-ap
 import View404 from '../../../error/404';
 import { LoadingScreen } from '../../../../components/loading-screen';
 import { useAuthContext } from '../../../../auth/hooks';
+import { checkApprovalPermission } from '../../utils';
 
 type Props = {
   id: string;
@@ -41,10 +42,7 @@ export function ApprovalDetailView({ id }: Props) {
     return <View404 />;
   }
 
-  const shouldRenderApprovalButton =
-    (user?.role === 'SAM' && approval.requestOwnerStatus === 'requested') ||
-    (user?.role === 'ADMIN_CENTRAL' && approval.requestOwnerStatus === 'verified') ||
-    user?.role === 'SUPER_ADMIN';
+  const renderApprovalButton = checkApprovalPermission(user?.role, approval.requestOwnerStatus);
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -58,7 +56,7 @@ export function ApprovalDetailView({ id }: Props) {
           },
         ]}
         action={
-          shouldRenderApprovalButton && (
+          renderApprovalButton && (
             <Stack direction="row" gap={1}>
               <Button
                 variant="contained"

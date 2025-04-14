@@ -12,6 +12,7 @@ import { IApprovalItem } from '../../../../types/approval';
 import Stack from '@mui/material/Stack';
 import { useAuthContext } from '../../../../auth/hooks';
 import Link from '@mui/material/Link';
+import { checkApprovalPermission } from '../../utils';
 
 type Props = {
   selected: boolean;
@@ -28,10 +29,9 @@ export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
 
   const quickApprove = useBoolean();
 
-  const shouldRenderApprovalButton =
-    (user?.role === 'SAM' && ownerStatus === 'requested') ||
-    (user?.role === 'ADMIN_CENTRAL' && ownerStatus === 'verified') ||
-    user?.role === 'SUPER_ADMIN';
+  const renderApprovalButton = checkApprovalPermission(user?.role, ownerStatus);
+
+  console.log(renderApprovalButton);
 
   return (
     <>
@@ -93,7 +93,7 @@ export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
         arrow="right-top"
         sx={{ width: 140 }}
       >
-        {shouldRenderApprovalButton && (
+        {renderApprovalButton && (
           <MenuItem
             onClick={() => {
               quickApprove.onTrue();

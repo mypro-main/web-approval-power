@@ -12,14 +12,27 @@ import capitalize from '@mui/utils/capitalize';
 import Label from '../../../../components/label';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import { useAuthContext } from '../../../../auth/hooks';
 
 type Props = {
   filters: IApprovalTableFilters;
   onFilters: (key: string, value: string) => void;
 };
 
+const baseOptions = ['requested', 'verified', 'approved', 'rejected', 'reconfirm'];
+
 export default function ApprovalTableToolbar({ filters, onFilters }: Props) {
+  const { user } = useAuthContext();
+
   const popover = usePopover();
+
+  const options = baseOptions.filter((option) => {
+    if (user?.role === 'SAM') {
+      return option === 'requested' || option === 'reconfirm';
+    }
+
+    return true;
+  });
 
   const handleFilterRequestStatus = useCallback(
     (event: SelectChangeEvent<string>) => {
@@ -62,7 +75,7 @@ export default function ApprovalTableToolbar({ filters, onFilters }: Props) {
             onChange={handleFilterRequestStatus}
             variant="outlined"
           >
-            {['requested', 'verified', 'approved', 'rejected'].map((key) => (
+            {options.map((key) => (
               <MenuItem key={key} value={key} sx={{ textAlign: 'center' }}>
                 <Label
                   variant="soft"
@@ -71,6 +84,7 @@ export default function ApprovalTableToolbar({ filters, onFilters }: Props) {
                     (key === 'verified' && 'info') ||
                     (key === 'approved' && 'success') ||
                     (key === 'rejected' && 'error') ||
+                    (key === 'reconfirm' && 'secondary') ||
                     'default'
                   }
                   sx={{ cursor: 'pointer' }}
