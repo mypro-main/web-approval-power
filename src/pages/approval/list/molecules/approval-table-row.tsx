@@ -22,16 +22,15 @@ type Props = {
 export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
   const { user } = useAuthContext();
 
-  const { identityCardNumber, name, phoneNumber, outletId, outlet, status, requestOwnerStatus } =
-    row;
+  const { identityCardNumber, name, phoneNumber, outletId, outlet, status, ownerStatus } = row;
 
   const popover = usePopover();
 
   const quickApprove = useBoolean();
 
   const shouldRenderApprovalButton =
-    (user?.role === 'SAM' && requestOwnerStatus === 'requested') ||
-    (user?.role === 'ADMIN_CENTRAL' && requestOwnerStatus === 'verified') ||
+    (user?.role === 'SAM' && ownerStatus === 'requested') ||
+    (user?.role === 'ADMIN_CENTRAL' && ownerStatus === 'verified') ||
     user?.role === 'SUPER_ADMIN';
 
   return (
@@ -69,14 +68,14 @@ export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
           <Label
             variant="soft"
             color={
-              (requestOwnerStatus === 'requested' && 'warning') ||
-              (requestOwnerStatus === 'verified' && 'info') ||
-              (requestOwnerStatus === 'approved' && 'success') ||
-              (requestOwnerStatus === 'rejected' && 'error') ||
+              (ownerStatus === 'requested' && 'warning') ||
+              (ownerStatus === 'verified' && 'info') ||
+              (ownerStatus === 'approved' && 'success') ||
+              (ownerStatus === 'rejected' && 'error') ||
               'default'
             }
           >
-            {requestOwnerStatus || '-'}
+            {ownerStatus || '-'}
           </Label>
         </TableCell>
         <TableCell>

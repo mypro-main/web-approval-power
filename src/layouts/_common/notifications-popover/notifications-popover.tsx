@@ -21,14 +21,14 @@ import Button from '@mui/material/Button';
 import { RouterLink } from 'src/components/router-link';
 import { paths } from '../../../pages/paths';
 import { useGetNotificationSummary } from '../../../services/notification/hooks/use-get-notification-summary';
-import { useAuthContext } from '../../../auth/hooks';
+import { CircularProgress } from '@mui/material';
+
+type CurrentTab = 'requested' | 'verified' | 'approved' | 'rejected' | 'reconfirm';
 
 export default function NotificationsPopover() {
-  const { user } = useAuthContext();
-
   const { notification, isFetching, error } = useGetNotificationSummary();
 
-  const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: string) => {
+  const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: CurrentTab) => {
     setCurrentTab(newValue);
   }, []);
 
@@ -36,28 +36,64 @@ export default function NotificationsPopover() {
 
   const smUp = useResponsive('up', 'sm');
 
-  const defaultActiveTab = user?.role === 'ADMIN_CENTRAL' ? 'verified' : 'requested';
+  const defaultActiveTab = 'requested';
 
-  const [currentTab, setCurrentTab] = useState(defaultActiveTab);
+  const [currentTab, setCurrentTab] = useState<CurrentTab>(defaultActiveTab);
 
   const TABS = useMemo(
     () => [
       {
         value: 'requested',
         label: 'Requested',
-        count: notification?.summary.requested,
+        count: notification?.highlight.requested.total,
       },
       {
         value: 'verified',
         label: 'Verified',
-        count: notification?.summary.verified,
+        count: notification?.highlight.verified.total,
+      },
+      {
+        value: 'approved',
+        label: 'Approved',
+        count: notification?.highlight.approved.total,
+      },
+      {
+        value: 'rejected',
+        label: 'Rejected',
+        count: notification?.highlight.rejected.total,
+      },
+      {
+        value: 'reconfirm',
+        label: 'Reconfirm',
+        count: notification?.highlight.reconfirm.total,
       },
     ],
     [notification]
   );
 
+  const isNotificationEmpty = TABS.every((tab) => !tab.count);
+
+  const handleCloseNotification = useCallback(() => {
+    drawer.onFalse();
+  }, []);
+
   if (isFetching) {
-    return null;
+    return (
+      <IconButton
+        component={m.button}
+        whileTap="tap"
+        whileHover="hover"
+        variants={varHover(1.05)}
+        color="default"
+      >
+        <Badge
+          badgeContent={<CircularProgress size={8} sx={{ color: 'common.white' }} />}
+          color="error"
+        >
+          <Iconify icon="solar:bell-bing-bold-duotone" width={24} />
+        </Badge>
+      </IconButton>
+    );
   }
 
   if (!notification || error) {
@@ -98,11 +134,7 @@ export default function NotificationsPopover() {
   const renderTabs = (
     <Tabs value={currentTab} onChange={handleChangeTab}>
       {TABS.map((tab) => {
-        if (user?.role === 'SAM' && tab.value === 'verified') {
-          return null;
-        }
-
-        if (user?.role === 'ADMIN_CENTRAL' && tab.value === 'requested') {
+        if (!tab.count) {
           return null;
         }
 
@@ -118,10 +150,13 @@ export default function NotificationsPopover() {
                 color={
                   (tab.value === 'requested' && 'warning') ||
                   (tab.value === 'verified' && 'info') ||
+                  (tab.value === 'approved' && 'success') ||
+                  (tab.value === 'rejected' && 'error') ||
+                  (tab.value === 'reconfirm' && 'secondary') ||
                   'default'
                 }
               >
-                {tab.count && tab.count > 10 ? '10+' : tab.count}
+                {notification.highlight[currentTab].total}
               </Label>
             }
             sx={{
@@ -137,16 +172,21 @@ export default function NotificationsPopover() {
 
   const renderList = (
     <Scrollbar>
-      <List disablePadding>
-        {currentTab === 'requested' &&
-          notification.highlight.requested.map((notif, index) => (
-            <NotificationItem key={index} notification={notif} />
+      {isNotificationEmpty ? (
+        <Stack justifyContent="center" alignItems="center" sx={{ p: 2 }}>
+          <Typography color="text.disabled">No new notification</Typography>
+        </Stack>
+      ) : (
+        <List disablePadding>
+          {notification.highlight[currentTab].data.map((notif, index) => (
+            <NotificationItem
+              key={index}
+              notification={notif}
+              onCloseNotification={handleCloseNotification}
+            />
           ))}
-        {currentTab === 'verified' &&
-          notification.highlight.verified.map((notif, index) => (
-            <NotificationItem key={index} notification={notif} />
-          ))}
-      </List>
+        </List>
+      )}
     </Scrollbar>
   );
 
@@ -160,18 +200,7 @@ export default function NotificationsPopover() {
         color={drawer.value ? 'primary' : 'default'}
         onClick={drawer.onTrue}
       >
-        <Badge
-          badgeContent={
-            user?.role === 'ADMIN_CENTRAL'
-              ? notification.summary.verified > 10
-                ? '10+'
-                : notification.summary.verified
-              : notification.summary.requested > 10
-                ? '10+'
-                : notification.summary.requested
-          }
-          color="error"
-        >
+        <Badge badgeContent={notification.highlight[currentTab].total} color="error">
           <Iconify icon="solar:bell-bing-bold-duotone" width={24} />
         </Badge>
       </IconButton>
@@ -189,21 +218,22 @@ export default function NotificationsPopover() {
       >
         {renderHead}
 
+        {!isNotificationEmpty && (
+          <>
+            <Divider />
+
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{ pl: 2.5, pr: 1 }}
+            >
+              {renderTabs}
+            </Stack>
+          </>
+        )}
         <Divider />
-
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          sx={{ pl: 2.5, pr: 1 }}
-        >
-          {renderTabs}
-        </Stack>
-
-        <Divider />
-
         {renderList}
-
         <Box sx={{ p: 1 }}>
           <Button component={RouterLink} href={paths.notification.root} fullWidth size="large">
             View All

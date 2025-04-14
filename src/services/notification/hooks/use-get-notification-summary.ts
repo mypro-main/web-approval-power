@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { UseQueryReturn } from '../../shared/use-query-return-type';
 import { NotificationService } from '../notification-service';
-import { NotificationResponse } from '../notification.response';
+import { NotificationSummaryResponse } from '../notification.response';
 
 interface UseGetNotificationSummaryReturn extends UseQueryReturn {
-  notification?: NotificationResponse;
+  notification?: NotificationSummaryResponse;
 }
 
 export function useGetNotificationSummary(): UseGetNotificationSummaryReturn {

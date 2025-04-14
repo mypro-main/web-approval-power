@@ -1,3 +1,5 @@
-import { INotificationItem } from '../../types/notification';
+import { INotificationItem, INotificationSummaryItem } from '../../types/notification';
 
-export interface NotificationResponse extends INotificationItem {}
+export interface NotificationListResponse extends INotificationItem {}
+
+export interface NotificationSummaryResponse extends INotificationSummaryItem {}
