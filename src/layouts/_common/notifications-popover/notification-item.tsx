@@ -44,7 +44,7 @@ export default function NotificationItem({
     };
 
     await mutateNotification({ payload });
-  }, []);
+  }, [redirectId]);
 
   const renderAvatar = (
     <ListItemAvatar>

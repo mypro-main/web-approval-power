@@ -42,7 +42,7 @@ export function ApprovalDetailView({ id }: Props) {
     return <View404 />;
   }
 
-  const renderApprovalButton = checkApprovalPermission(user?.role, approval.requestOwnerStatus);
+  const renderApprovalButton = checkApprovalPermission(user?.role, approval.ownerStatus);
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -112,15 +112,15 @@ export function ApprovalDetailView({ id }: Props) {
                   <Label
                     variant="soft"
                     color={
-                      (approval.requestOwnerStatus === 'requested' && 'warning') ||
-                      (approval.requestOwnerStatus === 'approved' && 'success') ||
-                      (approval.requestOwnerStatus === 'verified' && 'info') ||
-                      (approval.requestOwnerStatus === 'rejected' && 'error') ||
+                      (approval.ownerStatus === 'requested' && 'warning') ||
+                      (approval.ownerStatus === 'approved' && 'success') ||
+                      (approval.ownerStatus === 'verified' && 'info') ||
+                      (approval.ownerStatus === 'rejected' && 'error') ||
                       'default'
                     }
                     sx={{ cursor: 'pointer' }}
                   >
-                    {capitalize(approval.requestOwnerStatus || '')}
+                    {capitalize(approval.ownerStatus || '')}
                   </Label>
                 }
               />

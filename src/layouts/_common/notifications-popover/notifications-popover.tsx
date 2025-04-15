@@ -22,10 +22,13 @@ import { RouterLink } from 'src/components/router-link';
 import { paths } from '../../../pages/paths';
 import { useGetNotificationSummary } from '../../../services/notification/hooks/use-get-notification-summary';
 import { CircularProgress } from '@mui/material';
+import { useAuthContext } from '../../../auth/hooks';
 
 type CurrentTab = 'requested' | 'verified' | 'approved' | 'rejected' | 'reconfirm';
 
 export default function NotificationsPopover() {
+  const { user } = useAuthContext();
+
   const { notification, isFetching, error } = useGetNotificationSummary();
 
   const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: CurrentTab) => {
@@ -70,8 +73,6 @@ export default function NotificationsPopover() {
     ],
     [notification]
   );
-
-  const isNotificationEmpty = TABS.every((tab) => !tab.count);
 
   const handleCloseNotification = useCallback(() => {
     drawer.onFalse();
@@ -134,7 +135,7 @@ export default function NotificationsPopover() {
   const renderTabs = (
     <Tabs value={currentTab} onChange={handleChangeTab}>
       {TABS.map((tab) => {
-        if (!tab.count) {
+        if (!checkNotificationPermission(user?.role, tab.value)) {
           return null;
         }
 
@@ -156,7 +157,7 @@ export default function NotificationsPopover() {
                   'default'
                 }
               >
-                {notification.highlight[currentTab].total}
+                {tab.count}
               </Label>
             }
             sx={{
@@ -172,7 +173,7 @@ export default function NotificationsPopover() {
 
   const renderList = (
     <Scrollbar>
-      {isNotificationEmpty ? (
+      {!notification.highlight[currentTab].data.length ? (
         <Stack justifyContent="center" alignItems="center" sx={{ p: 2 }}>
           <Typography color="text.disabled">No new notification</Typography>
         </Stack>
@@ -218,20 +219,17 @@ export default function NotificationsPopover() {
       >
         {renderHead}
 
-        {!isNotificationEmpty && (
-          <>
-            <Divider />
+        <Divider />
 
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              sx={{ pl: 2.5, pr: 1 }}
-            >
-              {renderTabs}
-            </Stack>
-          </>
-        )}
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{ pl: 2.5, pr: 1 }}
+        >
+          {renderTabs}
+        </Stack>
+
         <Divider />
         {renderList}
         <Box sx={{ p: 1 }}>
@@ -243,3 +241,13 @@ export default function NotificationsPopover() {
     </>
   );
 }
+
+export const checkNotificationPermission = (role: string, ownerStatus: string) => {
+  if (!role) return false;
+
+  if (role === 'SAM') {
+    return ownerStatus === 'requested' || ownerStatus === 'reconfirm';
+  }
+
+  return true;
+};

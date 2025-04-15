@@ -31,8 +31,6 @@ export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
 
   const renderApprovalButton = checkApprovalPermission(user?.role, ownerStatus);
 
-  console.log(renderApprovalButton);
-
   return (
     <>
       <TableRow hover selected={selected}>
@@ -72,6 +70,7 @@ export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
               (ownerStatus === 'verified' && 'info') ||
               (ownerStatus === 'approved' && 'success') ||
               (ownerStatus === 'rejected' && 'error') ||
+              (ownerStatus === 'reconfirm' && 'secondary') ||
               'default'
             }
           >

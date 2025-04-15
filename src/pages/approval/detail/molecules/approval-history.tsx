@@ -80,13 +80,14 @@ function Item({ item, lastItem, index, ...other }: ItemProps) {
         </Typography>
 
         <Typography variant="body2" color="text.primary">
-          {item.User.name.toUpperCase()} has been change the approval status from
+          {item.ActivityLog.userName.toUpperCase()} has been change the approval status from
           <Label
             variant="soft"
             color={
               (item.prevStatus === 'requested' && 'warning') ||
               (item.prevStatus === 'approved' && 'success') ||
               (item.prevStatus === 'verified' && 'info') ||
+              (item.prevStatus === 'reconfirm' && 'secondary') ||
               'error'
             }
             sx={{ cursor: 'pointer', mr: 0.5, ml: 0.5 }}
@@ -100,6 +101,7 @@ function Item({ item, lastItem, index, ...other }: ItemProps) {
               (item.currentStatus === 'requested' && 'warning') ||
               (item.currentStatus === 'approved' && 'success') ||
               (item.currentStatus === 'verified' && 'info') ||
+              (item.currentStatus === 'reconfirm' && 'secondary') ||
               'error'
             }
             sx={{ cursor: 'pointer', ml: 0.5 }}

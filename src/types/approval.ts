@@ -24,16 +24,17 @@ export interface IApprovalHistory {
   id: string;
   prevStatus: string;
   currentStatus: string;
+  reason: string | null;
   status: string;
   userId: string;
   createdAt: string;
-  reason: string | null;
-  User: IApprovalHistoryUser;
+  ActivityLog: IApprovalHistoryActivityLog;
 }
 
-interface IApprovalHistoryUser {
-  name: string;
-  role: string;
+interface IApprovalHistoryActivityLog {
+  userName: string;
+  userRole: string;
+  ownerName: string;
 }
 
 export enum IApprovalStatus {
