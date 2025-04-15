@@ -18,12 +18,16 @@ import { useBoolean } from '../../../../hooks/use-boolean';
 import { ApprovalQuickApproveForm } from '../../list/molecules/approval-quick-approve-form';
 import View404 from '../../../error/404';
 import { LoadingScreen } from '../../../../components/loading-screen';
+import { useAuthContext } from '../../../../auth/hooks';
+import { checkApprovalPermission } from '../../utils';
 
 type Props = {
   id: string;
 };
 
 export function ApprovalDetailView({ id }: Props) {
+  const { user } = useAuthContext();
+
   const settings = useSettingsContext();
 
   const { approval, isFetching } = useGetAppoval(id);
@@ -38,6 +42,8 @@ export function ApprovalDetailView({ id }: Props) {
     return <View404 />;
   }
 
+  const renderApprovalButton = checkApprovalPermission(user?.role, approval.ownerStatus);
+
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
@@ -50,15 +56,17 @@ export function ApprovalDetailView({ id }: Props) {
           },
         ]}
         action={
-          <Stack direction="row" gap={1}>
-            <Button
-              variant="contained"
-              startIcon={<Iconify icon="mingcute:check-2-fill" />}
-              onClick={quickApprove.onTrue}
-            >
-              Approval
-            </Button>
-          </Stack>
+          renderApprovalButton && (
+            <Stack direction="row" gap={1}>
+              <Button
+                variant="contained"
+                startIcon={<Iconify icon="mingcute:check-2-fill" />}
+                onClick={quickApprove.onTrue}
+              >
+                Approval
+              </Button>
+            </Stack>
+          )
         }
         sx={{
           mb: { xs: 3, md: 5 },
@@ -104,15 +112,15 @@ export function ApprovalDetailView({ id }: Props) {
                   <Label
                     variant="soft"
                     color={
-                      (approval.requestOwnerStatus === 'requested' && 'warning') ||
-                      (approval.requestOwnerStatus === 'approved' && 'success') ||
-                      (approval.requestOwnerStatus === 'verified' && 'info') ||
-                      (approval.requestOwnerStatus === 'rejected' && 'error') ||
+                      (approval.ownerStatus === 'requested' && 'warning') ||
+                      (approval.ownerStatus === 'approved' && 'success') ||
+                      (approval.ownerStatus === 'verified' && 'info') ||
+                      (approval.ownerStatus === 'rejected' && 'error') ||
                       'default'
                     }
                     sx={{ cursor: 'pointer' }}
                   >
-                    {capitalize(approval.requestOwnerStatus || '')}
+                    {capitalize(approval.ownerStatus || '')}
                   </Label>
                 }
               />

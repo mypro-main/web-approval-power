@@ -12,6 +12,7 @@ import { IApprovalItem } from '../../../../types/approval';
 import Stack from '@mui/material/Stack';
 import { useAuthContext } from '../../../../auth/hooks';
 import Link from '@mui/material/Link';
+import { checkApprovalPermission } from '../../utils';
 
 type Props = {
   selected: boolean;
@@ -22,12 +23,13 @@ type Props = {
 export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
   const { user } = useAuthContext();
 
-  const { identityCardNumber, name, phoneNumber, outletId, outlet, status, requestOwnerStatus } =
-    row;
+  const { identityCardNumber, name, phoneNumber, outletId, outlet, status, ownerStatus } = row;
 
   const popover = usePopover();
 
   const quickApprove = useBoolean();
+
+  const renderApprovalButton = checkApprovalPermission(user?.role, ownerStatus);
 
   return (
     <>
@@ -64,14 +66,15 @@ export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
           <Label
             variant="soft"
             color={
-              (requestOwnerStatus === 'requested' && 'warning') ||
-              (requestOwnerStatus === 'verified' && 'info') ||
-              (requestOwnerStatus === 'approved' && 'success') ||
-              (requestOwnerStatus === 'rejected' && 'error') ||
+              (ownerStatus === 'requested' && 'warning') ||
+              (ownerStatus === 'verified' && 'info') ||
+              (ownerStatus === 'approved' && 'success') ||
+              (ownerStatus === 'rejected' && 'error') ||
+              (ownerStatus === 'reconfirm' && 'secondary') ||
               'default'
             }
           >
-            {requestOwnerStatus || '-'}
+            {ownerStatus || '-'}
           </Label>
         </TableCell>
         <TableCell>
@@ -89,15 +92,17 @@ export default function ApprovalTableRow({ row, selected, onViewRow }: Props) {
         arrow="right-top"
         sx={{ width: 140 }}
       >
-        <MenuItem
-          onClick={() => {
-            quickApprove.onTrue();
-            popover.onClose();
-          }}
-        >
-          <Iconify icon="mingcute:check-2-fill" />
-          Approval
-        </MenuItem>
+        {renderApprovalButton && (
+          <MenuItem
+            onClick={() => {
+              quickApprove.onTrue();
+              popover.onClose();
+            }}
+          >
+            <Iconify icon="mingcute:check-2-fill" />
+            Approval
+          </MenuItem>
+        )}
 
         <MenuItem
           onClick={() => {

@@ -36,3 +36,12 @@ export const CreateUserSchema = Yup.object({
     .required('Password confirmation must not be empty.')
     .oneOf([Yup.ref('password')], 'Your passwords do not match.'),
 });
+
+export const ChangePasswordSchema = Yup.object({
+  newPassword: Yup.string()
+    .min(3, 'Password must be at least 3 characters.')
+    .required('Password must not be empty.'),
+  confirmPassword: Yup.string()
+    .required('Password confirmation must not be empty.')
+    .oneOf([Yup.ref('newPassword')], 'Your passwords do not match.'),
+});

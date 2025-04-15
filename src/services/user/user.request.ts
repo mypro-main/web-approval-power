@@ -23,3 +23,7 @@ export interface UpdateUserRequest {
   status: string;
   jobTitle: string;
 }
+
+export interface UpdateUserPasswordRequest {
+  newPassword: string;
+}

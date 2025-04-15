@@ -21,16 +21,22 @@ type Props = {
   currentItem?: IApprovalItem;
 };
 
-const SAM_APPROVAL_OPTIONS = ['verified', 'rejected'];
-const ADMIN_CENTER_APPROVAL_OPTIONS = ['approved', 'rejected'];
+const baseOptions = ['verified', 'approved', 'reconfirm', 'rejected'];
 
 export function ApprovalQuickApproveForm({ currentItem, open, onClose }: Props) {
   const { mutateApproval } = useUpdateApproval();
 
-  const APPROVAL_OPTIONS =
-    currentItem?.requestOwnerStatus === 'requested'
-      ? SAM_APPROVAL_OPTIONS
-      : ADMIN_CENTER_APPROVAL_OPTIONS;
+  const options = baseOptions.filter((option) => {
+    if (currentItem?.ownerStatus === 'requested' || currentItem?.ownerStatus === 'reconfirm') {
+      return option === 'verified' || option === 'rejected';
+    }
+
+    if (currentItem?.ownerStatus === 'verified') {
+      return option === 'approved' || option === 'rejected' || option === 'reconfirm';
+    }
+
+    return true;
+  });
 
   const defaultValues = useMemo(
     () => ({
@@ -92,12 +98,13 @@ export function ApprovalQuickApproveForm({ currentItem, open, onClose }: Props) 
             </Grid>
             <Grid item xs={6}>
               <RHFSelect name="approvalStatus" label="Status Approval" required>
-                {APPROVAL_OPTIONS.map((status, index) => (
+                {options.map((status, index) => (
                   <MenuItem key={index} value={status}>
                     <Label
                       variant="soft"
                       color={
                         (status === 'verified' && 'success') ||
+                        (status === 'reconfirm' && 'secondary') ||
                         (status === 'approved' && 'success') ||
                         'error'
                       }
@@ -109,13 +116,9 @@ export function ApprovalQuickApproveForm({ currentItem, open, onClose }: Props) 
                 ))}
               </RHFSelect>
             </Grid>
-            {approvalStatus === 'rejected' && (
+            {(approvalStatus === 'rejected' || approvalStatus === 'reconfirm') && (
               <Grid item xs={12}>
-                <RHFTextField
-                  name="reason"
-                  label="Alasan"
-                  disabled={approvalStatus !== 'rejected'}
-                />
+                <RHFTextField name="reason" label="Alasan" />
               </Grid>
             )}
           </Grid>

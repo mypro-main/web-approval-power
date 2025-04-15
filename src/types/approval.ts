@@ -14,7 +14,8 @@ export interface IApprovalItem {
   email: string | null;
   birthDate: string | null;
   status: IApprovalStatus | null;
-  requestOwnerStatus: IApprovalRequestOwnerStatus | null;
+  requestOwnerStatus: IApprovalOwnerStatus | null;
+  ownerStatus: IApprovalOwnerStatus | null;
   outletId: string;
   outlet: IOutletItem;
 }
@@ -23,16 +24,17 @@ export interface IApprovalHistory {
   id: string;
   prevStatus: string;
   currentStatus: string;
+  reason: string | null;
   status: string;
   userId: string;
   createdAt: string;
-  reason: string | null;
-  User: IApprovalHistoryUser;
+  ActivityLog: IApprovalHistoryActivityLog;
 }
 
-interface IApprovalHistoryUser {
-  name: string;
-  role: string;
+interface IApprovalHistoryActivityLog {
+  userName: string;
+  userRole: string;
+  ownerName: string;
 }
 
 export enum IApprovalStatus {
@@ -42,9 +44,10 @@ export enum IApprovalStatus {
   rejected = 'rejected',
 }
 
-export enum IApprovalRequestOwnerStatus {
+export enum IApprovalOwnerStatus {
   requested = 'requested',
   verified = 'verified',
   approved = 'approved',
   rejected = 'rejected',
+  reconfirm = 'reconfirm',
 }

@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { NavListProps } from 'src/components/nav-section';
 import SvgColor from 'src/components/svg-color';
 import { paths } from 'src/pages/paths';
+import { ApprovalCounter } from './approval-counter';
 
 const icon = (name: string) => (
   <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
@@ -42,6 +43,7 @@ const navItem: {
     subheader: 'Main Hub',
     items: [
       {
+        info: <ApprovalCounter />,
         roles: ['SUPER_ADMIN', 'SAM', 'ADMIN_CENTRAL', 'VIEWER'],
         title: 'Approval',
         path: paths.approval.root,

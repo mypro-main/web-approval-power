@@ -7,19 +7,45 @@ import { fToNow } from 'src/utils/format-time';
 import { SxProps, Theme } from '@mui/material/styles';
 import RouterLink from '../../../components/router-link/router-link';
 import { paths } from '../../../pages/paths';
+import { IHighlightItem } from '../../../types/notification';
+import Typography from '@mui/material/Typography';
+import capitalize from '@mui/utils/capitalize';
+import { useRouter } from '../../../hooks/use-router';
+import { useCallback } from 'react';
+import { useReadNotification } from '../../../services/notification/hooks/use-read-notification';
 
 type NotificationItemProps = {
   sx?: SxProps<Theme>;
-  notification: {
-    id: string;
-    title: string;
-    category: string;
-    createdAt: Date;
-    isUnRead: boolean;
-  };
+  notification: IHighlightItem;
+  onCloseNotification?: () => void;
 };
 
-export default function NotificationItem({ notification, sx }: NotificationItemProps) {
+export default function NotificationItem({
+  notification,
+  onCloseNotification,
+  sx,
+}: NotificationItemProps) {
+  const router = useRouter();
+
+  const { mutateNotification } = useReadNotification();
+
+  const redirectId = notification.ownerId || notification.id;
+
+  const handleOpen = useCallback(async () => {
+    if (onCloseNotification) {
+      onCloseNotification();
+    }
+
+    router.push(paths.approval.details(redirectId));
+
+    const payload = {
+      id: notification.id,
+      isRequestedType: !notification.ownerId,
+    };
+
+    await mutateNotification({ payload });
+  }, [redirectId]);
+
   const renderAvatar = (
     <ListItemAvatar>
       <Stack
@@ -44,7 +70,16 @@ export default function NotificationItem({ notification, sx }: NotificationItemP
   const renderText = (
     <ListItemText
       disableTypography
-      primary={reader(notification.title)}
+      primary={
+        <Stack>
+          <Typography variant="body2">
+            <Box component="span" fontWeight="bold">
+              {capitalize(notification.name)}
+            </Box>{' '}
+            needs your approval.
+          </Typography>
+        </Stack>
+      }
       secondary={
         <Stack
           direction="row"
@@ -62,20 +97,20 @@ export default function NotificationItem({ notification, sx }: NotificationItemP
             />
           }
         >
-          {fToNow(notification.createdAt)}
-          {notification.category}
+          {fToNow(notification.updatedAt)}
+          Approval
         </Stack>
       }
     />
   );
 
-  const renderUnReadBadge = notification.isUnRead && (
+  const renderUnReadBadge = !notification.isRead && (
     <Box
       sx={{
-        top: 26,
+        top: 15,
+        left: 15,
         width: 8,
         height: 8,
-        right: 20,
         borderRadius: '50%',
         bgcolor: 'info.main',
         position: 'absolute',
@@ -85,8 +120,7 @@ export default function NotificationItem({ notification, sx }: NotificationItemP
 
   return (
     <ListItemButton
-      component={RouterLink}
-      href={paths.approval.details(notification.id)}
+      onClick={handleOpen}
       disableRipple
       sx={{
         p: 2.5,

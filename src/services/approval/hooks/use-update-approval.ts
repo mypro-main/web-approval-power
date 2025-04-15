@@ -26,6 +26,7 @@ export function useUpdateApproval(): UseUpdateApprovalReturn {
     onSuccess: async () => {
       await client.refetchQueries({ queryKey: ['approval'] });
       await client.refetchQueries({ queryKey: ['approvals'] });
+      await client.refetchQueries({ queryKey: ['notification-summary'] });
       toast.success('Update approval account success.');
     },
     onMutate: () => toast.info('Please wait. We are updating the approval account.'),

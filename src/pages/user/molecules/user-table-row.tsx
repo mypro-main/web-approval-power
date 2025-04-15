@@ -3,12 +3,13 @@ import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
 import { useBoolean } from 'src/hooks/use-boolean';
 import Iconify from 'src/components/iconify';
-import Stack from '@mui/material/Stack';
-import Tooltip from '@mui/material/Tooltip';
 import UserQuickEditForm from './user-quick-edit-form';
 import { IUserItem } from '../../../types/user';
 import capitalize from '@mui/utils/capitalize';
 import Label from '../../../components/label';
+import CustomPopover, { usePopover } from '../../../components/custom-popover';
+import MenuItem from '@mui/material/MenuItem';
+import UserQuickChangePasswordForm from './user-quick-change-password';
 
 type Props = {
   row: IUserItem;
@@ -18,7 +19,10 @@ type Props = {
 export default function UserTableRow({ row, selected }: Props) {
   const { name, email, role, status, jobTitle } = row;
 
-  const quickEdit = useBoolean();
+  const popover = usePopover();
+
+  const quickEditInformation = useBoolean();
+  const quickChangePassword = useBoolean();
 
   return (
     <>
@@ -42,20 +46,50 @@ export default function UserTableRow({ row, selected }: Props) {
         </TableCell>
 
         <TableCell align="right" sx={{ whiteSpace: 'nowrap' }}>
-          <Stack direction="row" alignItems="center" justifyContent="flex-end">
-            <Tooltip title="Quick Edit" placement="top" arrow>
-              <IconButton
-                color={quickEdit.value ? 'inherit' : 'default'}
-                onClick={quickEdit.onTrue}
-              >
-                <Iconify icon="solar:pen-bold" />
-              </IconButton>
-            </Tooltip>
-          </Stack>
+          <IconButton onClick={popover.onOpen}>
+            <Iconify icon="eva:more-vertical-fill" />
+          </IconButton>
         </TableCell>
       </TableRow>
 
-      <UserQuickEditForm currentUser={row} open={quickEdit.value} onClose={quickEdit.onFalse} />
+      <CustomPopover
+        open={popover.open}
+        onClose={popover.onClose}
+        arrow="right-top"
+        sx={{ width: 200 }}
+      >
+        <MenuItem
+          onClick={() => {
+            popover.onClose();
+            quickEditInformation.onTrue();
+          }}
+        >
+          <Iconify icon="solar:pen-bold" />
+          Edit Information
+        </MenuItem>
+
+        <MenuItem
+          onClick={() => {
+            popover.onClose();
+            quickChangePassword.onTrue();
+          }}
+        >
+          <Iconify icon="mingcute:key-2-fill" />
+          Change Password
+        </MenuItem>
+      </CustomPopover>
+
+      <UserQuickEditForm
+        currentUser={row}
+        open={quickEditInformation.value}
+        onClose={quickEditInformation.onFalse}
+      />
+
+      <UserQuickChangePasswordForm
+        currentUser={row}
+        open={quickChangePassword.value}
+        onClose={quickChangePassword.onFalse}
+      />
     </>
   );
 }

@@ -10,6 +10,8 @@ import Iconify from '../../iconify';
 //
 import { NavConfigProps, NavItemProps } from '../types';
 import { StyledDotIcon, StyledIcon, StyledItem } from './styles';
+import Badge from '@mui/material/Badge';
+import { Chip } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -75,8 +77,8 @@ export default function NavItem({
       )}
 
       {info && (
-        <Box component="span" sx={{ ml: 1, lineHeight: 0 }}>
-          {info}
+        <Box component="span" sx={{ ml: 1 }}>
+          <Chip label={info} variant="soft" />
         </Box>
       )}
 
