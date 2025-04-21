@@ -74,7 +74,7 @@ export function NotificationView() {
     };
 
     await mutateNotification({ payload });
-  }, []);
+  }, [notifications]);
 
   if (isFetching) {
     return <LoadingScreen />;

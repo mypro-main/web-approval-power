@@ -11,6 +11,9 @@ import Iconify from '../../iconify';
 //
 import { NavConfigProps, NavItemProps } from '../types';
 import { StyledIcon, StyledItem } from './styles';
+import Box from '@mui/material/Box';
+import { Chip } from '@mui/material';
+import Badge from '@mui/material/Badge';
 
 // ----------------------------------------------------------------------
 
@@ -22,7 +25,7 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
   ({ item, depth, open, active, externalLink, config, ...other }, ref) => {
     const theme = useTheme();
 
-    const { title, path, icon, children, disabled, caption, roles } = item;
+    const { title, path, icon, children, disabled, caption, roles, info } = item;
 
     const subItem = depth !== 1;
 
@@ -46,6 +49,14 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
           >
             {icon}
           </StyledIcon>
+        )}
+
+        {info && (
+          <Badge
+            badgeContent={info}
+            color="error"
+            sx={{ position: 'absolute', top: 10, right: 25 }}
+          />
         )}
 
         {!(config.hiddenLabel && !subItem) && (

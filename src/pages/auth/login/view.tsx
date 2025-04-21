@@ -60,11 +60,11 @@ export default function JwtLoginView() {
       <Typography variant="h4">Login</Typography>
 
       <Stack direction="row" spacing={0.5}>
-        <Typography variant="body2">New user?</Typography>
+        <Typography variant="subtitle1">Web Approval Power</Typography>
 
-        <Link component={RouterLink} href={paths.auth.register} variant="subtitle2">
-          Create an account
-        </Link>
+        {/*<Link component={RouterLink} href={paths.auth.register} variant="subtitle2">*/}
+        {/*  Create an account*/}
+        {/*</Link>*/}
       </Stack>
     </Stack>
   );
@@ -91,16 +91,16 @@ export default function JwtLoginView() {
         }}
       />
 
-      <Link
-        component={RouterLink}
-        href={paths.auth.forgotPassword}
-        variant="body2"
-        color="inherit"
-        underline="always"
-        sx={{ alignSelf: 'flex-end' }}
-      >
-        Forgot password?
-      </Link>
+      {/*<Link*/}
+      {/*  component={RouterLink}*/}
+      {/*  href={paths.auth.forgotPassword}*/}
+      {/*  variant="body2"*/}
+      {/*  color="inherit"*/}
+      {/*  underline="always"*/}
+      {/*  sx={{ alignSelf: 'flex-end' }}*/}
+      {/*>*/}
+      {/*  Forgot password?*/}
+      {/*</Link>*/}
 
       <LoadingButton
         fullWidth

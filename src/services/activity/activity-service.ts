@@ -15,6 +15,7 @@ export class ActivityService {
         'per-page': params?.perPage || 10,
         startDate: params?.startDate || '',
         endDate: params?.endDate || '',
+        sort: '-createdAt',
       },
       {
         filter: (key: string, value: string | number) => value || undefined,
