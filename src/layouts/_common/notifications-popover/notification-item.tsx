@@ -74,7 +74,7 @@ export default function NotificationItem({
         <Stack>
           <Typography variant="body2">
             <Box component="span" fontWeight="bold">
-              {capitalize(notification.name)}
+              {capitalize(notification.name || '-')}
             </Box>{' '}
             needs your approval.
           </Typography>

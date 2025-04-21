@@ -78,7 +78,7 @@ export default function NavItem({
 
       {info && (
         <Box component="span" sx={{ ml: 1 }}>
-          <Chip label={info} variant="soft" />
+          <Chip label={info} variant="filled" color="error" size="small" />
         </Box>
       )}
 

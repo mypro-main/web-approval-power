@@ -11,6 +11,7 @@ import Iconify from '../../iconify';
 //
 import { NavConfigProps, NavItemProps } from '../types';
 import { StyledIcon, StyledItem } from './styles';
+import Badge from '@mui/material/Badge';
 
 // ----------------------------------------------------------------------
 
@@ -67,9 +68,11 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
         )}
 
         {info && (
-          <Box component="span" sx={{ ml: 0.5, lineHeight: 0 }}>
-            {info}
-          </Box>
+          <Badge
+            badgeContent={info}
+            color="error"
+            sx={{ position: 'absolute', top: 10, left: 17.5 }}
+          />
         )}
 
         {caption && (

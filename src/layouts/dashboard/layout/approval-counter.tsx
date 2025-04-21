@@ -10,14 +10,14 @@ export function ApprovalCounter() {
 
   if (isFetching || !notification || error) {
     return (
-      <Typography variant="caption" color="textSecondary">
+      <Typography variant="caption" color="common.white">
         &nbsp;&nbsp;
       </Typography>
     );
   }
 
   return (
-    <Typography variant="caption" color="textSecondary">
+    <Typography variant="body2" color="common.white" fontWeight="bold">
       {countNotifications(user?.role, notification.task)}
     </Typography>
   );
