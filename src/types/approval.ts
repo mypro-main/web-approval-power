@@ -3,7 +3,6 @@ import { IOutletItem } from './outlet';
 export interface IApprovalTableFilters {
   keyword: string;
   requestOwnerStatus: string;
-  status: string;
 }
 
 export interface IApprovalItem {
