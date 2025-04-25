@@ -18,7 +18,6 @@ export class ApprovalService {
           !params?.requestOwnerStatus || params?.requestOwnerStatus === 'all'
             ? ''
             : params?.requestOwnerStatus,
-        status: params?.status || '',
         sort: params?.sort || '-updatedAt',
       },
       {

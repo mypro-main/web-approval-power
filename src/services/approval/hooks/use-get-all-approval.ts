@@ -21,7 +21,6 @@ export function useGetAllApproval(params?: GetAllApprovalParams): UseGetAllAppro
       params?.perPage,
       params?.keyword,
       params?.requestOwnerStatus,
-      params?.status,
       params?.sort,
     ],
     queryFn: () => api.getAll(params),
@@ -32,7 +31,7 @@ export function useGetAllApproval(params?: GetAllApprovalParams): UseGetAllAppro
 
   return useMemo(
     () => ({
-      approvals: data?.data.filter((item) => item.status !== 'active') || [],
+      approvals: data?.data || [],
       meta: data?.meta,
       error,
       isFetching: isLoading || isFetching || isPending,

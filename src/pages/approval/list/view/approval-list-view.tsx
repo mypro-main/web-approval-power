@@ -32,11 +32,7 @@ import { GetAllApprovalParams } from '../../../../services/approval/approval.req
 import { useRouter } from '../../../../hooks/use-router';
 import { useAuthContext } from '../../../../auth/hooks';
 
-const STATUS_OPTIONS = [
-  { value: '', label: 'All' },
-  { value: 'active', label: 'Active' },
-  { value: 'pending', label: 'Pending' },
-];
+const STATUS_OPTIONS = [{ value: '', label: 'All' }];
 
 const TABLE_HEAD = [
   { id: 'outletCode', label: 'Kode Outlet', width: 200 },
@@ -56,7 +52,6 @@ export function ApprovalListView() {
     return {
       keyword: '',
       requestOwnerStatus: generateDefaultRequestStatusFilter(user?.role),
-      status: '',
     };
   }, []);
 
@@ -75,7 +70,6 @@ export function ApprovalListView() {
       perPage: table.rowsPerPage,
       keyword: filters.keyword,
       requestOwnerStatus: filters.requestOwnerStatus,
-      status: filters.status,
     }),
     [table.page, table.rowsPerPage, filters]
   );
@@ -136,7 +130,7 @@ export function ApprovalListView() {
 
       <Card>
         <Tabs
-          value={filters.status}
+          value=""
           onChange={handleFilterStatus}
           sx={{
             px: 2.5,
@@ -149,17 +143,7 @@ export function ApprovalListView() {
               iconPosition="end"
               value={tab.value}
               icon={
-                <Label
-                  variant={
-                    ((tab.value === '' || tab.value === filters.status) && 'filled') || 'soft'
-                  }
-                  color={
-                    (tab.value === 'active' && 'success') ||
-                    (tab.value === 'pending' && 'warning') ||
-                    'default'
-                  }
-                  sx={{ cursor: 'pointer' }}
-                >
+                <Label variant="filled" color="default" sx={{ cursor: 'pointer' }}>
                   {tab.label}
                 </Label>
               }
