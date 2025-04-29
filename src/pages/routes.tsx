@@ -12,6 +12,7 @@ import { userRoutes } from './user/route';
 import { roleRoutes } from './role/route';
 import { activityRoutes } from './activity/route';
 import { notificationRoutes } from './notification/route';
+import { positionRoutes } from './position/route';
 
 export const router = createBrowserRouter(
   [
@@ -48,6 +49,7 @@ export const router = createBrowserRouter(
         // Authentication routes
         ...userRoutes,
         ...roleRoutes,
+        ...positionRoutes,
 
         // Log routes
         ...activityRoutes,
