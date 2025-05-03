@@ -48,7 +48,7 @@ export const router = createBrowserRouter(
 
         // Authentication routes
         ...userRoutes,
-        ...roleRoutes,
+        // ...roleRoutes,
         ...positionRoutes,
 
         // Log routes

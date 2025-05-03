@@ -8,7 +8,7 @@ import { PositionResponse } from './position.response';
 export class PositionService {
   api: AxiosInstance = axiosInstance;
 
-  async getAll(params?: GetAllPositionParams): Promise<BaseResponse<any[]>> {
+  async getAll(params?: GetAllPositionParams): Promise<BaseResponse<PositionResponse[]>> {
     const query = stringify(
       {
         page: params?.page || 1,
@@ -23,6 +23,8 @@ export class PositionService {
       }
     );
 
+    return MOCK;
+
     const response = await this.api.get(`/position?${query}`);
     return response.data;
   }
@@ -32,3 +34,36 @@ export class PositionService {
     return response.data;
   }
 }
+
+const MOCK = {
+  data: [
+    {
+      id: '12345',
+      name: 'Jr Manager',
+      roles: ['SAM'],
+      status: 'active',
+    },
+    {
+      id: '12346',
+      name: 'Sr Manager',
+      roles: ['SAM'],
+      status: 'active',
+    },
+    {
+      id: '12347',
+      name: 'Manager',
+      roles: [],
+      status: 'active',
+    },
+  ],
+  meta: {
+    record: {
+      current: 1,
+      total: 1,
+    },
+    page: {
+      current: 1,
+      total: 1,
+    },
+  },
+};

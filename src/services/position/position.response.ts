@@ -1,5 +1,3 @@
-export interface PositionResponse {
-  id: string;
-  name: string;
-  status: string;
-}
+import { IPositionItem } from '../../types/position';
+
+export interface PositionResponse extends IPositionItem {}
