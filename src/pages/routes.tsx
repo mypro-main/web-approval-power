@@ -13,6 +13,7 @@ import { roleRoutes } from './role/route';
 import { activityRoutes } from './activity/route';
 import { notificationRoutes } from './notification/route';
 import { positionRoutes } from './position/route';
+import View403 from './error/403';
 
 export const router = createBrowserRouter(
   [
@@ -30,6 +31,7 @@ export const router = createBrowserRouter(
           children: [
             { index: true, element: <Navigate to={paths.approval.root} /> },
             { path: '404', element: <View404 /> },
+            { path: '403', element: <View403 /> },
           ],
         },
 

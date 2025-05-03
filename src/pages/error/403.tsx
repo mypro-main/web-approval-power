@@ -1,19 +1,37 @@
 import { m } from 'framer-motion';
-// @mui
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-// assets
 import { ForbiddenIllustration } from 'src/assets/illustrations';
-// components
 import { Helmet } from 'react-helmet-async';
 import { MotionContainer, varBounce } from 'src/components/animate';
-import { RouterLink } from 'src/components/router-link';
-
-// ----------------------------------------------------------------------
+import Stack from '@mui/material/Stack';
+import { useAuthContext } from '../../auth/hooks';
+import { Button } from '@mui/material';
+import { useRouter } from '../../hooks/use-router';
 
 export default function View403() {
+  const { logout } = useAuthContext();
+
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.replace('/');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <>
+    <Stack
+      sx={{
+        mx: 'auto',
+        maxWidth: 400,
+        minHeight: '80vh',
+        textAlign: 'center',
+        justifyContent: 'center',
+      }}
+    >
       <Helmet>
         <title> 403 No Permission!</title>
       </Helmet>
@@ -27,9 +45,7 @@ export default function View403() {
 
         <m.div variants={varBounce().in}>
           <Typography sx={{ color: 'text.secondary' }}>
-            The page you&apos;re trying access has restricted access.
-            <br />
-            Please refer to your system administrator
+            Please contact the admin to set the role
           </Typography>
         </m.div>
 
@@ -37,10 +53,12 @@ export default function View403() {
           <ForbiddenIllustration sx={{ height: 260, my: { xs: 5, sm: 10 } }} />
         </m.div>
 
-        <Button component={RouterLink} href="/" size="large" variant="contained">
-          Go to Home
-        </Button>
+        <m.div variants={varBounce().in}>
+          <Button variant="contained" onClick={handleLogout}>
+            Log Out
+          </Button>
+        </m.div>
       </MotionContainer>
-    </>
+    </Stack>
   );
 }

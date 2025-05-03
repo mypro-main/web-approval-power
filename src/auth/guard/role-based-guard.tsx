@@ -65,6 +65,11 @@ export default function RoleBasedGuard({
   const currentRole = user?.role; // admin;
 
   const check = useCallback(() => {
+    // Handle new IdaMan users who don't have a position yet
+    // if (!user?.position) {
+    //   router.push('/403');
+    // }
+
     if (typeof roles !== 'undefined' && !roles.includes(currentRole)) {
       if (isRoute) {
         return router.replace(pathAfterLogin(currentRole));
