@@ -49,7 +49,7 @@ const TABLE_HEAD = [
 ];
 
 const defaultFilters: IPositionTableFilters = {
-  name: '',
+  keyword: '',
   status: '',
 };
 
@@ -66,7 +66,7 @@ export function PositionView() {
   const query = useMemo(
     () => ({
       status: filters.status,
-      name: filters.name,
+      keyword: filters.keyword,
     }),
     [filters]
   );

@@ -18,7 +18,7 @@ export class PositionService {
         page: params?.page || 1,
         'per-page': params?.perPage || 10,
         id: params?.id || '',
-        name: params?.name || '',
+        keyword: params?.keyword || '',
         status: params?.status || '',
       },
       {

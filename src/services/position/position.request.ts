@@ -2,7 +2,7 @@ import { BaseParams } from '../shared/base.params';
 
 export interface GetAllPositionParams extends BaseParams {
   id?: string;
-  name?: string;
+  keyword?: string;
   status?: string;
 }
 

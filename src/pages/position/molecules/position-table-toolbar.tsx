@@ -16,9 +16,9 @@ type Props = {
 export default function PositionTableToolbar({ filters, onFilters }: Props) {
   const popover = usePopover();
 
-  const handleFilterName = useCallback(
+  const handleFilterKeyword = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      onFilters('name', event.target.value);
+      onFilters('keyword', event.target.value);
     },
     [onFilters]
   );
@@ -40,9 +40,9 @@ export default function PositionTableToolbar({ filters, onFilters }: Props) {
         <Stack direction="row" alignItems="center" spacing={2} flexGrow={1} sx={{ width: 1 }}>
           <TextField
             fullWidth
-            value={filters.name}
-            onChange={handleFilterName}
-            placeholder="Search by name..."
+            value={filters.keyword}
+            onChange={handleFilterKeyword}
+            placeholder="Search by ID or name..."
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">

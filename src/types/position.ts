@@ -1,5 +1,5 @@
 export interface IPositionTableFilters {
-  name: string;
+  keyword: string;
   status: string;
 }
 
