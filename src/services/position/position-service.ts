@@ -1,7 +1,11 @@
 import { AxiosInstance } from 'axios';
 import axiosInstance from '../../utils/axios';
 import { BaseResponse } from '../shared/base.response';
-import { AssignPositionRequest, GetAllPositionParams } from './position.request';
+import {
+  AssignPositionRequest,
+  CreatePositionRequest,
+  GetAllPositionParams,
+} from './position.request';
 import { stringify } from 'qs';
 import { PositionResponse } from './position.response';
 
@@ -29,6 +33,11 @@ export class PositionService {
     return response.data;
   }
 
+  async create(payload: CreatePositionRequest): Promise<void> {
+    const response = await this.api.post(`/position`, payload);
+    return response.data;
+  }
+
   async assign(id: string, payload: AssignPositionRequest): Promise<PositionResponse | null> {
     const response = await this.api.put(`/position/${id}`, payload);
     return response.data;
@@ -40,19 +49,19 @@ const MOCK = {
     {
       id: '12345',
       name: 'Jr Manager',
-      roles: ['SAM'],
+      role: 'SAM',
       status: 'active',
     },
     {
       id: '12346',
       name: 'Sr Manager',
-      roles: ['SAM'],
+      role: 'SAM',
       status: 'active',
     },
     {
       id: '12347',
       name: 'Manager',
-      roles: [],
+      role: null,
       status: 'active',
     },
   ],

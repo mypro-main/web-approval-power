@@ -6,6 +6,11 @@ export interface GetAllPositionParams extends BaseParams {
   status?: string;
 }
 
+export interface CreatePositionRequest {
+  name: string;
+  role: string;
+}
+
 export interface AssignPositionRequest {
   name: string;
   description?: string;

@@ -6,6 +6,6 @@ export interface IPositionTableFilters {
 export interface IPositionItem {
   id: string;
   name: string;
-  role: string;
+  role: string | null;
   status: string;
 }

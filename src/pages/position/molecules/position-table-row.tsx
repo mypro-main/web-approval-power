@@ -6,7 +6,6 @@ import { IPositionItem } from '../../../types/position';
 import Iconify from '../../../components/iconify';
 import IconButton from '@mui/material/IconButton';
 import { useBoolean } from '../../../hooks/use-boolean';
-import UserQuickEditForm from '../../user/molecules/user-quick-edit-form';
 import PositionQuickAssignForm from './position-quick-assign-form';
 
 type Props = {
@@ -15,7 +14,7 @@ type Props = {
 };
 
 export default function PositionTableRow({ row, selected }: Props) {
-  const { id, name, roles, status } = row;
+  const { id, name, role, status } = row;
 
   const quickAssign = useBoolean();
 
@@ -24,7 +23,7 @@ export default function PositionTableRow({ row, selected }: Props) {
       <TableRow hover selected={selected}>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{capitalize(id)}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{capitalize(name)}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{roles.length ? roles.join(', ') : '-'}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{capitalize(role || '-')}</TableCell>
         <TableCell>
           <Label
             variant="soft"

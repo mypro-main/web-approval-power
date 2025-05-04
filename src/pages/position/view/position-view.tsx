@@ -28,6 +28,11 @@ import { useGetAllPosition } from '../../../services/position/hooks/use-get-all-
 import PositionTableToolbar from '../molecules/position-table-toolbar';
 import PositionTableFiltersResult from '../molecules/position-table-filters-result';
 import PositionTableRow from '../molecules/position-table-row';
+import { useBoolean } from '../../../hooks/use-boolean';
+import { Button } from '@mui/material';
+import Iconify from '../../../components/iconify';
+import Stack from '@mui/material/Stack';
+import { PositionQuickCreateForm } from '../molecules/position-quick-create-form';
 
 export const STATUS_OPTIONS = [
   { value: '', label: 'All' },
@@ -38,7 +43,7 @@ export const STATUS_OPTIONS = [
 const TABLE_HEAD = [
   { id: 'id', label: 'ID', width: 300 },
   { id: 'name', label: 'Name', width: 600 },
-  { id: 'roles', label: 'Roles', width: 600 },
+  { id: 'role', label: 'Role', width: 600 },
   { id: 'status', label: 'Status', width: 600 },
   { id: '', width: 100 },
 ];
@@ -50,6 +55,8 @@ const defaultFilters: IPositionTableFilters = {
 
 export function PositionView() {
   const [filters, setFilters] = useState(defaultFilters);
+
+  const quickCreate = useBoolean();
 
   const table = useTable({
     defaultRowsPerPage: 5,
@@ -106,6 +113,17 @@ export function PositionView() {
       <CustomBreadcrumbs
         heading="Position"
         links={[{ name: 'Authentication' }, { name: 'Position' }]}
+        action={
+          <Stack direction="row" gap={1}>
+            <Button
+              variant="contained"
+              startIcon={<Iconify icon="mingcute:add-line" />}
+              onClick={quickCreate.onTrue}
+            >
+              Create
+            </Button>
+          </Stack>
+        }
         sx={{
           mb: { xs: 3, md: 5 },
         }}
@@ -217,6 +235,8 @@ export function PositionView() {
           onChangeDense={table.onChangeDense}
         />
       </Card>
+
+      <PositionQuickCreateForm open={quickCreate.value} onClose={quickCreate.onFalse} />
     </Container>
   );
 }
