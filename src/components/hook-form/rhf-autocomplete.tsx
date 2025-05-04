@@ -540,10 +540,12 @@ export function AutocompleteOnSearchMultiple({
 }: RHFAutocompleteAsyncProps) {
   const { control, setValue: setFieldValue } = useFormContext();
 
+  const defaultOptions = [{ id: '', name: '' }];
+
   const [value, setValue] = useState<Value[]>(initialValues || []);
   const [inputValue, setInputValue] = useState('');
-  const [options, setOptions] = useState<Value[]>([{ id: '', name: '' }]);
-  const [initialOptions, setInitialOptions] = useState<Value[]>([{ id: '', name: '' }]);
+  const [options, setOptions] = useState<Value[]>(defaultOptions);
+  const [initialOptions, setInitialOptions] = useState<Value[]>(defaultOptions);
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
   const getOptions = useMemo(
@@ -583,19 +585,15 @@ export function AutocompleteOnSearchMultiple({
     }
 
     setIsFetching(true);
+
     getOptions({ keyword: inputValue }, (results?: Value[]) => {
       if (results) {
         setOptions(results);
       }
     });
-  }, [inputValue, getOptions, initialValues]);
+  }, [inputValue]);
 
   const handleOpen = async () => {
-    if (initialOptions.length > 1) {
-      setOptions(initialOptions);
-      return;
-    }
-
     setIsFetching(true);
 
     await getOptions({ keyword: '' }, (results?: Value[]) => {
@@ -627,6 +625,7 @@ export function AutocompleteOnSearchMultiple({
           value={value}
           noOptionsText="No options"
           loading={isFetching}
+          onBlur={() => setOptions(defaultOptions)}
           onChange={(event, newValue) => {
             const val = newValue.map((val) => val.id);
             setValue(newValue);
@@ -706,6 +705,7 @@ export function AutocompleteOnSearchSingle({
     () =>
       debounce(async (params: { keyword: string }, callback: (results?: string[]) => void) => {
         const { data } = await asyncFn(params.keyword);
+
         let results;
 
         if (renderId) {
@@ -763,11 +763,6 @@ export function AutocompleteOnSearchSingle({
   }, [watchedValue]);
 
   const handleOpen = async () => {
-    if (initialOptions.length) {
-      setOptions(initialOptions);
-      return;
-    }
-
     setIsFetching(true);
 
     await getOptions({ keyword: '' }, (results?: string[]) => {
@@ -797,6 +792,7 @@ export function AutocompleteOnSearchSingle({
           value={value}
           noOptionsText="No options"
           loading={isFetching}
+          onBlur={() => setOptions([])}
           onChange={(event: any, newValue: string | null) => {
             setOptions(newValue ? [newValue, ...options] : initialOptions);
             setValue(newValue);
