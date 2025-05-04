@@ -33,7 +33,7 @@ export default function PositionQuickAssignForm({ currentPosition, open, onClose
   const defaultValues = useMemo(
     () => ({
       name: currentPosition.name,
-      roles: currentPosition.roles,
+      role: currentPosition.role,
     }),
     [currentPosition]
   );
@@ -51,7 +51,7 @@ export default function PositionQuickAssignForm({ currentPosition, open, onClose
 
   useEffect(() => {
     if (error) {
-      setError('roles', error);
+      setError('role', error);
     }
   }, [error]);
 
@@ -80,14 +80,7 @@ export default function PositionQuickAssignForm({ currentPosition, open, onClose
               <RHFTextField name="name" label="Position" required />
             </Grid>
             <Grid item xs={6}>
-              <RHFAutocompleteAsyncOnOpen
-                required
-                multiple
-                withManualInput
-                name="roles"
-                label="Role"
-                asyncFn={getRoles}
-              />
+              <RHFAutocompleteAsyncOnOpen required name="role" label="Role" asyncFn={getRoles} />
             </Grid>
           </Grid>
         </DialogContent>

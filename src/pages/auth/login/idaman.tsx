@@ -24,12 +24,12 @@ export default function IdamanLoginView() {
   const config = {
     authority: IDAMAN.viteIdamanAuthority,
     client_id: IDAMAN.viteIdamanClientId,
-    // client_secret: IDAMAN.viteIdamanClientSecret,
+    client_secret: IDAMAN.viteIdamanClientSecret,
     redirect_uri: IDAMAN.viteIdamanRedirectUri,
     response_type: 'code',
     // scope: 'openid profile api.auth user.read user.readAll',
     scope:
-      'openid profile email api.auth user.role user.read user.readAll position.read position.readAll unit.read unit.readAll',
+      'api.auth user.read user.readAll user.role  position.readAll unit.readAll position.read unit.read',
     // post_logout_redirect_uri: IDAMAN.viteIdamanPostLogoutRedirectUrl,
   };
 
@@ -39,6 +39,7 @@ export default function IdamanLoginView() {
 
   const handleIdamanLogin = async (data: { email: string; idp: string }) => {
     try {
+      console.log('idaman data', data);
       await login?.(data.email, data.idp);
 
       router.push(returnTo || PATH_AFTER_LOGIN);

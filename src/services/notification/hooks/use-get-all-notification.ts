@@ -17,7 +17,7 @@ export function useGetAllNotification(
   const api = new NotificationService();
 
   const { data, error, isPending, isFetching, isLoading } = useQuery({
-    queryKey: ['notifications', params?.page, params?.category, params?.isRead],
+    queryKey: ['notifications', params?.page, params?.perPage, params?.category, params?.isRead],
     queryFn: () => api.getAll(params),
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
