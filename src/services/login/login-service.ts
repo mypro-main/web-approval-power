@@ -7,7 +7,7 @@ export class LoginService {
   api: AxiosInstance = axiosInstance;
 
   async login(payload: LoginRequest): Promise<LoginResponse> {
-    const response = await this.api.post(`/auth/login`, payload);
+    const response = await this.api.post<LoginResponse>(`/auth/login`, payload);
     return response.data;
   }
 }

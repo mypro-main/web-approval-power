@@ -1,14 +1,25 @@
 import axios, { AxiosRequestConfig } from 'axios';
 // config
-import { ACCESS_TOKEN_KEY, HOST_API } from 'src/config-global';
+import { ACCESS_TOKEN_KEY, HOST_API, LOGIN_METHOD_KEY } from 'src/config-global';
 
 // ----------------------------------------------------------------------
 
 const axiosInstance = axios.create({ baseURL: HOST_API });
 
-const accessToken = sessionStorage.getItem(ACCESS_TOKEN_KEY);
+axiosInstance.interceptors.request.use((config) => {
+  const accessToken = sessionStorage.getItem(ACCESS_TOKEN_KEY);
+  const method = sessionStorage.getItem(LOGIN_METHOD_KEY);
 
-axiosInstance.defaults.headers.common.Authorization = accessToken;
+  if (accessToken) {
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
+  }
+
+  if (method) {
+    config.headers['X-Identity-Method'] = method;
+  }
+
+  return config;
+});
 
 axiosInstance.interceptors.response.use(
   (res) => res,

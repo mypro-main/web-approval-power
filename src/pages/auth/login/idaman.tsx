@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import Stack from '@mui/material/Stack';
 import { useAuthContext } from 'src/auth/hooks';
-import { PATH_AFTER_LOGIN, IDAMAN } from 'src/config-global';
+import { PATH_AFTER_LOGIN, IDAMAN, ACCESS_TOKEN_KEY, LOGIN_METHOD_KEY } from 'src/config-global';
 import { useRouter } from 'src/hooks/use-router';
 import { useSearchParams } from 'src/hooks/use-search-params';
 import { Button, Typography } from '@mui/material';
 import { LogoBlueWhite } from 'src/components/logo/logo-dynamic';
 import Oidc from 'oidc-client';
-import { isValidToken, jwtDecode } from 'src/auth/context/jwt/utils';
+import { isValidToken, jwtDecode, setAuth } from 'src/auth/context/jwt/utils';
 import { LoadingScreen } from 'src/components/loading-screen';
+import { AuthService } from '../../../services/auth/auth-service';
 
 export default function IdamanLoginView() {
-  const { login } = useAuthContext();
+  const { loginIdaman } = useAuthContext();
 
   const router = useRouter();
 
@@ -37,10 +38,9 @@ export default function IdamanLoginView() {
 
   const authorizationCode = searchParams.get('code');
 
-  const handleIdamanLogin = async (data: { email: string; idp: string }) => {
+  const handleIdamanLogin = async (accessToken: string) => {
     try {
-      console.log('idaman data', data);
-      await login?.(data.email, data.idp);
+      void loginIdaman(accessToken);
 
       router.push(returnTo || PATH_AFTER_LOGIN);
     } catch (error) {
@@ -59,7 +59,7 @@ export default function IdamanLoginView() {
           console.log('code', authorizationCode);
           if (user && user.access_token) {
             if (isValidToken(user.access_token)) {
-              handleIdamanLogin(jwtDecode(user.access_token));
+              void handleIdamanLogin(user.access_token);
             } else {
               setErrorMsg('Failed to obtain access token due invalid token');
             }
