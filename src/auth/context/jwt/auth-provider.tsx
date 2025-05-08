@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useReducer } from 'react';
 import axios from 'src/utils/axios';
 //
 import { useQueryClient } from '@tanstack/react-query';
-import { ACCESS_TOKEN_KEY } from 'src/config-global';
+import { ACCESS_TOKEN_KEY, LOGIN_METHOD_KEY } from 'src/config-global';
 import { endpoints } from 'src/utils/endpoints';
 import { AuthService } from '../../../services/auth/auth-service';
 import { LoginService } from '../../../services/login/login-service';
@@ -131,15 +131,21 @@ export function AuthProvider({ children }: Props) {
 
   // LOGIN
   const login = useCallback(async (email: string, password: string) => {
-    const data = {
+    const credential = {
       email,
       password,
     };
 
     const loginService = new LoginService();
-    const { user, accessToken, refreshToken } = await loginService.login(data);
+    const authService = new AuthService();
+
+    const { accessToken, refreshToken } = await loginService.login(credential);
 
     setAuth(accessToken);
+
+    sessionStorage.setItem(LOGIN_METHOD_KEY, 'App');
+
+    const user = await authService.getAccount();
 
     dispatch({
       type: Types.LOGIN,
@@ -148,6 +154,27 @@ export function AuthProvider({ children }: Props) {
           ...user,
           accessToken,
           refreshToken,
+        },
+      },
+    });
+  }, []);
+
+  const loginIdaman = useCallback(async (accessToken: string) => {
+    const authService = new AuthService();
+
+    setAuth(accessToken);
+
+    sessionStorage.setItem(LOGIN_METHOD_KEY, 'Idaman');
+
+    const user = await authService.getAccount();
+
+    dispatch({
+      type: Types.LOGIN,
+      payload: {
+        user: {
+          ...user,
+          accessToken,
+          refreshToken: '',
         },
       },
     });
@@ -214,10 +241,11 @@ export function AuthProvider({ children }: Props) {
       unauthenticated: status === 'unauthenticated',
       //
       login,
+      loginIdaman,
       register,
       logout,
     }),
-    [login, logout, register, state.user, status]
+    [login, loginIdaman, logout, register, state.user, status]
   );
 
   return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>;

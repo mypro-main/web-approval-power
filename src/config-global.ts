@@ -20,6 +20,7 @@ export const IS_CAPTCHA_ACTIVE = import.meta.env.VITE_IS_CAPTCHA;
 export const PATH_AFTER_LOGIN = paths.approval.root;
 
 export const ACCESS_TOKEN_KEY = 'accessToken';
+export const LOGIN_METHOD_KEY = 'method';
 
 export const MAP_ID = '70a0fe702821572b';
 

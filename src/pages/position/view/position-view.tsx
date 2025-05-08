@@ -1,13 +1,11 @@
-import { Button } from '@mui/material';
-import Container from '@mui/material/Container';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
 import CustomBreadcrumbs from '../../../components/custom-breadcrumbs';
-import Iconify from '../../../components/iconify';
+import Container from '@mui/material/Container';
 import { useSettingsContext } from '../../../components/settings';
-import { IUserItem, IUserTableFilters } from '../../../types/user';
-import { useCallback, useMemo, useState } from 'react';
-import { useGetUserStatuses } from '../../../services/user/hooks/use-get-user-statuses';
+import Tabs from '@mui/material/Tabs';
+import { alpha } from '@mui/material/styles';
+import Tab from '@mui/material/Tab';
+import Label from '../../../components/label';
+import TableContainer from '@mui/material/TableContainer';
 import {
   getComparator,
   TableHeadCustom,
@@ -17,50 +15,54 @@ import {
   TableSkeleton,
   useTable,
 } from '../../../components/table';
-import { useDebounceQuery } from '../../../hooks/use-debounce';
-import { GetAllUserParams } from '../../../services/user/user.request';
-import { useGetAllUser } from '../../../services/user/hooks/use-get-all-user';
-import { useBoolean } from '../../../hooks/use-boolean';
-import isEqual from 'lodash/isEqual';
-import Tabs from '@mui/material/Tabs';
-import { alpha } from '@mui/material/styles';
-import Tab from '@mui/material/Tab';
-import Label from '../../../components/label';
-import UserTableToolbar from '../molecules/user-table-toolbar';
-import UserTableFiltersResult from '../molecules/user-table-filters-result';
-import TableContainer from '@mui/material/TableContainer';
-import Scrollbar from '../../../components/scrollbar';
+import Scrollbar from '../../../components/scrollbar/scrollbar';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import UserTableRow from '../molecules/user-table-row';
-import { UserQuickCreateForm } from '../molecules/user-quick-create-form';
+import Card from '@mui/material/Card';
+import { useCallback, useMemo, useState } from 'react';
+import { useDebounceQuery } from '../../../hooks/use-debounce';
+import { GetAllPositionParams } from '../../../services/position/position.request';
+import isEqual from 'lodash/isEqual';
+import { IPositionItem, IPositionTableFilters } from '../../../types/position';
+import { useGetAllPosition } from '../../../services/position/hooks/use-get-all-position';
+import PositionTableToolbar from '../molecules/position-table-toolbar';
+import PositionTableFiltersResult from '../molecules/position-table-filters-result';
+import PositionTableRow from '../molecules/position-table-row';
+import { useBoolean } from '../../../hooks/use-boolean';
+import { Button } from '@mui/material';
+import Iconify from '../../../components/iconify';
+import Stack from '@mui/material/Stack';
+import { PositionQuickCreateForm } from '../molecules/position-quick-create-form';
+import { useSyncPosition } from '../../../services/position/hooks/use-sync-position';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useSyncUser } from '../../../services/user/hooks/use-sync-user';
+
+export const STATUS_OPTIONS = [
+  { value: '', label: 'All' },
+  { value: 'active', label: 'Active' },
+  { value: 'inactive', label: 'Inactive' },
+];
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', width: 300 },
-  { id: 'email', label: 'Email', width: 200 },
-  { id: 'position', label: 'Position', width: 200 },
-  { id: 'role', label: 'Role', width: 200 },
-  { id: 'status', label: 'Status', width: 100 },
+  { id: 'id', label: 'ID', width: 300 },
+  { id: 'name', label: 'Name', width: 600 },
+  { id: 'role', label: 'Role', width: 600 },
+  { id: 'status', label: 'Status', width: 600 },
   { id: '', width: 100 },
 ];
 
-const defaultFilters: IUserTableFilters = {
+const defaultFilters: IPositionTableFilters = {
+  keyword: '',
   status: '',
-  name: '',
-  role: '',
 };
 
-export function UserView() {
+export function PositionView() {
   const [filters, setFilters] = useState(defaultFilters);
 
-  const { statuses } = useGetUserStatuses();
-
-  const statusOptions = ['', ...statuses];
+  const quickCreate = useBoolean();
 
   const table = useTable({
     defaultRowsPerPage: 5,
+    defaultOrderBy: 'no',
   });
 
   const query = useMemo(
@@ -68,25 +70,21 @@ export function UserView() {
       page: table.page + 1,
       perPage: table.rowsPerPage,
       status: filters.status,
-      name: filters.name,
-      role: filters.role,
+      keyword: filters.keyword,
     }),
     [table.page, table.rowsPerPage, filters]
   );
 
-  const debouncedQuery = useDebounceQuery<GetAllUserParams>(query, 'name');
+  const debouncedQuery = useDebounceQuery<GetAllPositionParams>(query, 'name');
 
-  const { users, meta, isFetching, error } = useGetAllUser(debouncedQuery);
-  const { syncUser, isSyncing } = useSyncUser();
+  const { positions, meta, isFetching, error } = useGetAllPosition(debouncedQuery);
+  const { syncPosition, isSyncing } = useSyncPosition();
 
   const settings = useSettingsContext();
 
-  const quickCreate = useBoolean();
-
-  const filteredUsers = applyFilter({
-    inputData: users,
+  const filteredPositions = applyFilter({
+    inputData: positions,
     comparator: getComparator(table.order, table.orderBy),
-    filters,
   });
 
   const denseHeight = table.dense ? 52 : 72;
@@ -115,24 +113,24 @@ export function UserView() {
     setFilters(defaultFilters);
   }, []);
 
-  const handleSyncUser = useCallback(async () => {
-    await syncUser();
+  const handleSyncPosition = useCallback(async () => {
+    await syncPosition();
   }, []);
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="User"
-        links={[{ name: 'Authentication' }, { name: 'User' }]}
+        heading="Position"
+        links={[{ name: 'Authentication' }, { name: 'Position' }]}
         action={
           <Stack direction="row" gap={1}>
             <LoadingButton
               variant="contained"
               startIcon={<Iconify icon="mingcute:refresh-3-fill" />}
-              onClick={handleSyncUser}
+              onClick={handleSyncPosition}
               loading={isSyncing}
             >
-              Sync User
+              Sync Position
             </LoadingButton>
             <Button
               variant="contained"
@@ -157,37 +155,38 @@ export function UserView() {
             boxShadow: (theme) => `inset 0 -2px 0 0 ${alpha(theme.palette.grey[500], 0.08)}`,
           }}
         >
-          {statusOptions.map((status, i) => (
+          {STATUS_OPTIONS.map((tab, i) => (
             <Tab
               key={i}
               iconPosition="end"
-              value={status}
+              value={tab.value}
               icon={
                 <Label
-                  variant={((status === '' || status === filters.status) && 'filled') || 'soft'}
+                  variant={
+                    ((tab.value === '' || tab.value === filters.status) && 'filled') || 'soft'
+                  }
                   color={
-                    (status === 'active' && 'success') ||
-                    (status === 'pending' && 'warning') ||
-                    (status === 'banned' && 'error') ||
+                    (tab.value === 'active' && 'success') ||
+                    (tab.value === 'inactive' && 'error') ||
                     'default'
                   }
                   sx={{ cursor: 'pointer' }}
                 >
-                  {status || 'All'}
+                  {tab.label}
                 </Label>
               }
             />
           ))}
         </Tabs>
 
-        <UserTableToolbar filters={filters} onFilters={handleFilters} />
+        <PositionTableToolbar filters={filters} onFilters={handleFilters} />
 
         {canReset && (
-          <UserTableFiltersResult
+          <PositionTableFiltersResult
             filters={filters}
             onFilters={handleFilters}
             onResetFilters={handleResetFilters}
-            results={filteredUsers.length}
+            results={filteredPositions.length}
             sx={{ p: 2.5, pt: 0 }}
           />
         )}
@@ -196,11 +195,11 @@ export function UserView() {
           <TableSelectedAction
             dense={table.dense}
             numSelected={table.selected.length}
-            rowCount={filteredUsers.length}
+            rowCount={positions.length}
             onSelectAllRows={(checked) =>
               table.onSelectAllRows(
                 checked,
-                filteredUsers.map((row) => row.id)
+                positions.map((row) => row.id)
               )
             }
           />
@@ -211,7 +210,7 @@ export function UserView() {
                 order={table.order}
                 orderBy={table.orderBy}
                 headLabel={TABLE_HEAD}
-                rowCount={filteredUsers.length}
+                rowCount={positions.length}
                 numSelected={table.selected.length}
                 onSort={table.onSort}
               />
@@ -227,8 +226,8 @@ export function UserView() {
                   ))
                 ) : (
                   <>
-                    {filteredUsers.map((row) => (
-                      <UserTableRow
+                    {filteredPositions.map((row) => (
+                      <PositionTableRow
                         key={row.id}
                         row={row}
                         selected={table.selected.includes(row.id)}
@@ -236,11 +235,6 @@ export function UserView() {
                     ))}
                   </>
                 )}
-
-                {/* <TableEmptyRows */}
-                {/*  height={denseHeight} */}
-                {/*  emptyRows={emptyRows(table.page, table.rowsPerPage, filteredUsers.length)} */}
-                {/* /> */}
 
                 <TableNoData notFound={notFound} />
               </TableBody>
@@ -259,7 +253,7 @@ export function UserView() {
         />
       </Card>
 
-      <UserQuickCreateForm open={quickCreate.value} onClose={quickCreate.onFalse} />
+      <PositionQuickCreateForm open={quickCreate.value} onClose={quickCreate.onFalse} />
     </Container>
   );
 }
@@ -267,14 +261,10 @@ export function UserView() {
 function applyFilter({
   inputData,
   comparator,
-  filters,
 }: {
-  inputData: IUserItem[];
+  inputData: IPositionItem[];
   comparator: (a: any, b: any) => number;
-  filters: IUserTableFilters;
 }) {
-  const { name, status } = filters;
-
   const stabilizedThis = inputData.map((el, index) => [el, index] as const);
 
   stabilizedThis.sort((a, b) => {
@@ -284,16 +274,6 @@ function applyFilter({
   });
 
   inputData = stabilizedThis.map((el) => el[0]);
-
-  if (name) {
-    inputData = inputData.filter(
-      (user) => user.name.toLowerCase().indexOf(name.toLowerCase()) !== -1
-    );
-  }
-
-  if (status !== '') {
-    inputData = inputData.filter((user) => user.status === status);
-  }
 
   return inputData;
 }

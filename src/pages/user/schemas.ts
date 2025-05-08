@@ -5,7 +5,7 @@ export const EditUserSchema = Yup.object({
   email: Yup.string().required('Email must not be empty.'),
   role: Yup.string().required('Role must not be empty.'),
   status: Yup.string().required('Status must not be empty.'),
-  jobTitle: Yup.string().required('Status must not be empty.'),
+  positionId: Yup.string().required('Position must not be empty.'),
 });
 
 export const CreateUserSchema = Yup.object({
@@ -13,8 +13,8 @@ export const CreateUserSchema = Yup.object({
     .min(3, 'Name must be at least 3 characters.')
     .required('Name must not be empty.'),
   email: Yup.string().email('Email must be a valid email.').required('Email must not be empty.'),
+  positionId: Yup.string().required('Position must not be empty.'),
   role: Yup.string().required('Role must not be empty.'),
-  jobTitle: Yup.string().required('Role must not be empty.'),
   regionIds: Yup.array()
     .of(Yup.string().required())
     .when('role', {

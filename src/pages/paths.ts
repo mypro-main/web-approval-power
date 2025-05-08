@@ -7,6 +7,7 @@ const ROOTS = {
   REGION: '/region',
   USER: '/user',
   ROLE: '/role',
+  POSITION: '/position',
   ACTIVITY: '/activity',
 };
 
@@ -44,6 +45,10 @@ export const paths = {
 
   role: {
     root: `${ROOTS.ROLE}`,
+  },
+
+  position: {
+    root: `${ROOTS.POSITION}`,
   },
 
   activity: {

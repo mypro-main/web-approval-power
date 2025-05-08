@@ -18,6 +18,7 @@ export class NotificationService {
     const query = stringify(
       {
         page: params?.page || 1,
+        'per-page': params?.perPage || 10,
         category: params?.category || 'requested',
         isRead: params?.isRead || false,
       },

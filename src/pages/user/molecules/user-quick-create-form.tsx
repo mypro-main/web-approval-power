@@ -20,6 +20,7 @@ import { useBoolean } from '../../../hooks/use-boolean';
 import { RHFAutocompleteAsyncOnSearch } from '../../../components/hook-form/rhf-autocomplete';
 import { RegionService } from '../../../services/region/region-service';
 import { TerritoryService } from '../../../services/territory/territory-service';
+import { PositionService } from '../../../services/position/position-service';
 
 type Props = {
   open: boolean;
@@ -33,6 +34,7 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
   const password = useBoolean();
   const confirmPassword = useBoolean();
 
+  const positionService = new PositionService();
   const regionService = new RegionService();
   const territoryService = new TerritoryService();
 
@@ -43,7 +45,7 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
       role: '',
       password: '',
       confirmPassword: '',
-      jobTitle: '',
+      positionId: '',
       regionIds: [],
       territoryIds: [],
     }),
@@ -63,10 +65,12 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
     formState: { isSubmitting },
     watch,
     resetField,
+    setValue,
   } = methods;
 
-  const { role, regionIds } = watch();
+  const { role, positionId, regionIds } = watch();
 
+  const getPosition = (keyword?: string) => positionService.getAll({ keyword });
   const getRegion = (keyword?: string) => regionService.getAll({ name: keyword });
   const getTerritory = (keyword?: string) => {
     const { regionIds } = watch();
@@ -80,6 +84,18 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
     resetField('regionIds');
     resetField('territoryIds');
   }, [role]);
+
+  useEffect(() => {
+    if (positionId) {
+      (async function x() {
+        const { role } = await positionService.get(positionId);
+
+        if (role) {
+          setValue('role', role);
+        }
+      })();
+    }
+  }, [positionId]);
 
   useEffect(() => {
     if (error) {
@@ -114,10 +130,15 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
               <RHFTextField name="email" label="Email" autoComplete="email" required />
             </Grid>
             <Grid item xs={6}>
-              <RHFTextField name="jobTitle" label="Job Title" required />
+              <RHFAutocompleteAsyncOnSearch
+                name="positionId"
+                label="Position"
+                asyncFn={getPosition}
+                required
+              />
             </Grid>
             <Grid item xs={6}>
-              <RHFSelect name="role" label="Role" required>
+              <RHFSelect name="role" label="Role" disabled required>
                 {roles.map((status, index) => (
                   <MenuItem key={index} value={status}>
                     {status}

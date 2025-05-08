@@ -23,6 +23,7 @@ import { useReadAllNotification } from '../../../services/notification/hooks/use
 
 const defaultFilters = {
   page: 1,
+  perPage: 10,
   category: 'requested',
   isRead: false,
 };
@@ -37,6 +38,7 @@ export function NotificationView() {
   const query = useMemo(
     () => ({
       page: filters.page,
+      perPage: filters.perPage,
       category: filters.category,
       isRead: filters.isRead,
     }),
@@ -50,6 +52,11 @@ export function NotificationView() {
       ...prevState,
       [key]: value,
     }));
+  }, []);
+
+  const handlePerPageChange = useCallback((event: SelectChangeEvent) => {
+    handleFilters('perPage', parseInt(event.target.value, 10));
+    handleFilters('page', 1);
   }, []);
 
   const handlePageChange = useCallback((event: React.ChangeEvent<unknown>, value: number) => {
@@ -175,14 +182,34 @@ export function NotificationView() {
                 ))}
               </List>
 
-              <Stack alignItems="center">
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                sx={{ py: 4 }}
+              >
                 <Pagination
+                  page={filters.page}
+                  shape="rounded"
                   count={meta?.page.total}
                   onChange={handlePageChange}
-                  sx={{
-                    mt: { xs: 8, md: 8 },
-                  }}
                 />
+
+                <FormControl size="small" sx={{ width: 120 }}>
+                  <InputLabel htmlFor="per-page-select">Items per page</InputLabel>
+                  <Select
+                    variant="outlined"
+                    value={String(filters.perPage)}
+                    label="Item per page"
+                    onChange={handlePerPageChange}
+                    inputProps={{ id: 'per-page-select' }}
+                  >
+                    <MenuItem value={10}>10</MenuItem>
+                    <MenuItem value={25}>25</MenuItem>
+                    <MenuItem value={50}>50</MenuItem>
+                    <MenuItem value={100}>100</MenuItem>
+                  </Select>
+                </FormControl>
               </Stack>
             </>
           )}

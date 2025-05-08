@@ -1,5 +1,6 @@
-export interface GetAllNotificationParams {
-  page: number;
+import { BaseParams } from '../shared/base.params';
+
+export interface GetAllNotificationParams extends BaseParams {
   category: string;
   isRead: boolean;
 }

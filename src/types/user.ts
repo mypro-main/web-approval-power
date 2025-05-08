@@ -1,5 +1,6 @@
 import { IRegionItem } from './region';
 import { ITerritoryItem } from './territory';
+import { IPositionItem } from './position';
 
 export interface IUserItem {
   id: string;
@@ -7,7 +8,8 @@ export interface IUserItem {
   email: string;
   role: string;
   status: string;
-  jobTitle: string | null;
+  idamanId: string | null;
+  Position: IPositionItem;
 }
 
 export interface IUserDetailItem extends IUserItem {

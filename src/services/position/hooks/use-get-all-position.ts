@@ -2,22 +2,27 @@ import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { UseQueryReturn } from '../../shared/use-query-return-type';
 import { BaseMeta } from '../../shared/base.response';
-import { NotificationService } from '../notification-service';
-import { GetAllNotificationParams } from '../notification.request';
-import { NotificationListResponse } from '../notification.response';
+import { PositionResponse } from '../position.response';
+import { GetAllPositionParams } from '../position.request';
+import { PositionService } from '../position-service';
 
-interface UseGetAllNotificationReturn extends UseQueryReturn {
-  notifications: NotificationListResponse[];
+interface UseGetAllPositionReturn extends UseQueryReturn {
+  positions: PositionResponse[];
   meta?: BaseMeta;
 }
 
-export function useGetAllNotification(
-  params?: GetAllNotificationParams
-): UseGetAllNotificationReturn {
-  const api = new NotificationService();
+export function useGetAllPosition(params?: GetAllPositionParams): UseGetAllPositionReturn {
+  const api = new PositionService();
 
   const { data, error, isPending, isFetching, isLoading } = useQuery({
-    queryKey: ['notifications', params?.page, params?.perPage, params?.category, params?.isRead],
+    queryKey: [
+      'positions',
+      params?.page,
+      params?.perPage,
+      params?.status,
+      params?.keyword,
+      params?.id,
+    ],
     queryFn: () => api.getAll(params),
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
@@ -26,7 +31,7 @@ export function useGetAllNotification(
 
   return useMemo(
     () => ({
-      notifications: data?.data || [],
+      positions: data?.data || [],
       meta: data?.meta,
       error,
       isFetching: isLoading || isFetching || isPending,

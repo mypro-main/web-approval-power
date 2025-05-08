@@ -12,7 +12,7 @@ export interface CreateUserRequest {
   role: string;
   password: string;
   confirmPassword: string;
-  jobTitle: string;
+  positionId: string;
   territoryIds?: string[];
 }
 
@@ -21,7 +21,7 @@ export interface UpdateUserRequest {
   email: string;
   role: string;
   status: string;
-  jobTitle: string;
+  positionId: string;
 }
 
 export interface UpdateUserPasswordRequest {

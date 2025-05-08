@@ -77,10 +77,16 @@ const navItem: {
         path: paths.user.root,
         icon: ICONS.user,
       },
+      // {
+      //   roles: ['SUPER_ADMIN'],
+      //   title: 'Role',
+      //   path: paths.role.root,
+      //   icon: ICONS.lock,
+      // },
       {
         roles: ['SUPER_ADMIN'],
-        title: 'Role',
-        path: paths.role.root,
+        title: 'Position',
+        path: paths.position.root,
         icon: ICONS.lock,
       },
     ],
