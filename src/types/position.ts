@@ -8,4 +8,5 @@ export interface IPositionItem {
   name: string;
   role: string | null;
   status: string;
+  organizationName: string | null;
 }

@@ -45,8 +45,6 @@ export function PositionQuickCreateForm({ open, onClose }: Props) {
     handleSubmit,
     setError,
     formState: { isSubmitting },
-    watch,
-    resetField,
   } = methods;
 
   useEffect(() => {
@@ -56,8 +54,7 @@ export function PositionQuickCreateForm({ open, onClose }: Props) {
   }, [error]);
 
   const onSubmit = handleSubmit(async (payload) => {
-    console.log(payload);
-    // await mutatePosition({ payload });
+    await mutatePosition({ payload });
 
     reset();
     onClose();

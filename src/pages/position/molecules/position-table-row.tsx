@@ -36,7 +36,7 @@ export default function PositionTableRow({ row, selected }: Props) {
         </TableCell>
         <TableCell align="right" sx={{ whiteSpace: 'nowrap' }}>
           <IconButton onClick={() => quickAssign.onTrue()}>
-            <Iconify icon="fa:user-plus" />
+            <Iconify icon="fa-solid:user-cog" />
           </IconButton>
         </TableCell>
       </TableRow>

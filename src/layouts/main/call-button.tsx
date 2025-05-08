@@ -28,7 +28,7 @@ const TextContainer = styled('div')({
 });
 
 export default function CallButton() {
-  const whatsappNumber = paths.waSystem; // Replace with the actual WhatsApp number
+  const whatsappNumber = '000';
   const whatsappMessage = 'Halo! Saya butuh bantuan terkait Program Click N Win';
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
   return (

@@ -34,11 +34,13 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import UserTableRow from '../molecules/user-table-row';
 import { UserQuickCreateForm } from '../molecules/user-quick-create-form';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { useSyncUser } from '../../../services/user/hooks/use-sync-user';
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', width: 300 },
   { id: 'email', label: 'Email', width: 200 },
-  { id: 'jobtitle', label: 'Job Title', width: 200 },
+  { id: 'position', label: 'Position', width: 200 },
   { id: 'role', label: 'Role', width: 200 },
   { id: 'status', label: 'Status', width: 100 },
   { id: '', width: 100 },
@@ -75,6 +77,7 @@ export function UserView() {
   const debouncedQuery = useDebounceQuery<GetAllUserParams>(query, 'name');
 
   const { users, meta, isFetching, error } = useGetAllUser(debouncedQuery);
+  const { syncUser, isSyncing } = useSyncUser();
 
   const settings = useSettingsContext();
 
@@ -112,6 +115,10 @@ export function UserView() {
     setFilters(defaultFilters);
   }, []);
 
+  const handleSyncUser = useCallback(async () => {
+    await syncUser();
+  }, []);
+
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
@@ -119,6 +126,14 @@ export function UserView() {
         links={[{ name: 'Authentication' }, { name: 'User' }]}
         action={
           <Stack direction="row" gap={1}>
+            <LoadingButton
+              variant="contained"
+              startIcon={<Iconify icon="mingcute:refresh-3-fill" />}
+              onClick={handleSyncUser}
+              loading={isSyncing}
+            >
+              Sync User
+            </LoadingButton>
             <Button
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}

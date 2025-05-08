@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 // config
 import { ACCESS_TOKEN_KEY, HOST_API, LOGIN_METHOD_KEY } from 'src/config-global';
+import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------------
 
@@ -20,6 +21,24 @@ axiosInstance.interceptors.request.use((config) => {
 
   return config;
 });
+
+axiosInstance.interceptors.response.use(
+  (res) => res,
+  (error) => {
+    const status = error.response?.status;
+
+    if (status === 403) {
+      console.warn('Access forbidden: You do not have permission.');
+
+      toast.error('Access forbidden: You do not have permission.', { autoClose: false });
+
+      sessionStorage.removeItem(ACCESS_TOKEN_KEY);
+      sessionStorage.removeItem(LOGIN_METHOD_KEY);
+    }
+
+    return Promise.reject(error.response?.data || 'Something went wrong');
+  }
+);
 
 axiosInstance.interceptors.response.use(
   (res) => res,

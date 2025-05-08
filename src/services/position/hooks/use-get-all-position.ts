@@ -20,7 +20,7 @@ export function useGetAllPosition(params?: GetAllPositionParams): UseGetAllPosit
       params?.page,
       params?.perPage,
       params?.status,
-      params?.name,
+      params?.keyword,
       params?.id,
     ],
     queryFn: () => api.getAll(params),

@@ -709,7 +709,7 @@ export function AutocompleteOnSearchSingle({
         let results;
 
         if (renderId) {
-          results = data.map((item: any) => `${item.id} - ${item.name}`);
+          results = data.map((item: any) => `${item.name} - ${item.id}`);
         } else {
           results = data.map((item: any) => item.name);
         }

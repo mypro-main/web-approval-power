@@ -33,6 +33,8 @@ import { Button } from '@mui/material';
 import Iconify from '../../../components/iconify';
 import Stack from '@mui/material/Stack';
 import { PositionQuickCreateForm } from '../molecules/position-quick-create-form';
+import { useSyncPosition } from '../../../services/position/hooks/use-sync-position';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 export const STATUS_OPTIONS = [
   { value: '', label: 'All' },
@@ -65,15 +67,18 @@ export function PositionView() {
 
   const query = useMemo(
     () => ({
+      page: table.page + 1,
+      perPage: table.rowsPerPage,
       status: filters.status,
       keyword: filters.keyword,
     }),
-    [filters]
+    [table.page, table.rowsPerPage, filters]
   );
 
   const debouncedQuery = useDebounceQuery<GetAllPositionParams>(query, 'name');
 
   const { positions, meta, isFetching, error } = useGetAllPosition(debouncedQuery);
+  const { syncPosition, isSyncing } = useSyncPosition();
 
   const settings = useSettingsContext();
 
@@ -108,6 +113,10 @@ export function PositionView() {
     setFilters(defaultFilters);
   }, []);
 
+  const handleSyncPosition = useCallback(async () => {
+    await syncPosition();
+  }, []);
+
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
@@ -115,6 +124,14 @@ export function PositionView() {
         links={[{ name: 'Authentication' }, { name: 'Position' }]}
         action={
           <Stack direction="row" gap={1}>
+            <LoadingButton
+              variant="contained"
+              startIcon={<Iconify icon="mingcute:refresh-3-fill" />}
+              onClick={handleSyncPosition}
+              loading={isSyncing}
+            >
+              Sync Position
+            </LoadingButton>
             <Button
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}

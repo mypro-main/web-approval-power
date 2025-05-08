@@ -61,4 +61,9 @@ export class UserService {
     const response = await this.api.get(`/user/statuses`);
     return response.data;
   }
+
+  async sync(): Promise<void> {
+    const response = await this.api.post(`/user/sync`);
+    return response.data;
+  }
 }

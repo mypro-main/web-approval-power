@@ -13,6 +13,7 @@ export interface CreatePositionRequest {
 
 export interface AssignPositionRequest {
   name: string;
-  description?: string;
+  role: string;
   status: string;
+  organizationName?: string;
 }

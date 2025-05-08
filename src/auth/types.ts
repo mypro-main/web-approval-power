@@ -1,4 +1,6 @@
 import { LogoutOptions, PopupLoginOptions, RedirectLoginOptions } from '@auth0/auth0-react';
+import { IUserTerritory } from '../types/user';
+import { Position } from '../services/auth/auth.response';
 
 export type ActionMapType<M extends { [index: string]: any }> = {
   [Key in keyof M]: M[Key] extends undefined
@@ -9,6 +11,19 @@ export type ActionMapType<M extends { [index: string]: any }> = {
         type: Key;
         payload: M[Key];
       };
+};
+
+export type AuthUser = {
+  id: string;
+  idamanId: string | null;
+  webAuthnId: string;
+  email: string;
+  name: string;
+  role: string;
+  photoUrl: string | null;
+  status: string;
+  UserTerritory: IUserTerritory[];
+  Position: Position;
 };
 
 export type AuthUserType = null | Record<string, any>;

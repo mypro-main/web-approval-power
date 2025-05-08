@@ -32,6 +32,8 @@ export default function PositionQuickAssignForm({ currentPosition, open, onClose
     () => ({
       name: currentPosition.name || '',
       role: currentPosition.role || '',
+      status: 'active',
+      organizationName: '',
     }),
     [currentPosition]
   );
@@ -55,8 +57,8 @@ export default function PositionQuickAssignForm({ currentPosition, open, onClose
 
   const onSubmit = handleSubmit(async (payload) => {
     const { id } = currentPosition;
-    console.log(payload);
-    // await mutatePosition({  id, payload})
+
+    await mutatePosition({ id, payload });
   });
 
   return (

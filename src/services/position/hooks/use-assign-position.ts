@@ -25,6 +25,7 @@ export function useAssignPosition(): UseAssignPositionReturn {
     mutationFn: ({ id, payload }) => api.assign(id, payload),
     onSuccess: async () => {
       await client.refetchQueries({ queryKey: ['positions'] });
+      await client.refetchQueries({ queryKey: ['users'] });
       toast.success('Assign position success.');
     },
     onMutate: () => toast.info('Please wait. We are assigning the position.'),

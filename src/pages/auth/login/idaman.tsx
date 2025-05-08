@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import Stack from '@mui/material/Stack';
 import { useAuthContext } from 'src/auth/hooks';
-import { PATH_AFTER_LOGIN, IDAMAN, ACCESS_TOKEN_KEY, LOGIN_METHOD_KEY } from 'src/config-global';
+import { PATH_AFTER_LOGIN, IDAMAN } from 'src/config-global';
 import { useRouter } from 'src/hooks/use-router';
 import { useSearchParams } from 'src/hooks/use-search-params';
 import { Button, Typography } from '@mui/material';
 import { LogoBlueWhite } from 'src/components/logo/logo-dynamic';
 import Oidc from 'oidc-client';
-import { isValidToken, jwtDecode, setAuth } from 'src/auth/context/jwt/utils';
+import { isValidToken } from 'src/auth/context/jwt/utils';
 import { LoadingScreen } from 'src/components/loading-screen';
-import { AuthService } from '../../../services/auth/auth-service';
 
 export default function IdamanLoginView() {
   const { loginIdaman } = useAuthContext();
@@ -55,16 +54,12 @@ export default function IdamanLoginView() {
       mgr
         .signinRedirectCallback()
         .then((user) => {
-          console.log('user', user);
-          console.log('code', authorizationCode);
           if (user && user.access_token) {
             if (isValidToken(user.access_token)) {
               void handleIdamanLogin(user.access_token);
             } else {
               setErrorMsg('Failed to obtain access token due invalid token');
             }
-            // setAccessToken(user.access_token);
-            // Optionally, you can store the access token securely or use it for API requests.
           } else {
             setErrorMsg('Failed to obtain access token due no access token');
           }
@@ -74,14 +69,14 @@ export default function IdamanLoginView() {
           setErrorMsg('Failed to obtain access token');
         });
     }
-  }, [authorizationCode, handleIdamanLogin]);
+  }, [authorizationCode]);
 
   const idamanLogin = () => {
     mgr.signinRedirect();
   };
 
   return authorizationCode ? (
-    <LoadingScreen />
+    <LoadingScreen sx={{ minHeight: '100vh' }} />
   ) : (
     <Stack spacing={2.5}>
       {errorMsg && (

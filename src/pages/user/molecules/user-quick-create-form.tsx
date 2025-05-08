@@ -65,9 +65,10 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
     formState: { isSubmitting },
     watch,
     resetField,
+    setValue,
   } = methods;
 
-  const { role, regionIds } = watch();
+  const { role, positionId, regionIds } = watch();
 
   const getPosition = (keyword?: string) => positionService.getAll({ keyword });
   const getRegion = (keyword?: string) => regionService.getAll({ name: keyword });
@@ -83,6 +84,18 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
     resetField('regionIds');
     resetField('territoryIds');
   }, [role]);
+
+  useEffect(() => {
+    if (positionId) {
+      (async function x() {
+        const { role } = await positionService.get(positionId);
+
+        if (role) {
+          setValue('role', role);
+        }
+      })();
+    }
+  }, [positionId]);
 
   useEffect(() => {
     if (error) {
@@ -125,7 +138,7 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
               />
             </Grid>
             <Grid item xs={6}>
-              <RHFSelect name="role" label="Role" required>
+              <RHFSelect name="role" label="Role" disabled required>
                 {roles.map((status, index) => (
                   <MenuItem key={index} value={status}>
                     {status}

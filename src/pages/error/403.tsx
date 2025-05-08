@@ -55,7 +55,7 @@ export default function View403() {
 
         <m.div variants={varBounce().in}>
           <Button variant="contained" onClick={handleLogout}>
-            Log Out
+            Back to Login
           </Button>
         </m.div>
       </MotionContainer>

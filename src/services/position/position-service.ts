@@ -27,52 +27,27 @@ export class PositionService {
       }
     );
 
-    return MOCK;
+    const response = await this.api.get(`/position/list?${query}`);
+    return response.data;
+  }
 
-    const response = await this.api.get(`/position?${query}`);
+  async get(id: string): Promise<PositionResponse> {
+    const response = await this.api.get(`/position/${id}`);
     return response.data;
   }
 
   async create(payload: CreatePositionRequest): Promise<void> {
-    const response = await this.api.post(`/position`, payload);
+    const response = await this.api.post(`/position/create`, payload);
     return response.data;
   }
 
   async assign(id: string, payload: AssignPositionRequest): Promise<PositionResponse | null> {
-    const response = await this.api.put(`/position/${id}`, payload);
+    const response = await this.api.put(`/position/update/${id}`, payload);
+    return response.data;
+  }
+
+  async sync(): Promise<void> {
+    const response = await this.api.post(`/position/sync`);
     return response.data;
   }
 }
-
-const MOCK = {
-  data: [
-    {
-      id: '12345',
-      name: 'Jr Manager',
-      role: 'SAM',
-      status: 'active',
-    },
-    {
-      id: '12346',
-      name: 'Sr Manager',
-      role: 'SAM',
-      status: 'active',
-    },
-    {
-      id: '12347',
-      name: 'Manager',
-      role: null,
-      status: 'active',
-    },
-  ],
-  meta: {
-    record: {
-      current: 1,
-      total: 1,
-    },
-    page: {
-      current: 1,
-      total: 1,
-    },
-  },
-};

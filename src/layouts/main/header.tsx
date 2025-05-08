@@ -54,7 +54,7 @@ export default function Header() {
               },
             }}
           >
-            <LogoH />
+            <LogoH sx={{ mt: 4 }} />
           </Badge>
 
           <Box sx={{ flexGrow: 1 }} />

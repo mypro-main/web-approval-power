@@ -1,4 +1,5 @@
 import { IUserTerritory } from '../../types/user';
+import { AuthUser } from '../../auth/types';
 
 export interface Position {
   id: string;
@@ -7,15 +8,4 @@ export interface Position {
   refId: string;
 }
 
-export interface User {
-  id: string;
-  idamanId: string | null;
-  webAuthnId: string;
-  email: string;
-  name: string;
-  role: string;
-  photoUrl: string | null;
-  status: string;
-  UserTerritory: IUserTerritory[];
-  Position: Position;
-}
+export interface User extends AuthUser {}

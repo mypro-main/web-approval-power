@@ -16,6 +16,8 @@ import { useGetUserRoles } from '../../../services/user/hooks/use-get-user-roles
 import Label from '../../../components/label';
 import { useUpdateUser } from '../../../services/user/hooks/use-update-user';
 import { IUserItem } from '../../../types/user';
+import { RHFAutocompleteAsyncOnSearch } from '../../../components/hook-form/rhf-autocomplete';
+import { PositionService } from 'src/services/position/position-service';
 
 type Props = {
   open: boolean;
@@ -28,13 +30,17 @@ export default function UserQuickEditForm({ currentUser, open, onClose }: Props)
   const { statuses } = useGetUserStatuses();
   const { roles } = useGetUserRoles();
 
+  const positionService = new PositionService();
+
+  const getPosition = (keyword?: string) => positionService.getAll({ keyword });
+
   const defaultValues = useMemo(
     () => ({
       name: currentUser.name,
       email: currentUser.email,
-      role: currentUser.role,
+      role: currentUser.Position.role ?? '',
       status: currentUser.status,
-      jobTitle: currentUser.jobTitle ?? '',
+      positionId: currentUser.Position.id ?? '',
     }),
     [currentUser]
   );
@@ -83,10 +89,18 @@ export default function UserQuickEditForm({ currentUser, open, onClose }: Props)
               <RHFTextField name="email" label="Email" required />
             </Grid>
             <Grid item xs={6}>
-              <RHFTextField name="jobTitle" label="Job Title" />
+              <RHFAutocompleteAsyncOnSearch
+                initialValue={currentUser.Position.name}
+                name="positionId"
+                label="Position"
+                asyncFn={getPosition}
+                renderId
+                disabled
+                required
+              />
             </Grid>
             <Grid item xs={6}>
-              <RHFSelect name="role" label="Role" required>
+              <RHFSelect name="role" label="Role" required disabled>
                 {roles.map((status, index) => (
                   <MenuItem key={index} value={status}>
                     {status}

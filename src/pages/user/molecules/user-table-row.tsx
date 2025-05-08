@@ -17,7 +17,7 @@ type Props = {
 };
 
 export default function UserTableRow({ row, selected }: Props) {
-  const { name, email, role, status, jobTitle } = row;
+  const { name, email, role, status, Position } = row;
 
   const popover = usePopover();
 
@@ -29,8 +29,10 @@ export default function UserTableRow({ row, selected }: Props) {
       <TableRow hover selected={selected}>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{name}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{email}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{jobTitle ? capitalize(jobTitle) : '-'}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{role}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>
+          {Position ? capitalize(Position.name) : '-'}
+        </TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{Position.role || '-'}</TableCell>
         <TableCell>
           <Label
             variant="soft"

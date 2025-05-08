@@ -168,9 +168,6 @@ export function AuthProvider({ children }: Props) {
 
     const user = await authService.getAccount();
 
-    console.log('token', accessToken);
-    console.log('user', user);
-
     dispatch({
       type: Types.LOGIN,
       payload: {
