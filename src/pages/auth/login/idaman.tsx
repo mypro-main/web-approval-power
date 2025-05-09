@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Stack from '@mui/material/Stack';
 import { useAuthContext } from 'src/auth/hooks';
-import { PATH_AFTER_LOGIN, IDAMAN } from 'src/config-global';
+import { IDAMAN_CONFIG } from 'src/config-global';
 import { useRouter } from 'src/hooks/use-router';
 import { useSearchParams } from 'src/hooks/use-search-params';
 import { Button, Typography } from '@mui/material';
@@ -19,21 +19,7 @@ export default function IdamanLoginView() {
 
   const searchParams = useSearchParams();
 
-  const returnTo = searchParams.get('returnTo');
-
-  const config = {
-    authority: IDAMAN.viteIdamanAuthority,
-    client_id: IDAMAN.viteIdamanClientId,
-    client_secret: IDAMAN.viteIdamanClientSecret,
-    redirect_uri: IDAMAN.viteIdamanRedirectUri,
-    response_type: 'code',
-    // scope: 'openid profile api.auth user.read user.readAll',
-    scope:
-      'api.auth user.read user.readAll user.role  position.readAll unit.readAll position.read unit.read',
-    // post_logout_redirect_uri: IDAMAN.viteIdamanPostLogoutRedirectUrl,
-  };
-
-  const mgr = new Oidc.UserManager(config);
+  const mgr = new Oidc.UserManager(IDAMAN_CONFIG);
 
   const authorizationCode = searchParams.get('code');
 
@@ -41,10 +27,9 @@ export default function IdamanLoginView() {
     try {
       void loginIdaman(accessToken);
 
-      router.push(returnTo || PATH_AFTER_LOGIN);
+      router.push('/signin-oidc-idle');
     } catch (error) {
       console.error(error);
-      // reset();
       setErrorMsg(typeof error === 'string' ? error : error.message);
     }
   };

@@ -14,6 +14,17 @@ export const IDAMAN = {
   viteIdamanPostLogoutRedirectUrl: import.meta.env.VITE_IDAMAN_POST_LOGOUT_REDIRECT_URL,
 };
 
+export const IDAMAN_CONFIG = {
+  authority: IDAMAN.viteIdamanAuthority,
+  client_id: IDAMAN.viteIdamanClientId,
+  client_secret: IDAMAN.viteIdamanClientSecret,
+  redirect_uri: IDAMAN.viteIdamanRedirectUri,
+  response_type: 'code',
+  scope:
+    'openid profile email api.auth user.read user.readAll user.role position.readAll unit.readAll position.read unit.read',
+  post_logout_redirect_uri: IDAMAN.viteIdamanPostLogoutRedirectUrl,
+};
+
 export const IS_CAPTCHA_ACTIVE = import.meta.env.VITE_IS_CAPTCHA;
 
 // ROOT PATH AFTER LOGIN SUCCESSFUL

@@ -4,19 +4,16 @@ import { ForbiddenIllustration } from 'src/assets/illustrations';
 import { Helmet } from 'react-helmet-async';
 import { MotionContainer, varBounce } from 'src/components/animate';
 import Stack from '@mui/material/Stack';
-import { useAuthContext } from '../../auth/hooks';
+import Oidc from 'oidc-client';
 import { Button } from '@mui/material';
-import { useRouter } from '../../hooks/use-router';
+import { IDAMAN_CONFIG } from '../../config-global';
 
 export default function View403() {
-  const { logout } = useAuthContext();
-
-  const router = useRouter();
+  const mgr = new Oidc.UserManager(IDAMAN_CONFIG);
 
   const handleLogout = async () => {
     try {
-      await logout();
-      router.replace('/');
+      await mgr.signoutRedirect();
     } catch (error) {
       console.error(error);
     }
@@ -33,7 +30,7 @@ export default function View403() {
       }}
     >
       <Helmet>
-        <title> 403 No Permission!</title>
+        <title>403 No Permission!</title>
       </Helmet>
 
       <MotionContainer>
@@ -55,7 +52,7 @@ export default function View403() {
 
         <m.div variants={varBounce().in}>
           <Button variant="contained" onClick={handleLogout}>
-            Back to Login
+            Logout
           </Button>
         </m.div>
       </MotionContainer>
