@@ -15,6 +15,8 @@ import { notificationRoutes } from './notification/route';
 import { positionRoutes } from './position/route';
 import View403 from './error/403';
 import IdamanLoginView from './auth/login/idaman';
+import { IdamanLogout } from './auth/logout/idaman-logout';
+import { IdamanIdle } from './auth/login/IdamanIdle';
 
 export const router = createBrowserRouter(
   [
@@ -34,6 +36,8 @@ export const router = createBrowserRouter(
             { path: '404', element: <View404 /> },
             { path: '403', element: <View403 /> },
             { path: 'signin-oidc', element: <IdamanLoginView /> },
+            { path: 'signin-oidc-idle', element: <IdamanIdle /> },
+            { path: 'signout-oidc', element: <IdamanLogout /> },
           ],
         },
 

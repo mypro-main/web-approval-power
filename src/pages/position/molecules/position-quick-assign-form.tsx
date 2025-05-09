@@ -30,6 +30,7 @@ export default function PositionQuickAssignForm({ currentPosition, open, onClose
 
   const defaultValues = useMemo(
     () => ({
+      id: currentPosition.id || '',
       name: currentPosition.name || '',
       role: currentPosition.role || '',
       status: 'active',
@@ -76,8 +77,11 @@ export default function PositionQuickAssignForm({ currentPosition, open, onClose
 
         <DialogContent>
           <Grid container spacing={2} rowSpacing={4} sx={{ mt: 1 }}>
+            <Grid item xs={12}>
+              <RHFTextField name="id" label="Position ID" disabled required />
+            </Grid>
             <Grid item xs={6}>
-              <RHFTextField name="name" label="Position" required />
+              <RHFTextField name="name" label="Position" disabled required />
             </Grid>
             <Grid item xs={6}>
               <RHFAutocompleteAsyncOnOpen required name="role" label="Role" asyncFn={getRoles} />
