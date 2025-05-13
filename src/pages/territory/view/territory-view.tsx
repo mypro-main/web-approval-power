@@ -31,11 +31,7 @@ import TableBody from '@mui/material/TableBody';
 import TerritoryTableRow from '../molecules/territory-table-row';
 import { TerritoryQuickUploadForm } from '../molecules/territory-quick-upload-form';
 
-export const STATUS_OPTIONS = [
-  { value: '', label: 'All' },
-  { value: 'active', label: 'Active' },
-  { value: 'inactive', label: 'Inactive' },
-];
+export const STATUS_OPTIONS = [{ value: '', label: 'All' }];
 
 const TABLE_HEAD = [
   { id: 'id', label: 'ID', width: 300 },

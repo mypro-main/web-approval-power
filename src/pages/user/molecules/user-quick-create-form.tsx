@@ -70,7 +70,7 @@ export function UserQuickCreateForm({ open, onClose }: Props) {
 
   const { role, positionId, regionIds } = watch();
 
-  const getPosition = (keyword?: string) => positionService.getAll({ keyword });
+  const getPosition = (keyword?: string) => positionService.getAll({ status: 'active', keyword });
   const getRegion = (keyword?: string) => regionService.getAll({ name: keyword });
   const getTerritory = (keyword?: string) => {
     const { regionIds } = watch();
