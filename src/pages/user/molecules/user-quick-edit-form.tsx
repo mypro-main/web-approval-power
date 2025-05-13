@@ -32,7 +32,7 @@ export default function UserQuickEditForm({ currentUser, open, onClose }: Props)
 
   const positionService = new PositionService();
 
-  const getPosition = (keyword?: string) => positionService.getAll({ keyword });
+  const getPosition = (keyword?: string) => positionService.getAll({ status: 'active', keyword });
 
   const defaultValues = useMemo(
     () => ({

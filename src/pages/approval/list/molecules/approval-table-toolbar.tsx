@@ -2,10 +2,8 @@ import { ChangeEvent, useCallback } from 'react';
 import Stack from '@mui/material/Stack';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Iconify from 'src/components/iconify';
-import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { IApprovalTableFilters } from '../../../../types/approval';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import capitalize from '@mui/utils/capitalize';
@@ -23,8 +21,6 @@ const baseOptions = ['requested', 'verified', 'approved', 'rejected', 'reconfirm
 
 export default function ApprovalTableToolbar({ filters, onFilters }: Props) {
   const { user } = useAuthContext();
-
-  const popover = usePopover();
 
   const options = baseOptions.filter((option) => {
     if (user?.role === 'SAM') {
@@ -59,7 +55,6 @@ export default function ApprovalTableToolbar({ filters, onFilters }: Props) {
         }}
         sx={{
           p: 2.5,
-          pr: { xs: 2.5, md: 1 },
         }}
       >
         <FormControl
@@ -109,45 +104,7 @@ export default function ApprovalTableToolbar({ filters, onFilters }: Props) {
             ),
           }}
         />
-
-        <IconButton onClick={popover.onOpen}>
-          <Iconify icon="eva:more-vertical-fill" />
-        </IconButton>
       </Stack>
-
-      <CustomPopover
-        open={popover.open}
-        onClose={popover.onClose}
-        arrow="right-top"
-        sx={{ width: 140 }}
-      >
-        <MenuItem
-          onClick={() => {
-            popover.onClose();
-          }}
-        >
-          <Iconify icon="solar:printer-minimalistic-bold" />
-          Print
-        </MenuItem>
-
-        <MenuItem
-          onClick={() => {
-            popover.onClose();
-          }}
-        >
-          <Iconify icon="solar:import-bold" />
-          Import
-        </MenuItem>
-
-        <MenuItem
-          onClick={() => {
-            popover.onClose();
-          }}
-        >
-          <Iconify icon="solar:export-bold" />
-          Export
-        </MenuItem>
-      </CustomPopover>
     </>
   );
 }

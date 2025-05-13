@@ -7,19 +7,23 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import FormProvider, { RHFSelect, RHFTextField } from 'src/components/hook-form';
 import Grid from '@mui/material/Grid';
 import { AssignPositionSchema } from '../schema';
 import { IPositionItem } from '../../../types/position';
 import { useAssignPosition } from '../../../services/position/hooks/use-assign-position';
 import { RHFAutocompleteAsyncOnOpen } from '../../../components/hook-form/rhf-autocomplete';
 import { RoleService } from '../../../services/role/role-service';
+import MenuItem from '@mui/material/MenuItem';
+import Label from '../../../components/label';
 
 type Props = {
   open: boolean;
   onClose: VoidFunction;
   currentPosition: IPositionItem;
 };
+
+const STATUS_OPTIONS = ['active', 'inactive'];
 
 export default function PositionQuickAssignForm({ currentPosition, open, onClose }: Props) {
   const { mutatePosition, error } = useAssignPosition();
@@ -33,7 +37,7 @@ export default function PositionQuickAssignForm({ currentPosition, open, onClose
       id: currentPosition.id || '',
       name: currentPosition.name || '',
       role: currentPosition.role || '',
-      status: 'active',
+      status: currentPosition.status || 'inactive',
       organizationName: '',
     }),
     [currentPosition]
@@ -73,11 +77,11 @@ export default function PositionQuickAssignForm({ currentPosition, open, onClose
       }}
     >
       <FormProvider methods={methods} onSubmit={onSubmit}>
-        <DialogTitle>Assign Position</DialogTitle>
+        <DialogTitle>Update Position</DialogTitle>
 
         <DialogContent>
           <Grid container spacing={2} rowSpacing={4} sx={{ mt: 1 }}>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <RHFTextField name="id" label="Position ID" disabled required />
             </Grid>
             <Grid item xs={6}>
@@ -85,6 +89,25 @@ export default function PositionQuickAssignForm({ currentPosition, open, onClose
             </Grid>
             <Grid item xs={6}>
               <RHFAutocompleteAsyncOnOpen required name="role" label="Role" asyncFn={getRoles} />
+            </Grid>
+            <Grid item xs={6}>
+              <RHFSelect name="status" label="Status" required>
+                {STATUS_OPTIONS.map((status, index) => (
+                  <MenuItem key={index} value={status}>
+                    <Label
+                      variant="soft"
+                      color={
+                        (status === 'active' && 'success') ||
+                        (status === 'inactive' && 'error') ||
+                        'default'
+                      }
+                      sx={{ cursor: 'pointer' }}
+                    >
+                      {status || 'All'}
+                    </Label>
+                  </MenuItem>
+                ))}
+              </RHFSelect>
             </Grid>
           </Grid>
         </DialogContent>
@@ -95,7 +118,7 @@ export default function PositionQuickAssignForm({ currentPosition, open, onClose
           </Button>
 
           <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-            Assign
+            Update
           </LoadingButton>
         </DialogActions>
       </FormProvider>

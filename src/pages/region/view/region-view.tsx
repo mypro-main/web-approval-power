@@ -29,11 +29,7 @@ import { IRegionItem, IRegionTableFilters } from '../../../types/region';
 import { GetAllRegionParams } from '../../../services/region/region.request';
 import { useGetAllRegion } from '../../../services/region/hooks/use-get-all-region';
 
-export const STATUS_OPTIONS = [
-  { value: '', label: 'All' },
-  { value: 'active', label: 'Active' },
-  { value: 'inactive', label: 'Inactive' },
-];
+export const STATUS_OPTIONS = [{ value: '', label: 'All' }];
 
 const TABLE_HEAD = [
   { id: 'id', label: 'ID', width: 300 },
